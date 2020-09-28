@@ -10,6 +10,12 @@ class LevelOne extends Phaser.Scene {
     this.load.image('star', 'assets/star.png');
     this.load.image('bomb', 'assets/bomb.png');
     this.load.spritesheet('dude', 'assets/main.png', { frameWidth: 56, frameHeight: 45 });
+    this.load.audio('jump', ['assets/Jump.ogg', 'assets/Jump.mp3', 'assets/Jump.m4a']);
+    this.load.audio('shot', ['assets/Shot.ogg', 'assets/Shot.mp3', 'assets/Shot.m4a']);
+    this.load.audio('hit', ['assets/Player Hit.ogg', 'assets/Player Hit.mp3', 'assets/Player Hit.m4a']);
+    this.load.audio('boom', ['assets/Shot Explode.ogg', 'assets/Shot Explode.mp3', 'assets/Shot Explode.m4a']);
+    this.load.audio('key', ['assets/Key Get.ogg', 'assets/Key Get.mp3', 'assets/Key Get.m4a']);
+    this.load.audio('win', ['assets/Enemy Die.ogg', 'assets/Enemy Die.mp3', 'assets/Enemy Die.m4a']);
   }
 
   create() {
@@ -27,6 +33,12 @@ class LevelOne extends Phaser.Scene {
     platforms.create(50, 250, 'ground');
     platforms.create(750, 220, 'ground');
     platforms.create(400, -75, 'ground').setScale(2).refreshBody(); //ceiling
+    jumpNoise = game.sound.add('jump');
+    bombNoise = game.sound.add('boom');
+    hitNoise = game.sound.add('hit');
+    keyNoise = game.sound.add('key');
+    winNoise = game.sound.add('win');
+    shotNoise = game.sound.add('shot');
 
     // The player and its settings
     player = this.physics.add.sprite(100, 450, 'dude');
@@ -177,10 +189,11 @@ class LevelOne extends Phaser.Scene {
     if ((keys.W.isDown || keys.SPACE.isDown || cursors.up.isDown) && player.body.touching.down)
     {
         player.setVelocityY(-330);
+        jumpNoise.play();
     }
 
     if (pointer.isDown && attack === "single"){
-        
+        shotNoise.play();
         var bomb = bombs.create(player.x, player.y, 'bomb');
         var velocityX = (pointer.x - player.x)*4;
         var velocityY = (pointer.y - player.y)*4;
