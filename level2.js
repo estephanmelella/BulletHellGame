@@ -9,6 +9,7 @@ class LevelTwo extends Phaser.Scene {
     this.load.image('star', 'assets/star.png');
     this.load.image('bomb', 'assets/bomb.png');
     this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
+    this.load.audio('jump', ['assets/Jump.ogg', 'assets/Jump.mp3', 'assets/Jump.m4a']);
   }
 
   create() {
@@ -27,6 +28,7 @@ class LevelTwo extends Phaser.Scene {
     platforms.create(50, 250, 'ground');
     platforms.create(750, 220, 'ground');
     platforms.create(400, -75, 'ground').setScale(2).refreshBody(); //ceiling
+    jumpNoise = game.sound.add('jump');
 
     // The player and its settings
     player = this.physics.add.sprite(100, 450, 'dude');
@@ -163,9 +165,10 @@ class LevelTwo extends Phaser.Scene {
         player.anims.play('turn');
     }
 
-    if (keys.W.isDown && player.body.touching.down)
+    if ((keys.W.isDown || keys.SPACE.isDown || cursors.up.isDown) && player.body.touching.down)
     {
         player.setVelocityY(-330);
+        jumpNoise.play();
     }
 
     if (pointer.isDown && attack === "single"){
