@@ -33,6 +33,9 @@
 
 
 var player;
+var timedEvent;
+var timedEvent2;
+var enemyShot = true;
 var enemy;
 var levelKey;
 var bombs;
@@ -46,6 +49,7 @@ var hp;
 var hpText;
 var enemyHealth;
 var enemyHealthText;
+var enemyBombs;
 var gameOverText;
 var youWin = false;
 var youWinText;
@@ -55,28 +59,35 @@ var cursors;
 var date = new Date();
 var seconds;
 var jumpNoise;
+var bombNoise;
+var hitNoise;
+var keyNoise;
+var winNoise;
+var shotNoise;
 
 var game = new Phaser.Game(config);
 
 function collectKey (player, levelKey){
     levelKey.destroy();
-
+    keyNoise.play();
     youWin = true;
 }
 
-function playerHitBomb (player, bomb){
+function playerHitBomb (player, enemyBombs){
 
     //Reduce hp
     if (hp > 0){
-      hp = hp - 1;
+      hp = hp - 3;
     }
+    hitNoise.play();
     hpText.setText('HP: ' + hp);
 
     //Set Textures
     player.setTint(0xff0000);
-    bomb.setTexture('star');
-    bomb.setVelocity(0,0);
-    this.time.addEvent({delay: 100, callback: () => bomb.destroy()});
+    enemyBombs.setTexture('star');
+    enemyBombs.setVelocity(0,0);
+    this.time.addEvent({delay: 100, callback: () => enemyBombs.destroy()});
+    //bombNoise.play();
 
     if (hp === 0){
       this.physics.pause();
@@ -106,8 +117,10 @@ function enemyHitBomb (enemy, bomb){
     bomb.setTexture('star');
     bomb.setVelocity(0,0);
     this.time.addEvent({delay: 100, callback: () => bomb.destroy()});
+    bombNoise.play();
 
     if (enemyHealth === 0){
+      winNoise.play();
       enemyHealth = null;
       enemy.setTexture('star');
       this.time.addEvent({delay: 1000, callback: () => enemy.destroy()});
@@ -134,7 +147,7 @@ function bombExplode(bomb){
   bomb.setTexture('star');
   bomb.setVelocity(0,0);
   this.time.addEvent({delay: 100, callback: () => bomb.destroy()});
-
+  bombNoise.play();
 }
 
 </script>

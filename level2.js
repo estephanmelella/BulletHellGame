@@ -5,16 +5,24 @@ class LevelTwo extends Phaser.Scene {
 
   preload() {
     this.load.image('sky', 'assets/sky.png');
+    this.load.image('boss', 'assets/boss.png')
     this.load.image('ground', 'assets/platform.png');
     this.load.image('star', 'assets/star.png');
     this.load.image('bomb', 'assets/bomb.png');
     this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
     this.load.audio('jump', ['assets/Jump.ogg', 'assets/Jump.mp3', 'assets/Jump.m4a']);
+    this.load.audio('shot', ['assets/Shot.ogg', 'assets/Shot.mp3', 'assets/Shot.m4a']);
+    this.load.audio('hit', ['assets/Player Hit.ogg', 'assets/Player Hit.mp3', 'assets/Player Hit.m4a']);
+    this.load.audio('boom', ['assets/Shot Explode.ogg', 'assets/Shot Explode.mp3', 'assets/Shot Explode.m4a']);
+    this.load.audio('key', ['assets/Key Get.ogg', 'assets/Key Get.mp3', 'assets/Key Get.m4a']);
+    this.load.audio('win', ['assets/Enemy Die.ogg', 'assets/Enemy Die.mp3', 'assets/Enemy Die.m4a']);
   }
 
   create() {
     //  A simple background for our game
     this.add.image(400, 300, 'sky');
+    youWinText.setText('');
+    youWin = false;
 
     //  The platforms group contains the ground and the 2 ledges we can jump on
     platforms = this.physics.add.staticGroup();
@@ -29,6 +37,11 @@ class LevelTwo extends Phaser.Scene {
     platforms.create(750, 220, 'ground');
     platforms.create(400, -75, 'ground').setScale(2).refreshBody(); //ceiling
     jumpNoise = game.sound.add('jump');
+    bombNoise = game.sound.add('boom');
+    hitNoise = game.sound.add('hit');
+    keyNoise = game.sound.add('key');
+    winNoise = game.sound.add('win');
+    shotNoise = game.sound.add('shot');
 
     // The player and its settings
     player = this.physics.add.sprite(100, 450, 'dude');
@@ -59,7 +72,7 @@ class LevelTwo extends Phaser.Scene {
     });
 
     //Enemy
-    enemy = this.physics.add.sprite(800,500,'platform');
+    enemy = this.physics.add.sprite(750,500,'boss');
     enemy.body.allowGravity = false;
     enemy.body.immovable = true;
 
@@ -67,18 +80,18 @@ class LevelTwo extends Phaser.Scene {
     targets: enemy.body.velocity,
     loop: -1,
     tweens: [
-      { x:    0, y: -100, duration: 5000, ease: 'Stepped' },
-      { x:    0, y:    0, duration: 1000, ease: 'Stepped' },
-      { x: -160, y:    0, duration: 5000, ease: 'Stepped' },
-      { x:    0, y:    0, duration: 1000, ease: 'Stepped' },
+      { x:    0, y: -90, duration: 5000, ease: 'Stepped' },
+      //{ x:    0, y:    0, duration: 1000, ease: 'Stepped' },
+      { x: -140, y:    0, duration: 5000, ease: 'Stepped' },
+      //{ x:    0, y:    0, duration: 1000, ease: 'Stepped' },
       { x:    0, y:  100, duration: 5000, ease: 'Stepped' },
-      { x:    0, y:    0, duration: 1000, ease: 'Stepped' },
+      //{ x:    0, y:    0, duration: 1000, ease: 'Stepped' },
       { x:    0, y: -100, duration: 5000, ease: 'Stepped' },
-      { x:    0, y:    0, duration: 1000, ease: 'Stepped' },
-      { x:  160, y:    0, duration: 5000, ease: 'Stepped' },
-      { x:    0, y:    0, duration: 1000, ease: 'Stepped' },
-      { x:    0, y:  100, duration: 5000, ease: 'Stepped' },
-      { x:    0, y:    0, duration: 1000, ease: 'Stepped' }
+      //{ x:    0, y:    0, duration: 1000, ease: 'Stepped' },
+      { x:  140, y:    0, duration: 5000, ease: 'Stepped' },
+      //{ x:    0, y:    0, duration: 1000, ease: 'Stepped' },
+      { x:    0, y:  90, duration: 5000, ease: 'Stepped' },
+      //{ x:    0, y:    0, duration: 1000, ease: 'Stepped' }
     ]
   });
 
@@ -103,6 +116,7 @@ class LevelTwo extends Phaser.Scene {
     attack = "single";
 
     bombs = this.physics.add.group();
+    enemyBombs = this.physics.add.group();
 
     // The hp
     hp = 300;
@@ -120,10 +134,10 @@ class LevelTwo extends Phaser.Scene {
 
     //  Collide the player and the stars with the platforms
     this.physics.add.collider(player, platforms);
+    this.physics.add.collider(enemyBombs, platforms);
     this.physics.add.collider(bombs, platforms, bombExplode, null, this);
     this.physics.add.collider(player, levelKey, collectKey, null, this);
-
-
+    this.physics.add.collider(player, enemyBombs, playerHitBomb, null, this);
     this.physics.add.collider(player, bombs, playerHitBomb, null, this);
     this.physics.add.collider(enemy, bombs, enemyHitBomb, null, this);
   }
@@ -137,6 +151,11 @@ class LevelTwo extends Phaser.Scene {
     if (youWin) {
       youWinText.setText('YOU WIN! ONTO LVL 2');
 
+
+    }
+    if(enemyHealth > 0 && enemyShot == true){
+      enemyShot = false;
+      timedEvent = this.time.delayedCall(1500, this.enemyAttack, [], this);
 
     }
 
@@ -179,5 +198,16 @@ class LevelTwo extends Phaser.Scene {
       bomb.allowGravity = false;
 
     }
+  }
+  enemyAttack(){ // Scatters a bunch of bombs
+    console.log("Starting Enemy Attack...");
+    for (var i = 0; i < 1; i++){
+      var enemyBomb = enemyBombs.create(enemy.x, enemy.y, 'bomb');
+      enemyBomb.setBounce(1);
+      enemyBomb.setCollideWorldBounds(true);
+      enemyBomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
+      enemyBomb.allowGravity = true;
+    }
+    enemyShot = true;
   }
 }

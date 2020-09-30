@@ -5,14 +5,22 @@ class LevelOne extends Phaser.Scene {
 
   preload() {
     this.load.image('sky', 'assets/sky.png');
+    this.load.image('boss', 'assets/boss.png')
     this.load.image('ground', 'assets/platform.png');
     this.load.image('star', 'assets/star.png');
     this.load.image('bomb', 'assets/bomb.png');
-    this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
+    this.load.spritesheet('dude', 'assets/main.png', { frameWidth: 56, frameHeight: 45 });
     this.load.audio('jump', ['assets/Jump.ogg', 'assets/Jump.mp3', 'assets/Jump.m4a']);
+    this.load.audio('shot', ['assets/Shot.ogg', 'assets/Shot.mp3', 'assets/Shot.m4a']);
+    this.load.audio('hit', ['assets/Player Hit.ogg', 'assets/Player Hit.mp3', 'assets/Player Hit.m4a']);
+    this.load.audio('boom', ['assets/Shot Explode.ogg', 'assets/Shot Explode.mp3', 'assets/Shot Explode.m4a']);
+    this.load.audio('key', ['assets/Key Get.ogg', 'assets/Key Get.mp3', 'assets/Key Get.m4a']);
+    this.load.audio('win', ['assets/Enemy Die.ogg', 'assets/Enemy Die.mp3', 'assets/Enemy Die.m4a']);
   }
 
   create() {
+
+
     //  A simple background for our game
     this.add.image(400, 300, 'sky');
 
@@ -26,10 +34,14 @@ class LevelOne extends Phaser.Scene {
     platforms.create(750, 220, 'ground');
     platforms.create(400, -75, 'ground').setScale(2).refreshBody(); //ceiling
     jumpNoise = game.sound.add('jump');
+    bombNoise = game.sound.add('boom');
+    hitNoise = game.sound.add('hit');
+    keyNoise = game.sound.add('key');
+    winNoise = game.sound.add('win');
+    shotNoise = game.sound.add('shot');
 
     // The player and its settings
     player = this.physics.add.sprite(100, 450, 'dude');
-    
 
     //  Player physics properties
     player.setBounce(0);
@@ -57,27 +69,28 @@ class LevelOne extends Phaser.Scene {
     });
 
     //Enemy
-    enemy = this.physics.add.sprite(800,500,'platform');
+    enemy = this.physics.add.sprite(750 ,500,'boss');
     enemy.body.allowGravity = false;
     enemy.body.immovable = true;
+
 
     //Enemy's movement around the screen
     this.tweens.timeline({
     targets: enemy.body.velocity,
     loop: -1,
     tweens: [
-      { x:    0, y: -100, duration: 5000, ease: 'Stepped' },
-      { x:    0, y:    0, duration: 1000, ease: 'Stepped' },
-      { x: -160, y:    0, duration: 5000, ease: 'Stepped' },
-      { x:    0, y:    0, duration: 1000, ease: 'Stepped' },
+      { x:    0, y: -90, duration: 5000, ease: 'Stepped' },
+      //{ x:    0, y:    0, duration: 1000, ease: 'Stepped' },
+      { x: -140, y:    0, duration: 5000, ease: 'Stepped' },
+      //{ x:    0, y:    0, duration: 1000, ease: 'Stepped' },
       { x:    0, y:  100, duration: 5000, ease: 'Stepped' },
-      { x:    0, y:    0, duration: 1000, ease: 'Stepped' },
+      //{ x:    0, y:    0, duration: 1000, ease: 'Stepped' },
       { x:    0, y: -100, duration: 5000, ease: 'Stepped' },
-      { x:    0, y:    0, duration: 1000, ease: 'Stepped' },
-      { x:  160, y:    0, duration: 5000, ease: 'Stepped' },
-      { x:    0, y:    0, duration: 1000, ease: 'Stepped' },
-      { x:    0, y:  100, duration: 5000, ease: 'Stepped' },
-      { x:    0, y:    0, duration: 1000, ease: 'Stepped' }
+    //  { x:    0, y:    0, duration: 1000, ease: 'Stepped' },
+      { x:  140, y:    0, duration: 5000, ease: 'Stepped' },
+    //  { x:    0, y:    0, duration: 1000, ease: 'Stepped' },
+      { x:    0, y:  90, duration: 5000, ease: 'Stepped' },
+      //{ x:    0, y:    0, duration: 1000, ease: 'Stepped' }
     ]
   });
 
@@ -91,6 +104,7 @@ class LevelOne extends Phaser.Scene {
 
     // Bombs
     bombs = this.physics.add.group();
+    enemyBombs = this.physics.add.group();
 
     // The hp
     hp = 300;
@@ -108,21 +122,16 @@ class LevelOne extends Phaser.Scene {
 
     //  Collide the player and the stars with the platforms
     this.physics.add.collider(player, platforms);
+    //this.physics.add.collider(bombs, platforms, bombExplode, null, this);
+    this.physics.add.collider(enemyBombs, platforms);
     this.physics.add.collider(bombs, platforms, bombExplode, null, this);
-    this.physics.add.collider(player, bombs, playerHitBomb, null, this);
+    this.physics.add.collider(player, enemyBombs, playerHitBomb, null, this);
     this.physics.add.collider(enemy, bombs, enemyHitBomb, null, this);
 
     // Enemy Attack
-    function enemyAttack(){ // Scatters a bunch of bombs
-      console.log("Starting Enemy Attack...");
-      for (var i = 0; i < 10; i++){
-        var bomb = bombs.create(enemy.x, enemy.y, 'bomb');
-        bomb.setCollideWorldBounds(true);
-        bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
-        bomb.allowGravity = true;
-      }
-    }
 
+
+    //enemy.enemyAttack();
     // // Loop attack every 3 seconds
     // timer = this.time.addEvent({
     //   delay: 3000,
@@ -146,7 +155,11 @@ class LevelOne extends Phaser.Scene {
       });
 
     }
+    if(enemyHealth > 0 && enemyShot == true){
+      enemyShot = false;
+      timedEvent = this.time.delayedCall(1500, this.enemyAttack, [], this);
 
+    }
     if (keys.A.isDown || cursors.left.isDown)
     {
         player.setVelocityX(-160);
@@ -180,15 +193,36 @@ class LevelOne extends Phaser.Scene {
     }
 
     if (pointer.isDown && attack === "single"){
-      var bomb = bombs.create(player.x, player.y, 'bomb');
-      var velocityX = (pointer.x - player.x)*5;
-      var velocityY = (pointer.y - player.y)*5;
-      bomb.setVelocity(velocityX, velocityY);
-      bomb.allowGravity = false;
-    }
+        shotNoise.play();
+        var bomb = bombs.create(player.x, player.y, 'bomb');
+        var velocityX = (pointer.x - player.x)*4;
+        var velocityY = (pointer.y - player.y)*4;
+        bomb.setVelocity(velocityX, velocityY);
+        bomb.allowGravity = false;
 
+    }
     // // Enemy attacks every 3 seconds
     // seconds = date.getTime();
     // if (seconds%3000 === 0){enemyAttack();}
+  }
+  playerAttack(){
+    for (var i = 0; i < 1; i++){
+      var bomb = bombs.create(player.x, player.y, 'bomb');
+      var velocityX = (pointer.x - player.x)*4;
+      var velocityY = (pointer.y - player.y)*4;
+      bomb.setVelocity(velocityX, velocityY);
+      bomb.allowGravity = false;
+    }
+  }
+  enemyAttack(){ // Scatters a bunch of bombs
+    console.log("Starting Enemy Attack...");
+    for (var i = 0; i < 1; i++){
+      var enemyBomb = enemyBombs.create(enemy.x, enemy.y, 'bomb');
+      enemyBomb.setBounce(1);
+      enemyBomb.setCollideWorldBounds(true);
+      enemyBomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
+      enemyBomb.allowGravity = true;
+    }
+    enemyShot = true;
   }
 }
