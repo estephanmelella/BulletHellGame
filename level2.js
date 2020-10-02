@@ -190,13 +190,16 @@ class LevelTwo extends Phaser.Scene {
         jumpNoise.play();
     }
 
-    if (pointer.isDown && attack === "single"){
+    if (pointer.isDown && attack === "single" && !hasShot){
       var bomb = bombs.create(player.x, player.y, 'bomb');
       var velocityX = (pointer.x - player.x)*5;
       var velocityY = (pointer.y - player.y)*5;
       bomb.setVelocity(velocityX, velocityY);
       bomb.allowGravity = false;
-
+      hasShot = true;
+    }
+    if(!pointer.isDown){
+      hasShot = false;
     }
   }
   enemyAttack(){ // Scatters a bunch of bombs

@@ -192,14 +192,18 @@ class LevelOne extends Phaser.Scene {
         jumpNoise.play();
     }
 
-    if (pointer.isDown && attack === "single"){
+    if (pointer.isDown && attack === "single" && !hasShot){
         shotNoise.play();
         var bomb = bombs.create(player.x, player.y, 'bomb');
         var velocityX = (pointer.x - player.x)*4;
         var velocityY = (pointer.y - player.y)*4;
         bomb.setVelocity(velocityX, velocityY);
         bomb.allowGravity = false;
+        hasShot = true;
 
+    }
+    if(!pointer.isDown){
+      hasShot = false;
     }
     // // Enemy attacks every 3 seconds
     // seconds = date.getTime();
