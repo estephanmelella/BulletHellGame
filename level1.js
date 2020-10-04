@@ -19,8 +19,6 @@ class LevelOne extends Phaser.Scene {
   }
 
   create() {
-
-
     //  A simple background for our game
     this.add.image(400, 300, 'sky');
 
@@ -73,7 +71,6 @@ class LevelOne extends Phaser.Scene {
     enemy.body.allowGravity = false;
     enemy.body.immovable = true;
 
-
     //Enemy's movement around the screen
     this.tweens.timeline({
     targets: enemy.body.velocity,
@@ -96,7 +93,7 @@ class LevelOne extends Phaser.Scene {
 
     //  Input Events
     cursors = this.input.keyboard.createCursorKeys();
-    keys = this.input.keyboard.addKeys('W,A,S,D,SPACE');
+    keys = this.input.keyboard.addKeys('W,A,S,D,SPACE,ESC');
     pointer = this.input.activePointer;
 
     // Attack
@@ -112,7 +109,12 @@ class LevelOne extends Phaser.Scene {
 
     // Enemy Health
     enemyHealth = 1000;
-    enemyHealthText = this.add.text(16, 16, 'Enemy Health: ' + enemyHealth, { fontSize: '32px', fill: '#000' });
+    enemyHealthText = this.add.text(200, 16, 'Enemy Health: ' + enemyHealth, { fontSize: '32px', fill: '#000' });
+
+    //Back Button
+    menuButton = this.add.text(16, 16, 'Menu', { fontSize: '20px', fill: '#000' });
+    menuButton.setInteractive();
+    menuButton.on('pointerdown', () => this.scene.start('MainMenu'));
 
     //Game Over text
     gameOverText = this.add.text(200,300,'', { fontSize: '72px', fill: '#ff0000' });
@@ -128,28 +130,20 @@ class LevelOne extends Phaser.Scene {
     this.physics.add.collider(player, enemyBombs, playerHitBomb, null, this);
     this.physics.add.collider(enemy, bombs, enemyHitBomb, null, this);
 
-    // Enemy Attack
-
-
-    //enemy.enemyAttack();
-    // // Loop attack every 3 seconds
-    // timer = this.time.addEvent({
-    //   delay: 3000,
-    //   callback: enemyAttack(),
-    //   callbackScope: this,
-    //   loop: true
-    // });
   }
 
   update(){
     if (gameOver)
     {
+      this.physics.pause();
       gameOverText.setText('GAME OVER');
     }
 
     if (youWin) {
       youWinText.setText('YOU WIN! ONTO LVL 2');
-
+      if (progress === 1){
+        progress = 2;
+      }
       this.time.addEvent({
         delay: 2000, callback: () => this.scene.start('LevelTwo')
       });
@@ -205,10 +199,8 @@ class LevelOne extends Phaser.Scene {
     if(!pointer.isDown){
       hasShot = false;
     }
-    // // Enemy attacks every 3 seconds
-    // seconds = date.getTime();
-    // if (seconds%3000 === 0){enemyAttack();}
   }
+
   playerAttack(){
     for (var i = 0; i < 1; i++){
       var bomb = bombs.create(player.x, player.y, 'bomb');
@@ -219,7 +211,6 @@ class LevelOne extends Phaser.Scene {
     }
   }
   enemyAttack(){ // Scatters a bunch of bombs
-    console.log("Starting Enemy Attack...");
     for (var i = 0; i < 1; i++){
       var enemyBomb = enemyBombs.create(enemy.x, enemy.y, 'bomb');
       enemyBomb.setBounce(1);
@@ -229,4 +220,5 @@ class LevelOne extends Phaser.Scene {
     }
     enemyShot = true;
   }
+
 }

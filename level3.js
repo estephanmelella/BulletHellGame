@@ -1,6 +1,6 @@
-class LevelTwo extends Phaser.Scene {
+class LevelThree extends Phaser.Scene {
   constructor(){
-    super('LevelTwo');
+    super('LevelThree');
   }
 
   preload() {
@@ -137,7 +137,7 @@ class LevelTwo extends Phaser.Scene {
       youWinText.setText('YOU WIN! ONTO LVL 2');
 
       this.time.addEvent({
-        delay: 2000, callback: () => this.scene.start('LevelThree')
+        delay: 2000, callback: () => this.scene.start('LevelFour')
       });
 
     }

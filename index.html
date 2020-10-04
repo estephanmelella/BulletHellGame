@@ -5,8 +5,12 @@
     <title>Blaster Master</title>
     <script src="//cdn.jsdelivr.net/npm/phaser@3.11.0/dist/phaser.js"></script>
     <!--<script src="phaser.js"></script>--->
+    <script src="mainMenu.js"></script>
+    <script src="levelSelect.js"></script>
     <script src="level1.js"></script>
     <script src="level2.js"></script>
+    <script src="level3.js"></script>
+    <script src="level4.js"></script>
     <style type="text/css">
         body {
             margin: 0;
@@ -29,7 +33,7 @@
               debug: false
           }
       },
-      scene: [LevelOne, LevelTwo]
+      scene: [MainMenu, LevelSelect, LevelOne, LevelTwo, LevelThree, LevelFour]
   };
 
 
@@ -51,9 +55,9 @@ var hpText;
 var enemyHealth;
 var enemyHealthText;
 var enemyBombs;
-var gameOverText;
+var gameOverText = '';
 var youWin = false;
-var youWinText;
+var youWinText = '';
 var attack;
 var timer;
 var cursors;
@@ -66,6 +70,9 @@ var keyNoise;
 var winNoise;
 var shotNoise;
 var hasShot = false;
+var menuButton;
+var progress = 1;
+var errorText = '';
 
 var game = new Phaser.Game(config);
 
