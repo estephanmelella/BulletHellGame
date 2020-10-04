@@ -9,7 +9,7 @@ class LevelThree extends Phaser.Scene {
     this.load.image('ground', 'assets/platform.png');
     this.load.image('star', 'assets/star.png');
     this.load.image('bomb', 'assets/bomb.png');
-    this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
+    this.load.spritesheet('dude', 'assets/main.png', { frameWidth: 56, frameHeight: 45 });
     this.load.audio('jump', ['assets/Jump.ogg', 'assets/Jump.mp3', 'assets/Jump.m4a']);
     this.load.audio('shot', ['assets/Shot.ogg', 'assets/Shot.mp3', 'assets/Shot.m4a']);
     this.load.audio('hit', ['assets/Player Hit.ogg', 'assets/Player Hit.mp3', 'assets/Player Hit.m4a']);
@@ -21,16 +21,12 @@ class LevelThree extends Phaser.Scene {
   create() {
     //  A simple background for our game
     this.add.image(400, 300, 'sky');
-    youWin = false;
 
     //  The platforms group contains the ground and the 2 ledges we can jump on
     platforms = this.physics.add.staticGroup();
 
-    //  Here we create the ground.
-    //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
+    // Ground, ledges, and ceiling
     platforms.create(400, 568, 'ground').setScale(2).refreshBody();
-
-    //  Now let's create some ledges
     platforms.create(600, 400, 'ground');
     platforms.create(50, 250, 'ground');
     platforms.create(750, 220, 'ground');
@@ -45,7 +41,7 @@ class LevelThree extends Phaser.Scene {
     // The player and its settings
     player = this.physics.add.sprite(100, 450, 'dude');
 
-    //  Player physics properties. Give the little guy a slight bounce.
+    //  Player physics properties
     player.setBounce(0);
     player.setCollideWorldBounds(true);
 
@@ -71,10 +67,11 @@ class LevelThree extends Phaser.Scene {
     });
 
     //Enemy
-    enemy = this.physics.add.sprite(750,500,'boss');
+    enemy = this.physics.add.sprite(750 ,500,'boss');
     enemy.body.allowGravity = false;
     enemy.body.immovable = true;
 
+    //Enemy's movement around the screen
     this.tweens.timeline({
     targets: enemy.body.velocity,
     loop: -1,
@@ -86,20 +83,23 @@ class LevelThree extends Phaser.Scene {
       { x:    0, y:  100, duration: 5000, ease: 'Stepped' },
       //{ x:    0, y:    0, duration: 1000, ease: 'Stepped' },
       { x:    0, y: -100, duration: 5000, ease: 'Stepped' },
-      //{ x:    0, y:    0, duration: 1000, ease: 'Stepped' },
+    //  { x:    0, y:    0, duration: 1000, ease: 'Stepped' },
       { x:  140, y:    0, duration: 5000, ease: 'Stepped' },
-      //{ x:    0, y:    0, duration: 1000, ease: 'Stepped' },
+    //  { x:    0, y:    0, duration: 1000, ease: 'Stepped' },
       { x:    0, y:  90, duration: 5000, ease: 'Stepped' },
       //{ x:    0, y:    0, duration: 1000, ease: 'Stepped' }
     ]
   });
 
     //  Input Events
+    cursors = this.input.keyboard.createCursorKeys();
     keys = this.input.keyboard.addKeys('W,A,S,D,SPACE,ESC');
     pointer = this.input.activePointer;
 
+    // Attack
     attack = "single";
 
+    // Bombs
     bombs = this.physics.add.group();
     enemyBombs = this.physics.add.group();
 
@@ -111,6 +111,11 @@ class LevelThree extends Phaser.Scene {
     enemyHealth = 1000;
     enemyHealthText = this.add.text(200, 16, 'Enemy Health: ' + enemyHealth, { fontSize: '32px', fill: '#000' });
 
+    //Back Button
+    menuButton = this.add.text(16, 16, 'Menu', { fontSize: '20px', fill: '#000' });
+    menuButton.setInteractive();
+    menuButton.on('pointerdown', () => this.scene.start('MainMenu'));
+
     //Game Over text
     gameOverText = this.add.text(200,300,'', { fontSize: '72px', fill: '#ff0000' });
 
@@ -119,25 +124,28 @@ class LevelThree extends Phaser.Scene {
 
     //  Collide the player and the stars with the platforms
     this.physics.add.collider(player, platforms);
+    //this.physics.add.collider(bombs, platforms, bombExplode, null, this);
     this.physics.add.collider(enemyBombs, platforms);
     this.physics.add.collider(bombs, platforms, bombExplode, null, this);
-    this.physics.add.collider(player, levelKey, collectKey, null, this);
     this.physics.add.collider(player, enemyBombs, playerHitBomb, null, this);
-    this.physics.add.collider(player, bombs, playerHitBomb, null, this);
     this.physics.add.collider(enemy, bombs, enemyHitBomb, null, this);
+
   }
 
   update(){
     if (gameOver)
     {
+      this.physics.pause();
       gameOverText.setText('GAME OVER');
     }
 
     if (youWin) {
       youWinText.setText('YOU WIN! ONTO LVL 2');
-
+      if (progress === 1){
+        progress = 2;
+      }
       this.time.addEvent({
-        delay: 2000, callback: () => this.scene.start('LevelFour')
+        delay: 2000, callback: () => this.scene.start('LevelTwo')
       });
 
     }
@@ -146,20 +154,20 @@ class LevelThree extends Phaser.Scene {
       timedEvent = this.time.delayedCall(1500, this.enemyAttack, [], this);
 
     }
-
-    if (keys.A.isDown)
+    if (keys.A.isDown || cursors.left.isDown)
     {
         player.setVelocityX(-160);
 
         player.anims.play('left', true);
     }
-    else if (keys.D.isDown)
+    else if (keys.D.isDown || cursors.right.isDown)
     {
         player.setVelocityX(160);
 
         player.anims.play('right', true);
     }
-    else if (keys.S.isDown){
+    else if (keys.S.isDown || cursors.down.isDown)
+    {
       player.setVelocityY(300);
       player.setVelocityX(0);
 
@@ -172,26 +180,37 @@ class LevelThree extends Phaser.Scene {
         player.anims.play('turn');
     }
 
-    if ((keys.W.isDown || keys.SPACE.isDown) && player.body.touching.down)
+    if ((keys.W.isDown || keys.SPACE.isDown || cursors.up.isDown) && player.body.touching.down)
     {
         player.setVelocityY(-330);
         jumpNoise.play();
     }
 
     if (pointer.isDown && attack === "single" && !hasShot){
-      var bomb = bombs.create(player.x, player.y, 'bomb');
-      var velocityX = (pointer.x - player.x)*5;
-      var velocityY = (pointer.y - player.y)*5;
-      bomb.setVelocity(velocityX, velocityY);
-      bomb.allowGravity = false;
-      hasShot = true;
+        shotNoise.play();
+        var bomb = bombs.create(player.x, player.y, 'bomb');
+        var velocityX = (pointer.x - player.x)*4;
+        var velocityY = (pointer.y - player.y)*4;
+        bomb.setVelocity(velocityX, velocityY);
+        bomb.allowGravity = false;
+        hasShot = true;
+
     }
     if(!pointer.isDown){
       hasShot = false;
     }
   }
+
+  playerAttack(){
+    for (var i = 0; i < 1; i++){
+      var bomb = bombs.create(player.x, player.y, 'bomb');
+      var velocityX = (pointer.x - player.x)*4;
+      var velocityY = (pointer.y - player.y)*4;
+      bomb.setVelocity(velocityX, velocityY);
+      bomb.allowGravity = false;
+    }
+  }
   enemyAttack(){ // Scatters a bunch of bombs
-    console.log("Starting Enemy Attack...");
     for (var i = 0; i < 1; i++){
       var enemyBomb = enemyBombs.create(enemy.x, enemy.y, 'bomb');
       enemyBomb.setBounce(1);
@@ -201,4 +220,5 @@ class LevelThree extends Phaser.Scene {
     }
     enemyShot = true;
   }
+
 }
