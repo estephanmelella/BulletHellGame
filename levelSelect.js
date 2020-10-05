@@ -6,13 +6,15 @@ class LevelSelect extends Phaser.Scene {
   preload() {
     this.load.image('sky', 'assets/sky.png');
     this.load.image('star', 'assets/star.png');
-    this.load.audio('shot', ['assets/Shot.ogg', 'assets/Shot.mp3', 'assets/Shot.m4a']);
+    this.load.audio('select', ['assets/Select.ogg', 'assets/Select.mp3', 'assets/Select.m4a']);
+    this.load.audio('error', ['assets/Error.ogg', 'assets/Error.mp3', 'assets/Error.m4a'])
   }
 
   create() {
     //  A simple background for our game
     this.add.image(400, 300, 'sky');
-    shotNoise = game.sound.add('shot');
+    selectNoise = game.sound.add('select');
+    errNoise = game.sound.add('error')
 
 
     //Menu text
@@ -41,42 +43,42 @@ class LevelSelect extends Phaser.Scene {
   update(){}
 
   level1(errorText){
-    shotNoise.play();
+    selectNoise.play();
     this.scene.start('LevelOne');
   }
 
   level2(errorText){
     if (progress >= 2){
-      shotNoise.play();
+      selectNoise.play();
       this.scene.start('LevelTwo');
     } else {
-      //error noise
+      errNoise.play();
       errorText.setText('Level 2 Locked');
     }
   }
 
   level3(errorText){
     if (progress >= 3){
-      shotNoise.play();
+      selectNoise.play();
       this.scene.start('LevelThree');
     } else {
-      //error noise
+      errNoise.play();
       errorText.setText("Level 3 Locked");
     }
   }
 
   level4(errorText){
     if (progress === 4){
-      shotNoise.play();
+      selectNoise.play();
       this.scene.start('LevelFour');
     } else {
-      //error noise
+      errNoise.play();
       errorText.setText('Level 4 Locked');
     }
   }
 
   back(){
-    shotNoise.play();
+    selectNoise.play();
     this.scene.start('MainMenu');
   }
 
