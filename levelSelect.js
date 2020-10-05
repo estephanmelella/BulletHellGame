@@ -48,7 +48,7 @@ class LevelSelect extends Phaser.Scene {
   }
 
   level2(errorText){
-    if (progress >= 2){
+    if (progress >= 1){
       selectNoise.play();
       this.scene.start('LevelTwo');
     } else {

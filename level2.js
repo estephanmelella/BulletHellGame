@@ -4,11 +4,12 @@ class LevelTwo extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image('sky', 'assets/sky.png');
-    this.load.image('boss', 'assets/boss.png')
+    this.load.image('lvl2background', 'assets/lvl2background.png');
+    this.load.image('lvl2villain', 'assets/lvl2villain.png')
     this.load.image('ground', 'assets/platform.png');
     this.load.image('star', 'assets/star.png');
     this.load.image('bomb', 'assets/bomb.png');
+    this.load.image('lvl2projectile', 'assets/lvl2projectile.png');
     this.load.spritesheet('dude', 'assets/main.png', { frameWidth: 56, frameHeight: 45 });
     this.load.audio('jump', ['assets/Jump.ogg', 'assets/Jump.mp3', 'assets/Jump.m4a']);
     this.load.audio('shot', ['assets/Shot.ogg', 'assets/Shot.mp3', 'assets/Shot.m4a']);
@@ -20,7 +21,7 @@ class LevelTwo extends Phaser.Scene {
 
   create() {
     //  A simple background for our game
-    this.add.image(400, 300, 'sky');
+    this.add.image(400, 300, 'lvl2background');
 
     //  The platforms group contains the ground and the 2 ledges we can jump on
     platforms = this.physics.add.staticGroup();
@@ -67,7 +68,7 @@ class LevelTwo extends Phaser.Scene {
     });
 
     //Enemy
-    enemy = this.physics.add.sprite(750 ,500,'boss');
+    enemy = this.physics.add.sprite(750 ,500,'lvl2villain');
     enemy.body.allowGravity = false;
     enemy.body.immovable = true;
 
@@ -80,9 +81,9 @@ class LevelTwo extends Phaser.Scene {
       //{ x:    0, y:    0, duration: 1000, ease: 'Stepped' },
       { x: -140, y:    0, duration: 5000, ease: 'Stepped' },
       //{ x:    0, y:    0, duration: 1000, ease: 'Stepped' },
-      { x:    0, y:  100, duration: 5000, ease: 'Stepped' },
+      { x:    0, y:   90, duration: 5000, ease: 'Stepped' },
       //{ x:    0, y:    0, duration: 1000, ease: 'Stepped' },
-      { x:    0, y: -100, duration: 5000, ease: 'Stepped' },
+      { x:    0, y:   90, duration: 5000, ease: 'Stepped' },
     //  { x:    0, y:    0, duration: 1000, ease: 'Stepped' },
       { x:  140, y:    0, duration: 5000, ease: 'Stepped' },
     //  { x:    0, y:    0, duration: 1000, ease: 'Stepped' },
@@ -100,19 +101,19 @@ class LevelTwo extends Phaser.Scene {
     attack = "single";
 
     // Bombs
-    bombs = this.physics.add.group();
+    projectile = this.physics.add.group();
     enemyBombs = this.physics.add.group();
 
     // The hp
     hp = 300;
-    hpText = this.add.text(600, 16, 'HP: ' + hp, { fontSize: '32px', fill: '#000' });
+    hpText = this.add.text(600, 16, 'HP: ' + hp, { fontSize: '32px', fill: '#fff' });
 
     // Enemy Health
     enemyHealth = 1000;
-    enemyHealthText = this.add.text(200, 16, 'Enemy Health: ' + enemyHealth, { fontSize: '32px', fill: '#000' });
+    enemyHealthText = this.add.text(200, 16, 'Enemy Health: ' + enemyHealth, { fontSize: '32px', fill: '#fff' });
 
     //Back Button
-    menuButton = this.add.text(16, 16, 'Menu', { fontSize: '20px', fill: '#000' });
+    menuButton = this.add.text(16, 16, 'Menu', { fontSize: '20px', fill: '#fff' });
     menuButton.setInteractive();
     menuButton.on('pointerdown', () => this.scene.start('MainMenu'));
 
@@ -126,9 +127,9 @@ class LevelTwo extends Phaser.Scene {
     this.physics.add.collider(player, platforms);
     //this.physics.add.collider(bombs, platforms, bombExplode, null, this);
     this.physics.add.collider(enemyBombs, platforms);
-    this.physics.add.collider(bombs, platforms, bombExplode, null, this);
+    this.physics.add.collider(projectile, platforms, bombExplode, null, this);
     this.physics.add.collider(player, enemyBombs, playerHitBomb, null, this);
-    this.physics.add.collider(enemy, bombs, enemyHitBomb, null, this);
+    this.physics.add.collider(enemy, projectile, enemyHitBomb, null, this);
 
   }
 
@@ -188,7 +189,7 @@ class LevelTwo extends Phaser.Scene {
 
     if (pointer.isDown && attack === "single" && !hasShot){
         shotNoise.play();
-        var bomb = bombs.create(player.x, player.y, 'bomb');
+        var bomb = projectile.create(player.x, player.y, 'lvl2projectile');
         var velocityX = (pointer.x - player.x)*4;
         var velocityY = (pointer.y - player.y)*4;
         bomb.setVelocity(velocityX, velocityY);
@@ -203,7 +204,7 @@ class LevelTwo extends Phaser.Scene {
 
   playerAttack(){
     for (var i = 0; i < 1; i++){
-      var bomb = bombs.create(player.x, player.y, 'bomb');
+      var bomb = projectile.create(player.x, player.y, 'lvl2projectile');
       var velocityX = (pointer.x - player.x)*4;
       var velocityY = (pointer.y - player.y)*4;
       bomb.setVelocity(velocityX, velocityY);

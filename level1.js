@@ -4,7 +4,7 @@ class LevelOne extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image('sky', 'assets/sky.png');
+    this.load.image('lvl1background', 'assets/lvl1background.png');
     this.load.image('boss', 'assets/boss.png')
     this.load.image('ground', 'assets/platform.png');
     this.load.image('star', 'assets/star.png');
@@ -20,7 +20,7 @@ class LevelOne extends Phaser.Scene {
 
   create() {
     //  A simple background for our game
-    this.add.image(400, 300, 'sky');
+    this.add.image(400, 300, 'lvl1background');
 
     //  The platforms group contains the ground and the 2 ledges we can jump on
     platforms = this.physics.add.staticGroup();
@@ -76,17 +76,17 @@ class LevelOne extends Phaser.Scene {
     targets: enemy.body.velocity,
     loop: -1,
     tweens: [
-      { x:    0, y: -90, duration: 5000, ease: 'Stepped' },
+      { x:    0, y:  -90, duration: 5000, ease: 'Stepped' },
       //{ x:    0, y:    0, duration: 1000, ease: 'Stepped' },
       { x: -140, y:    0, duration: 5000, ease: 'Stepped' },
       //{ x:    0, y:    0, duration: 1000, ease: 'Stepped' },
-      { x:    0, y:  100, duration: 5000, ease: 'Stepped' },
+      { x:    0, y:   90, duration: 5000, ease: 'Stepped' },
       //{ x:    0, y:    0, duration: 1000, ease: 'Stepped' },
-      { x:    0, y: -100, duration: 5000, ease: 'Stepped' },
+      { x:    0, y:  -90, duration: 5000, ease: 'Stepped' },
     //  { x:    0, y:    0, duration: 1000, ease: 'Stepped' },
       { x:  140, y:    0, duration: 5000, ease: 'Stepped' },
     //  { x:    0, y:    0, duration: 1000, ease: 'Stepped' },
-      { x:    0, y:  90, duration: 5000, ease: 'Stepped' },
+      { x:    0, y:   90, duration: 5000, ease: 'Stepped' },
       //{ x:    0, y:    0, duration: 1000, ease: 'Stepped' }
     ]
   });
@@ -105,14 +105,14 @@ class LevelOne extends Phaser.Scene {
 
     // The hp
     hp = 300;
-    hpText = this.add.text(600, 16, 'HP: ' + hp, { fontSize: '32px', fill: '#000' });
+    hpText = this.add.text(600, 16, 'HP: ' + hp, { fontSize: '32px', fill: '#fff' });
 
     // Enemy Health
     enemyHealth = 1000;
-    enemyHealthText = this.add.text(200, 16, 'Enemy Health: ' + enemyHealth, { fontSize: '32px', fill: '#000' });
+    enemyHealthText = this.add.text(200, 16, 'Enemy Health: ' + enemyHealth, { fontSize: '32px', fill: '#fff' });
 
     //Back Button
-    menuButton = this.add.text(16, 16, 'Menu', { fontSize: '20px', fill: '#000' });
+    menuButton = this.add.text(16, 16, 'Menu', { fontSize: '20px', fill: '#fff' });
     menuButton.setInteractive();
     menuButton.on('pointerdown', () => this.scene.start('MainMenu'));
 
