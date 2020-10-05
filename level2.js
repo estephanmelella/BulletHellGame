@@ -4,7 +4,7 @@ class LevelTwo extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image('lvl2background', 'assets/lvl2background.png');
+    this.load.image('bigger_background', 'assets/bigger_background.png');
     this.load.image('lvl2villain', 'assets/lvl2villain.png')
     this.load.image('ground', 'assets/platform.png');
     this.load.image('star', 'assets/star.png');
@@ -21,7 +21,7 @@ class LevelTwo extends Phaser.Scene {
 
   create() {
     //  A simple background for our game
-    this.add.image(400, 300, 'lvl2background');
+    this.add.image(400, 300, 'bigger_background');
 
     //  The platforms group contains the ground and the 2 ledges we can jump on
     platforms = this.physics.add.staticGroup();
