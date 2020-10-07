@@ -83,7 +83,7 @@ class LevelTwo extends Phaser.Scene {
       //{ x:    0, y:    0, duration: 1000, ease: 'Stepped' },
       { x:    0, y:   90, duration: 5000, ease: 'Stepped' },
       //{ x:    0, y:    0, duration: 1000, ease: 'Stepped' },
-      { x:    0, y:   90, duration: 5000, ease: 'Stepped' },
+      { x:    0, y:  -90, duration: 5000, ease: 'Stepped' },
     //  { x:    0, y:    0, duration: 1000, ease: 'Stepped' },
       { x:  140, y:    0, duration: 5000, ease: 'Stepped' },
     //  { x:    0, y:    0, duration: 1000, ease: 'Stepped' },
@@ -98,7 +98,9 @@ class LevelTwo extends Phaser.Scene {
     pointer = this.input.activePointer;
 
     // Attack
-    attack = "single";
+    attackList = ["bullet", "cannonball"];
+    attackNum = 0
+    attack = attackList[attackNum];
 
     // Bombs
     projectile = this.physics.add.group();
@@ -111,6 +113,7 @@ class LevelTwo extends Phaser.Scene {
     // Enemy Health
     enemyHealth = 1000;
     enemyHealthText = this.add.text(200, 16, 'Enemy Health: ' + enemyHealth, { fontSize: '32px', fill: '#fff' });
+    enemyShot = true;
 
     //Back Button
     menuButton = this.add.text(16, 16, 'Menu', { fontSize: '20px', fill: '#fff' });
@@ -181,24 +184,39 @@ class LevelTwo extends Phaser.Scene {
         player.anims.play('turn');
     }
 
-    if ((keys.W.isDown || keys.SPACE.isDown || cursors.up.isDown) && player.body.touching.down)
+    if ((keys.W.isDown || cursors.up.isDown) && player.body.touching.down)
     {
         player.setVelocityY(-330);
         jumpNoise.play();
     }
 
-    if (pointer.isDown && attack === "single" && !hasShot){
+    if (keys.SPACE.isDown && !changeAttack){
+      //play switch noise
+      attackNum++;
+      attackNum = attackNum%(attackList.length);
+      attack = attackList[attackNum];
+      changeAttack = true;
+    }
+
+    if (pointer.isDown && !hasShot){
+      if (attack == "bullet"){
         shotNoise.play();
         var bomb = projectile.create(player.x, player.y, 'lvl2projectile');
-        var velocityX = (pointer.x - player.x)*4;
-        var velocityY = (pointer.y - player.y)*4;
-        bomb.setVelocity(velocityX, velocityY);
-        bomb.allowGravity = false;
-        hasShot = true;
-
+      } else if (attack == "cannonball"){
+        //play cannon noise
+        var bomb = projectile.create(player.x, player.y, 'bomb');
+      }
+      var velocityX = (pointer.x - player.x)*4;
+      var velocityY = (pointer.y - player.y)*4;
+      bomb.setVelocity(velocityX, velocityY);
+      bomb.allowGravity = false;
+      hasShot = true;
     }
     if(!pointer.isDown){
       hasShot = false;
+    }
+    if (!keys.SPACE.isDown){
+      changeAttack = false;
     }
   }
 

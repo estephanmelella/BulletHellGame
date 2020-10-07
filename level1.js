@@ -96,9 +96,6 @@ class LevelOne extends Phaser.Scene {
     keys = this.input.keyboard.addKeys('W,A,S,D,SPACE,ESC');
     pointer = this.input.activePointer;
 
-    // Attack
-    attack = "single";
-
     // Bombs
     bombs = this.physics.add.group();
     enemyBombs = this.physics.add.group();
@@ -186,7 +183,7 @@ class LevelOne extends Phaser.Scene {
         jumpNoise.play();
     }
 
-    if (pointer.isDown && attack === "single" && !hasShot){
+    if (pointer.isDown && !hasShot){
         shotNoise.play();
         var bomb = bombs.create(player.x, player.y, 'bomb');
         var velocityX = (pointer.x - player.x)*4;
