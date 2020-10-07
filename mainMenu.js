@@ -6,7 +6,7 @@ class MainMenu extends Phaser.Scene {
   preload() {
     this.load.image('sky', 'assets/sky.png');
     this.load.image('star', 'assets/star.png');
-    this.load.audio('select', ['assets/select.ogg', 'assets/select.mp3', 'assets/select.m4a']);
+    this.load.audio('select', ['assets/Select.ogg', 'assets/Select.mp3', 'assets/Select.m4a']);
   }
 
   create() {
@@ -31,7 +31,7 @@ class MainMenu extends Phaser.Scene {
     levelSelectButton.setInteractive();
     levelSelectButton.on('pointerdown', () => this.levelSelect());
     tutorialButton.setInteractive();
-    tutorialButton.on('pointerdown', () => this.scene.start('Tutorial'));
+    tutorialButton.on('pointerdown', () => this.tutorialStart());
 
   }
 
@@ -65,6 +65,11 @@ class MainMenu extends Phaser.Scene {
   levelSelect(){
     selectNoise.play();
     this.scene.start('LevelSelect');
+  }
+  
+  tutorialStart(){
+	selectNoise.play();
+	this.scene.start('Tutorial');
   }
 
 }
