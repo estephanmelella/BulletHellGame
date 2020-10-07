@@ -18,6 +18,7 @@ class LevelTwo extends Phaser.Scene {
     this.load.audio('key', ['assets/Key Get.ogg', 'assets/Key Get.mp3', 'assets/Key Get.m4a']);
     this.load.audio('win', ['assets/Enemy Die.ogg', 'assets/Enemy Die.mp3', 'assets/Enemy Die.m4a']);
 	this.load.audio('switch', ['assets/Weapon Change.ogg', 'assets/Weapon Change.mp3', 'assets/Weapon Change.m4a']);
+	this.load.audio('cannon', ['assets/Cannon.ogg', 'assets/Cannon.mp3', 'assets/Cannon.m4a']);
   }
 
   create() {
@@ -40,6 +41,7 @@ class LevelTwo extends Phaser.Scene {
     winNoise = game.sound.add('win');
     shotNoise = game.sound.add('shot');
 	switchNoise = game.sound.add('switch');
+	cannonNoise = game.sound.add('cannon');
 
     // The player and its settings
     player = this.physics.add.sprite(100, 450, 'dude');
@@ -205,7 +207,7 @@ class LevelTwo extends Phaser.Scene {
         shotNoise.play();
         var bomb = projectile.create(player.x, player.y, 'lvl2projectile');
       } else if (attack == "cannonball"){
-        //play cannon noise
+        cannonNoise.play();
         var bomb = projectile.create(player.x, player.y, 'bomb');
       }
       var velocityX = (pointer.x - player.x)*4;
