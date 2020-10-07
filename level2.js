@@ -17,7 +17,7 @@ class LevelTwo extends Phaser.Scene {
     this.load.audio('boom', ['assets/Shot Explode.ogg', 'assets/Shot Explode.mp3', 'assets/Shot Explode.m4a']);
     this.load.audio('key', ['assets/Key Get.ogg', 'assets/Key Get.mp3', 'assets/Key Get.m4a']);
     this.load.audio('win', ['assets/Enemy Die.ogg', 'assets/Enemy Die.mp3', 'assets/Enemy Die.m4a']);
-	this.load.audio('switch', ['assets/Weapon Switch.ogg', 'assets/Weapon Switch.mp3', 'assets/Weapon Switch.m4a']);
+	this.load.audio('switch', ['assets/Weapon Change.ogg', 'assets/Weapon Change.mp3', 'assets/Weapon Change.m4a']);
   }
 
   create() {
