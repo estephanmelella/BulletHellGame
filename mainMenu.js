@@ -19,9 +19,10 @@ class MainMenu extends Phaser.Scene {
     var titleText = this.add.text(50,100,'BLASTER MASTER', { fontSize: '80px', fill: '#505000' });
 
     //FIXME: POLISH
-    var newGameButton = this.add.text(200,300,'New Game', { fontSize: '50px', fill: '#ff0000' });
-    var continueGameButton = this.add.text(200,400,'Continue Game', { fontSize: '50px', fill: '#ff0000' });
-    var levelSelectButton = this.add.text(200,500,'Level Select', { fontSize: '50px', fill: '#ff0000' });
+    var newGameButton = this.add.text(200,250,'New Game', { fontSize: '50px', fill: '#ff0000' });
+    var continueGameButton = this.add.text(200,350,'Continue Game', { fontSize: '50px', fill: '#ff0000' });
+    var levelSelectButton = this.add.text(200,450,'Level Select', { fontSize: '50px', fill: '#ff0000' });
+    var tutorialButton = this.add.text(200,550,'Tutorial', { fontSize: '50px', fill: '#ff0000' });
 
     newGameButton.setInteractive();
     newGameButton.on('pointerdown', () => this.newGame());
@@ -29,6 +30,8 @@ class MainMenu extends Phaser.Scene {
     continueGameButton.on('pointerdown', () => this.continueGame());
     levelSelectButton.setInteractive();
     levelSelectButton.on('pointerdown', () => this.scene.start('LevelSelect'));
+    tutorialButton.setInteractive();
+    tutorialButton.on('pointerdown', () => this.scene.start('Tutorial'));
 
   }
 
@@ -57,11 +60,6 @@ class MainMenu extends Phaser.Scene {
       this.scene.start('LevelFour');
       break;
     }
-  }
-
-  levelSelect(){
-    shotNoise.play();
-    this.scene.start('LevelSelect');
   }
 
 }
