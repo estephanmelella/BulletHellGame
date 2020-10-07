@@ -6,13 +6,13 @@ class MainMenu extends Phaser.Scene {
   preload() {
     this.load.image('sky', 'assets/sky.png');
     this.load.image('star', 'assets/star.png');
-    this.load.audio('shot', ['assets/Shot.ogg', 'assets/Shot.mp3', 'assets/Shot.m4a']);
+    this.load.audio('select', ['assets/select.ogg', 'assets/select.mp3', 'assets/select.m4a']);
   }
 
   create() {
     //  A simple background for our game
     this.add.image(400, 300, 'sky');
-    shotNoise = game.sound.add('shot');
+    selectNoise = game.sound.add('select');
 
 
     //Menu text
@@ -35,13 +35,13 @@ class MainMenu extends Phaser.Scene {
   update(){}
 
   newGame(){
-    shotNoise.play();
+    selectNoise.play();
     progress = 1;
     this.scene.start('LevelOne');
   }
 
   continueGame(){
-    shotNoise.play();
+    selectNoise.play();
 
     switch (progress){
       case 1:
@@ -60,7 +60,7 @@ class MainMenu extends Phaser.Scene {
   }
 
   levelSelect(){
-    shotNoise.play();
+    selectNoise.play();
     this.scene.start('LevelSelect');
   }
 
