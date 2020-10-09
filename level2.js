@@ -110,6 +110,7 @@ class LevelTwo extends Phaser.Scene {
     // Bombs
     projectile = this.physics.add.group();
     enemyBombs = this.physics.add.group();
+    cannonball = this.physics.add.group();
 
     // The hp
     hp = 300;
@@ -138,6 +139,8 @@ class LevelTwo extends Phaser.Scene {
     this.physics.add.collider(projectile, platforms, bombExplode, null, this);
     this.physics.add.collider(player, enemyBombs, playerHitBomb, null, this);
     this.physics.add.collider(enemy, projectile, enemyHitBomb, null, this);
+    this.physics.add.collider(cannonball, platforms, bombExplode, null, this);
+    this.physics.add.collider(enemy, cannonball, enemyHitCannon, null, this);
 
   }
 
@@ -214,7 +217,7 @@ class LevelTwo extends Phaser.Scene {
         var bomb = projectile.create(player.x, player.y, 'lvl2projectile');
       } else if (attack == "cannonball"){
         cannonNoise.play();
-        var bomb = projectile.create(player.x, player.y, 'bomb');
+        var bomb = cannonball.create(player.x, player.y, 'bomb');
       }
       var velocityX = (pointer.x - player.x)*4;
       var velocityY = (pointer.y - player.y)*4;
