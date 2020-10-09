@@ -71,6 +71,7 @@ class LevelTwo extends Phaser.Scene {
     enemy = this.physics.add.sprite(750 ,500,'lvl2villain');
     enemy.body.allowGravity = false;
     enemy.body.immovable = true;
+    enemyShot = true;
 
     //Enemy's movement around the screen
     this.tweens.timeline({
@@ -111,7 +112,7 @@ class LevelTwo extends Phaser.Scene {
     hpText = this.add.text(600, 16, 'HP: ' + hp, { fontSize: '32px', fill: '#fff' });
 
     // Enemy Health
-    enemyHealth = 1000;
+    enemyHealth = 300;
     enemyHealthText = this.add.text(200, 16, 'Enemy Health: ' + enemyHealth, { fontSize: '32px', fill: '#fff' });
     enemyShot = true;
 
@@ -139,19 +140,24 @@ class LevelTwo extends Phaser.Scene {
   update(){
     if (gameOver)
     {
-      this.physics.pause();
-      gameOverText.setText('GAME OVER');
+      if (!youWin){ //If you got killed before winning
+        this.physics.pause();
+        gameOverText.setText('GAME OVER');
+        this.time.addEvent({
+          delay: 5000, callback: () => this.scene.start('MainMenu')
+        });
+        progress = 1;
+      }
+      gameOver = false;
     }
 
     if (youWin) {
-      youWinText.setText('YOU WIN! ONTO LVL 2');
-      if (progress === 1){
-        progress = 2;
+      youWinText.setText('YOU WIN! ONTO LVL 3');
+      if (progress === 2){
+        progress = 3;
       }
-      this.time.addEvent({
-        delay: 2000, callback: () => this.scene.start('LevelTwo')
-      });
-
+      this.time.addEvent({delay: 5000, callback: () => this.scene.start('LevelThree')});
+      this.time.addEvent({delay: 5000, callback: () => youWin = false});
     }
     if(enemyHealth > 0 && enemyShot == true){
       enemyShot = false;

@@ -70,6 +70,7 @@ class LevelFour extends Phaser.Scene {
     enemy = this.physics.add.sprite(750 ,500,'boss');
     enemy.body.allowGravity = false;
     enemy.body.immovable = true;
+    enemyShot = true;
 
     //Enemy's movement around the screen
     this.tweens.timeline({
@@ -135,19 +136,21 @@ class LevelFour extends Phaser.Scene {
   update(){
     if (gameOver)
     {
-      this.physics.pause();
-      gameOverText.setText('GAME OVER');
+      if (!youWin){ //If you got killed before winning
+        this.physics.pause();
+        gameOverText.setText('GAME OVER');
+        this.time.addEvent({
+          delay: 5000, callback: () => this.scene.start('MainMenu')
+        });
+        progress = 1;
+      }
+      gameOver = false;
     }
 
     if (youWin) {
-      youWinText.setText('YOU WIN! ONTO LVL 2');
-      if (progress === 1){
-        progress = 2;
-      }
-      this.time.addEvent({
-        delay: 2000, callback: () => this.scene.start('LevelTwo')
-      });
-
+      youWinText.setText('YOU WIN! CONGRATULATIONS!');
+      this.time.addEvent({delay: 5000, callback: () => this.scene.start('MainMenu')});
+      this.time.addEvent({delay: 5000, callback: () => youWin = false});
     }
     if(enemyHealth > 0 && enemyShot == true){
       enemyShot = false;

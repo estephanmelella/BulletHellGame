@@ -85,7 +85,7 @@ class Tutorial extends Phaser.Scene {
     hpText = this.add.text(600, 16, 'HP: ' + hp, { fontSize: '32px', fill: '#000' });
 
     // Enemy Health
-    enemyHealth = 1;
+    enemyHealth = 10;
     enemyHealthText = this.add.text(200, 16, 'Enemy Health: ' + enemyHealth, { fontSize: '32px', fill: '#000' });
 
     //Back Button
@@ -118,9 +118,8 @@ class Tutorial extends Phaser.Scene {
 
     if (youWin) {
       youWinText.setText("TUTORIAL COMPLETED");
-      this.time.addEvent({
-        delay: 5000, callback: () => this.scene.start('MainMenu')
-      });
+      this.time.addEvent({delay: 5000, callback: () => this.scene.start('MainMenu')});
+      this.time.addEvent({delay: 5000, callback: () => youWin = false});
 
     }
     if (keys.A.isDown || cursors.left.isDown)
@@ -149,7 +148,7 @@ class Tutorial extends Phaser.Scene {
         player.anims.play('turn');
     }
 
-    if ((keys.W.isDown || keys.SPACE.isDown || cursors.up.isDown) && player.body.touching.down)
+    if ((keys.W.isDown || cursors.up.isDown) && player.body.touching.down)
     {
         player.setVelocityY(-330);
         jumpNoise.play();

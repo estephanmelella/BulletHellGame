@@ -31,7 +31,7 @@ class MainMenu extends Phaser.Scene {
     levelSelectButton.setInteractive();
     levelSelectButton.on('pointerdown', () => this.levelSelect());
     tutorialButton.setInteractive();
-    tutorialButton.on('pointerdown', () => this.scene.start('Tutorial'));
+    tutorialButton.on('pointerdown', () => this.tutorial());
 
   }
 
@@ -40,7 +40,7 @@ class MainMenu extends Phaser.Scene {
   newGame(){
     selectNoise.play();
     progress = 1;
-    this.scene.start('LevelOne');
+    this.continueGame();
   }
 
   continueGame(){
@@ -65,6 +65,11 @@ class MainMenu extends Phaser.Scene {
   levelSelect(){
     selectNoise.play();
     this.scene.start('LevelSelect');
+  }
+
+  tutorial(){
+    selectNoise.play();
+    this.scene.start('Tutorial');
   }
 
 }
