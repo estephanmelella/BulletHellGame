@@ -41,6 +41,7 @@ class MainMenu extends Phaser.Scene {
     if(tutorialSong.isPlaying){
       tutorialSong.stop();
     }
+    youWin = false;
 
   }
 

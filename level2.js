@@ -24,7 +24,7 @@ class LevelTwo extends Phaser.Scene {
   create() {
     //  A simple background for our game
     this.add.image(400, 300, 'bigger_background');
-
+    youWin = false;
     //  The platforms group contains the ground and the 2 ledges we can jump on
     platforms = this.physics.add.staticGroup();
 
