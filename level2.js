@@ -236,7 +236,7 @@ class LevelTwo extends Phaser.Scene {
     if(enemyHealth > 0 && enemyShot == true){
       enemyShot = false;
       //sound cue
-      timedEvent = this.time.delayedCall(4000, this.enemyScatterAttack, [], this);
+      this.enemyScatterAttack();
       if (enemyHealth < 100){
         for (var i = 0; i < 3; i++){
           timedEvent = this.time.delayedCall(i*100, this.enemyShootAttack, [], this);

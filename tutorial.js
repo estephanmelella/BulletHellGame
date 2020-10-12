@@ -5,7 +5,7 @@ class Tutorial extends Phaser.Scene {
 
   preload() {
     this.load.image('sky', 'assets/sky.png');
-    this.load.image('boss', 'assets/tutorial_dummy.png')
+    this.load.image('dummy', 'assets/tutorial_dummy.png')
     this.load.image('ground', 'assets/new_plat.png');
     this.load.image('star', 'assets/explosion.png');
     this.load.image('win', 'assets/star.png');
@@ -72,7 +72,7 @@ class Tutorial extends Phaser.Scene {
     });
 
     //Enemy
-    enemy = this.physics.add.sprite(50 ,100,'boss');
+    enemy = this.physics.add.sprite(50 ,100,'dummy');
     enemy.body.allowGravity = false;
     enemy.body.immovable = true;
 
