@@ -287,21 +287,19 @@ class LevelTwo extends Phaser.Scene {
     }
 
     if (pointer.isDown && !hasShot){
-<<<<<<< HEAD
       if (attack == "single"){
         this.singleAttack();
       } else if (attack == "triple"){
         for (var i=0; i<3; i++){
           this.time.addEvent({delay: i*100, callback: () => this.tripleAttack()});
         }
-=======
+      }
       if (attack == "bullet"){
         shotNoise.play();
         var bomb = projectile.create(player.x, player.y, 'lvl2projectile');
       } else if (attack == "cannonball"){
         cannonNoise.play();
         var bomb = cannonball.create(player.x, player.y, 'bomb');
->>>>>>> bc8b0d0a3706527d46589e15defeaa2d6317ced2
       }
       hasShot = true;
     }
