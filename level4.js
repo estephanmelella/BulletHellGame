@@ -240,7 +240,7 @@ class LevelFour extends Phaser.Scene {
   }
 
   tripleAttack(){
-    cannonNoise.play();
+    shotNoise.play();
     var projectile = projectiles.create(player.x, player.y, 'lvl2projectile');
     var velocityX = (pointer.x - player.x)*3;
     var velocityY = (pointer.y - player.y)*3;
@@ -248,7 +248,7 @@ class LevelFour extends Phaser.Scene {
   }
 
   spreadAttack(){
-    //shotgunNoise.play();
+    cannonNoise.play();
     var bomb = projectiles.create(player.x, player.y, 'lvl2projectile');
     var velocityX = ((pointer.x - player.x)*4) + Phaser.Math.Between(-100, 100);
     var velocityY = (pointer.y - player.y)*4 + Phaser.Math.Between(-100, 100);
