@@ -6,10 +6,11 @@ class LevelTwo extends Phaser.Scene {
   preload() {
     this.load.image('bigger_background', 'assets/bigger_background.png');
     this.load.image('lvl2villain', 'assets/lvl2villain.png')
-    this.load.image('ground', 'assets/platform.png');
-    this.load.image('star', 'assets/star.png');
+    this.load.image('ground', 'assets/new_plat.png');
+    this.load.image('star', 'assets/explosion.png');
+    this.load.image('win', 'assets/star.png');
     this.load.image('bomb', 'assets/bomb.png');
-    this.load.image('lvl2projectile', 'assets/lvl2projectile.png');
+    this.load.image('lvl2projectile', 'assets/new_lvl2_proj.png');
     this.load.spritesheet('dude', 'assets/main.png', { frameWidth: 56, frameHeight: 45 });
     this.load.audio('jump', ['assets/Jump.ogg', 'assets/Jump.mp3', 'assets/Jump.m4a']);
     this.load.audio('shot', ['assets/Shot.ogg', 'assets/Shot.mp3', 'assets/Shot.m4a']);

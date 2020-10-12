@@ -154,7 +154,7 @@ function enemyHitBomb (enemy, bomb){
       this.time.addEvent({delay: 3500, callback: () => player.setTint(0x7f00ff)});
       this.time.addEvent({delay: 4000, callback: () => player.clearTint()});
 
-      levelKey = this.physics.add.sprite(100, 450, 'star');
+      levelKey = this.physics.add.sprite(100, 450, 'win');
       this.physics.add.collider(platforms, levelKey);
       this.physics.add.collider(player, levelKey, collectKey, null, this);
 
@@ -195,7 +195,7 @@ function enemyHitCannon(enemy, bomb)
       this.time.addEvent({delay: 3500, callback: () => player.setTint(0x7f00ff)});
       this.time.addEvent({delay: 4000, callback: () => player.clearTint()});
 
-      levelKey = this.physics.add.sprite(100, 450, 'star');
+      levelKey = this.physics.add.sprite(100, 450, 'win');
       this.physics.add.collider(platforms, levelKey);
       this.physics.add.collider(player, levelKey, collectKey, null, this);
 

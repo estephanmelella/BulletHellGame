@@ -5,7 +5,7 @@ class MainMenu extends Phaser.Scene {
 
   preload() {
     this.load.image('sky', 'assets/sky.png');
-    this.load.image('star', 'assets/star.png');
+    this.load.image('star', 'assets/explosion.png');
     this.load.audio('select', ['assets/Select.ogg', 'assets/Select.mp3', 'assets/Select.m4a']);
     this.load.audio('tutorial song', ['assets/Tutorial Song.ogg', 'assets/Tutorial Song.mp3', 'assets/Tutorial Song.m4a'])
   }
@@ -18,7 +18,7 @@ class MainMenu extends Phaser.Scene {
       tutorialSong = game.sound.add('tutorial song');
       tutorialSong.setLoop(true);
     }
-    
+
 
 
     //Menu text
