@@ -16,6 +16,8 @@ class LevelFour extends Phaser.Scene {
     this.load.audio('boom', ['assets/Shot Explode.ogg', 'assets/Shot Explode.mp3', 'assets/Shot Explode.m4a']);
     this.load.audio('key', ['assets/Key Get.ogg', 'assets/Key Get.mp3', 'assets/Key Get.m4a']);
     this.load.audio('win', ['assets/Enemy Die.ogg', 'assets/Enemy Die.mp3', 'assets/Enemy Die.m4a']);
+    this.load.audio('switch', ['assets/Weapon Change.ogg', 'assets/Weapon Change.mp3', 'assets/Weapon Change.m4a']);
+  	this.load.audio('cannon', ['assets/Cannon.ogg', 'assets/Cannon.mp3', 'assets/Cannon.m4a']);
   }
 
   create() {
@@ -37,6 +39,8 @@ class LevelFour extends Phaser.Scene {
     keyNoise = game.sound.add('key');
     winNoise = game.sound.add('win');
     shotNoise = game.sound.add('shot');
+    switchNoise = game.sound.add('switch');
+  	cannonNoise = game.sound.add('cannon');
 
     // The player and its settings
     player = this.physics.add.sprite(100, 450, 'dude');
@@ -70,7 +74,8 @@ class LevelFour extends Phaser.Scene {
     enemy = this.physics.add.sprite(750 ,500,'boss');
     enemy.body.allowGravity = false;
     enemy.body.immovable = true;
-    enemyShot = true;
+    enemyShot = false;
+    this.time.addEvent({delay: 5000, callback: () => enemyShot = true});
 
     //Enemy's movement around the screen
     this.tweens.timeline({
@@ -98,14 +103,16 @@ class LevelFour extends Phaser.Scene {
     pointer = this.input.activePointer;
 
     // Attack
-    attack = "single";
+    attackList = ["single", "triple", "spread", "laser"];
+    attackNum = 0
+    attack = attackList[attackNum];
 
-    // Bombs
-    bombs = this.physics.add.group();
+    // projectiles
+    projectiles = this.physics.add.group();
     enemyBombs = this.physics.add.group();
 
     // The hp
-    hp = 300;
+    hp = 100;
     hpText = this.add.text(600, 16, 'HP: ' + hp, { fontSize: '32px', fill: '#000' });
 
     // Enemy Health
@@ -127,9 +134,9 @@ class LevelFour extends Phaser.Scene {
     this.physics.add.collider(player, platforms);
     //this.physics.add.collider(bombs, platforms, bombExplode, null, this);
     this.physics.add.collider(enemyBombs, platforms);
-    this.physics.add.collider(bombs, platforms, bombExplode, null, this);
+    this.physics.add.collider(projectiles, platforms, bombExplode, null, this);
     this.physics.add.collider(player, enemyBombs, playerHitBomb, null, this);
-    this.physics.add.collider(enemy, bombs, enemyHitBomb, null, this);
+    this.physics.add.collider(enemy, projectiles, enemyHitBomb, null, this);
 
   }
 
@@ -183,36 +190,71 @@ class LevelFour extends Phaser.Scene {
         player.anims.play('turn');
     }
 
-    if ((keys.W.isDown || keys.SPACE.isDown || cursors.up.isDown) && player.body.touching.down)
+    if ((keys.W.isDown || cursors.up.isDown) && player.body.touching.down)
     {
         player.setVelocityY(-330);
         jumpNoise.play();
     }
 
-    if (pointer.isDown && attack === "single" && !hasShot){
-        shotNoise.play();
-        var bomb = bombs.create(player.x, player.y, 'bomb');
-        var velocityX = (pointer.x - player.x)*4;
-        var velocityY = (pointer.y - player.y)*4;
-        bomb.setVelocity(velocityX, velocityY);
-        bomb.allowGravity = false;
-        hasShot = true;
+    if (keys.SPACE.isDown && !changeAttack){
+      switchNoise.play();
+      attackNum++;
+      attackNum = attackNum%(attackList.length);
+      attack = attackList[attackNum];
+      changeAttack = true;
+    }
 
+    if (pointer.isDown && !hasShot){
+      if (attack == "single"){
+        this.singleAttack();
+      } else if (attack == "triple"){
+        for (var i=0; i<3; i++){
+          this.time.addEvent({delay: i*100, callback: () => this.tripleAttack()});
+        }
+      } else if (attack == "spread"){
+        for (var i=0; i<15; i++){
+          this.spreadAttack();
+        }
+
+      } else if (attack == "laser"){
+
+      }
+      hasShot = true;
     }
     if(!pointer.isDown){
       hasShot = false;
     }
+    if (!keys.SPACE.isDown){
+      changeAttack = false;
+    }
+
   }
 
-  playerAttack(){
-    for (var i = 0; i < 1; i++){
-      var bomb = bombs.create(player.x, player.y, 'bomb');
-      var velocityX = (pointer.x - player.x)*4;
-      var velocityY = (pointer.y - player.y)*4;
-      bomb.setVelocity(velocityX, velocityY);
-      bomb.allowGravity = false;
-    }
+  singleAttack(){
+    shotNoise.play();
+    var projectile = projectiles.create(player.x, player.y, 'lvl2projectile');
+    var velocityX = (pointer.x - player.x)*4;
+    var velocityY = (pointer.y - player.y)*4;
+    projectile.setVelocity(velocityX, velocityY);
   }
+
+  tripleAttack(){
+    cannonNoise.play();
+    var projectile = projectiles.create(player.x, player.y, 'lvl2projectile');
+    var velocityX = (pointer.x - player.x)*3;
+    var velocityY = (pointer.y - player.y)*3;
+    projectile.setVelocity(velocityX, velocityY);
+  }
+
+  spreadAttack(){
+    //shotgunNoise.play();
+    var bomb = projectiles.create(player.x, player.y, 'lvl2projectile');
+    var velocityX = ((pointer.x - player.x)*4) + Phaser.Math.Between(-100, 100);
+    var velocityY = (pointer.y - player.y)*4 + Phaser.Math.Between(-100, 100);
+    bomb.setVelocity(velocityX, velocityY);
+
+  }
+
   enemyAttack(){ // Scatters a bunch of bombs
     for (var i = 0; i < 1; i++){
       var enemyBomb = enemyBombs.create(enemy.x, enemy.y, 'bomb');

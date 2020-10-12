@@ -81,7 +81,7 @@ class Tutorial extends Phaser.Scene {
     enemyBombs = this.physics.add.group();
 
     // The hp
-    hp = 300;
+    hp = 100;
     hpText = this.add.text(600, 16, 'HP: ' + hp, { fontSize: '32px', fill: '#000' });
 
     // Enemy Health

@@ -76,12 +76,13 @@ var progress = 1;
 var errorText = '';
 var selectNoise;
 var errNoise;
-var projectile;
+var projectiles;
 var changeAttack
 var attackList;
 var attackNum;
 var switchNoise;
 var cannonNoise;
+var plat1, plat2, plat3, plat4;
 
 var game = new Phaser.Game(config);
 
@@ -107,7 +108,7 @@ function playerHitBomb (player, enemyBombs){
     this.time.addEvent({delay: 100, callback: () => enemyBombs.destroy()});
     //bombNoise.play();
 
-    if (hp === 0){
+    if (hp <= 0){
       this.physics.pause();
 
       player.anims.play('turn');
