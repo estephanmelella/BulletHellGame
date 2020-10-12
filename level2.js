@@ -24,7 +24,7 @@ class LevelTwo extends Phaser.Scene {
   create() {
     //  A simple background for our game
     this.add.image(400, 300, 'bigger_background');
-
+    youWin = false;
     //  The platforms group contains the ground and the 2 ledges we can jump on
     platforms = this.physics.add.staticGroup();
 
@@ -164,6 +164,7 @@ class LevelTwo extends Phaser.Scene {
     // projectiles
     projectiles = this.physics.add.group();
     enemyBombs = this.physics.add.group();
+    cannonball = this.physics.add.group();
 
     // The hp
     hp = 100;
@@ -203,6 +204,8 @@ class LevelTwo extends Phaser.Scene {
     this.physics.add.collider(plat4, projectiles, this.movingBombExplode, null, this);
     this.physics.add.collider(player, enemyBombs, playerHitBomb, null, this);
     this.physics.add.collider(enemy, projectiles, enemyHitBomb, null, this);
+    this.physics.add.collider(cannonball, platforms, bombExplode, null, this);
+    this.physics.add.collider(enemy, cannonball, enemyHitCannon, null, this);
 
   }
 
@@ -284,12 +287,21 @@ class LevelTwo extends Phaser.Scene {
     }
 
     if (pointer.isDown && !hasShot){
+<<<<<<< HEAD
       if (attack == "single"){
         this.singleAttack();
       } else if (attack == "triple"){
         for (var i=0; i<3; i++){
           this.time.addEvent({delay: i*100, callback: () => this.tripleAttack()});
         }
+=======
+      if (attack == "bullet"){
+        shotNoise.play();
+        var bomb = projectile.create(player.x, player.y, 'lvl2projectile');
+      } else if (attack == "cannonball"){
+        cannonNoise.play();
+        var bomb = cannonball.create(player.x, player.y, 'bomb');
+>>>>>>> bc8b0d0a3706527d46589e15defeaa2d6317ced2
       }
       hasShot = true;
     }

@@ -16,6 +16,7 @@ class Tutorial extends Phaser.Scene {
     this.load.audio('boom', ['assets/Shot Explode.ogg', 'assets/Shot Explode.mp3', 'assets/Shot Explode.m4a']);
     this.load.audio('key', ['assets/Key Get.ogg', 'assets/Key Get.mp3', 'assets/Key Get.m4a']);
     this.load.audio('win', ['assets/Enemy Die.ogg', 'assets/Enemy Die.mp3', 'assets/Enemy Die.m4a']);
+    //this.load.audio('tutorial song', ['assets/Tutorial Song.ogg', 'assets/Tutorial Song.mp3', 'assets/Tutorial Song.m4a'])
   }
 
   create() {
@@ -37,6 +38,9 @@ class Tutorial extends Phaser.Scene {
     keyNoise = game.sound.add('key');
     winNoise = game.sound.add('win');
     shotNoise = game.sound.add('shot');
+    //tutorialSong = game.sound.add('tutorial song');
+    //tutorialSong.setLoop(true);
+    tutorialSong.play();
 
     // The player and its settings
     player = this.physics.add.sprite(100, 450, 'dude');

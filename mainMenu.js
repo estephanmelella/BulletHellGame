@@ -7,12 +7,18 @@ class MainMenu extends Phaser.Scene {
     this.load.image('sky', 'assets/sky.png');
     this.load.image('star', 'assets/star.png');
     this.load.audio('select', ['assets/Select.ogg', 'assets/Select.mp3', 'assets/Select.m4a']);
+    this.load.audio('tutorial song', ['assets/Tutorial Song.ogg', 'assets/Tutorial Song.mp3', 'assets/Tutorial Song.m4a'])
   }
 
   create() {
     //  A simple background for our game
     this.add.image(400, 300, 'sky');
     selectNoise = game.sound.add('select');
+    if(!tutorialSong){
+      tutorialSong = game.sound.add('tutorial song');
+      tutorialSong.setLoop(true);
+    }
+    
 
 
     //Menu text
@@ -32,6 +38,10 @@ class MainMenu extends Phaser.Scene {
     levelSelectButton.on('pointerdown', () => this.levelSelect());
     tutorialButton.setInteractive();
     tutorialButton.on('pointerdown', () => this.tutorialStart());
+    if(tutorialSong.isPlaying){
+      tutorialSong.stop();
+    }
+    youWin = false;
 
   }
 
