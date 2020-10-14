@@ -7,8 +7,7 @@ class LevelThree extends Phaser.Scene {
     this.load.image('sky', 'assets/sky.png');
     this.load.image('boss', 'assets/boss.png')
     this.load.image('ground', 'assets/platform.png');
-    this.load.image('star', 'assets/explosion.png');
-    this.load.image('win', 'assets/star.png');
+    this.load.image('star', 'assets/star.png');
     this.load.image('bomb', 'assets/bomb.png');
     this.load.spritesheet('dude', 'assets/main.png', { frameWidth: 56, frameHeight: 45 });
     this.load.audio('jump', ['assets/Jump.ogg', 'assets/Jump.mp3', 'assets/Jump.m4a']);
@@ -83,18 +82,10 @@ class LevelThree extends Phaser.Scene {
     targets: enemy.body.velocity,
     loop: -1,
     tweens: [
-      { x:    0, y: -90, duration: 5000, ease: 'Stepped' },
-      //{ x:    0, y:    0, duration: 1000, ease: 'Stepped' },
-      { x: -140, y:    0, duration: 5000, ease: 'Stepped' },
-      //{ x:    0, y:    0, duration: 1000, ease: 'Stepped' },
-      { x:    0, y:  100, duration: 5000, ease: 'Stepped' },
-      //{ x:    0, y:    0, duration: 1000, ease: 'Stepped' },
-      { x:    0, y: -100, duration: 5000, ease: 'Stepped' },
-    //  { x:    0, y:    0, duration: 1000, ease: 'Stepped' },
-      { x:  140, y:    0, duration: 5000, ease: 'Stepped' },
-    //  { x:    0, y:    0, duration: 1000, ease: 'Stepped' },
-      { x:    0, y:  90, duration: 5000, ease: 'Stepped' },
-      //{ x:    0, y:    0, duration: 1000, ease: 'Stepped' }
+      { x:    0, y: -180, duration: 2500, ease: 'Stepped' },
+      { x: -280, y:    0, duration: 2500, ease: 'Stepped' },
+      { x:    0, y:  180, duration: 2500, ease: 'Stepped' },
+      { x:  280, y:    0, duration: 2500, ease: 'Stepped' },
     ]
   });
 
@@ -134,7 +125,7 @@ class LevelThree extends Phaser.Scene {
     //  Collide the player and the stars with the platforms
     this.physics.add.collider(player, platforms);
     //this.physics.add.collider(bombs, platforms, bombExplode, null, this);
-    this.physics.add.collider(enemyBombs, platforms);
+    this.physics.add.collider(enemyBombs, platforms, bombExplode, null, this);
     this.physics.add.collider(projectiles, platforms, bombExplode, null, this);
     this.physics.add.collider(player, enemyBombs, playerHitBomb, null, this);
     this.physics.add.collider(enemy, projectiles, enemyHitBomb, null, this);
@@ -165,10 +156,10 @@ class LevelThree extends Phaser.Scene {
     }
     if(enemyHealth > 0 && enemyShot == true){
       enemyShot = false;
-      //sound cue
-      timedEvent = this.time.delayedCall(3000, this.enemyScatterAttack, [], this);
+      for (var i=0; i<3; i++){
+        timedEvent = this.time.delayedCall(i*250, this.enemySprayAttack, [], this);
+      }
       if (enemyHealth < 300){
-        //sound cue
         timedEvent = this.time.delayedCall(2500, this.enemyScatterAttack, [], this);
       }
       if (enemyHealth < 100){
@@ -268,12 +259,13 @@ class LevelThree extends Phaser.Scene {
 
   }
 
-  enemyScatterAttack(){ // Scatters a bunch of bombs
-    for (var i = 0; i < 15; i++){
+  enemySprayAttack(){ // Sprays a bunch of bombs
+    for (var i = 1; i <= 16; i++){
       var enemyBomb = enemyBombs.create(enemy.x, enemy.y, 'bomb');
-      enemyBomb.setBounce(1);
-      enemyBomb.setCollideWorldBounds(true);
-      enemyBomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
+      // enemyBomb.setCollideWorldBounds(true);
+      // var velocityX =
+      // var velocityY =
+      enemyBomb.setVelocity(Math.cos(Math.PI * i/6)*500, Math.sin(Math.PI * i/6)*500);
       enemyBomb.allowGravity = true;
     }
   }
@@ -284,5 +276,16 @@ class LevelThree extends Phaser.Scene {
     enemyBomb.setVelocity((player.x - enemy.x)*3, (player.y - enemy.y)*3);
     enemyBomb.allowGravity = true;
   }
+
+  enemyScatterAttack(){ // Scatters a bunch of bombs
+    for (var i = 0; i < 10; i++){
+      var enemyBomb = enemyBombs.create(enemy.x, enemy.y, 'bomb');
+      enemyBomb.setBounce(1);
+      enemyBomb.setCollideWorldBounds(true);
+      enemyBomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
+      enemyBomb.allowGravity = true;
+    }
+  }
+
 
 }

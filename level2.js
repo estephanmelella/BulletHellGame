@@ -6,7 +6,7 @@ class LevelTwo extends Phaser.Scene {
   preload() {
     this.load.image('bigger_background', 'assets/bigger_background.png');
     this.load.image('lvl2villain', 'assets/lvl2villain.png')
-    this.load.image('ground', 'assets/new_plat.png');
+    this.load.image('lvl2ground', 'assets/new_plat.png');
     this.load.image('star', 'assets/explosion.png');
     this.load.image('win', 'assets/star.png');
     this.load.image('bomb', 'assets/bomb.png');
@@ -30,19 +30,19 @@ class LevelTwo extends Phaser.Scene {
     platforms = this.physics.add.staticGroup();
 
     // Ground, ledges, and ceiling
-    platforms.create(400, 568, 'ground').setScale(2).refreshBody();
-    platforms.create(400, -75, 'ground').setScale(2).refreshBody(); //ceiling
+    platforms.create(400, 568, 'lvl2ground').setScale(2).refreshBody();
+    platforms.create(400, -75, 'lvl2ground').setScale(2).refreshBody(); //ceiling
 
-    var plat1 = this.physics.add.image(200, 200, 'ground')
+    var plat1 = this.physics.add.image(200, 200, 'lvl2ground')
       .setImmovable(true)
       .setScale(0.5);
-    var plat2 = this.physics.add.image(600, 200, 'ground')
+    var plat2 = this.physics.add.image(600, 200, 'lvl2ground')
       .setImmovable(true)
       .setScale(0.5);
-    var plat3 = this.physics.add.image(200, 400, 'ground')
+    var plat3 = this.physics.add.image(200, 400, 'lvl2ground')
       .setImmovable(true)
       .setScale(0.5);
-    var plat4 = this.physics.add.image(600, 400, 'ground')
+    var plat4 = this.physics.add.image(600, 400, 'lvl2ground')
       .setImmovable(true)
       .setScale(0.5);
 
