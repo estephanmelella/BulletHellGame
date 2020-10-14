@@ -320,7 +320,7 @@ class LevelTwo extends Phaser.Scene {
     projectile.setVelocity(velocityX, velocityY);
   }
   tripleAttack(){
-    cannonNoise.play();
+    shotNoise.play();
     var projectile = projectiles.create(player.x, player.y, 'lvl2projectile');
     var velocityX = (pointer.x - player.x)*3;
     var velocityY = (pointer.y - player.y)*3;
