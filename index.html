@@ -71,7 +71,6 @@ var keyNoise;
 var winNoise;
 var shotNoise;
 var hasShot = false;
-var menuButton;
 var progress = 1;
 var errorText = '';
 var selectNoise;
@@ -84,7 +83,8 @@ var switchNoise;
 var cannonNoise;
 var cannonball;
 var tutorialSong;
-var plat1, plat2, plat3, plat4;
+var plat1, plat2, plat3, plat4, plat5, plat6, plat7, plat8, plat9;
+var invincible;
 
 var game = new Phaser.Game(config);
 
@@ -95,22 +95,25 @@ function collectKey (player, levelKey){
 }
 
 function playerHitBomb (player, enemyBombs){
-
     //Reduce hp
-    if (hp > 0){
-      hp = hp - 3;
-    }
-    hitNoise.play();
-    hpText.setText('HP: ' + hp);
+    if (hp > 0 && !invincible){
+      hp--;
+      invincible = true;
+      hitNoise.play();
+      hpText.setText('HP: ' + hp);
 
-    //Set Textures
-    player.setTint(0xff0000);
-    enemyBombs.setTexture('star');
-    enemyBombs.setVelocity(0,0);
-    this.time.addEvent({delay: 100, callback: () => enemyBombs.destroy()});
-    //bombNoise.play();
+      //Set Textures
+      player.setTint(0xff0000);
+      enemyBombs.setTexture('star');
+      enemyBombs.setVelocity(0,0);
+
+      this.time.addEvent({delay: 100, callback: () => enemyBombs.destroy()});
+      this.time.addEvent({delay: 100, callback: () => invincible = false});
+    }
 
     if (hp <= 0){
+      hpText.setText('HP: 0');
+
       this.physics.pause();
 
       player.anims.play('turn');
@@ -119,7 +122,7 @@ function playerHitBomb (player, enemyBombs){
 
       gameOver = true;
     }
-    this.time.addEvent({delay: 200, callback: () => player.clearTint()});
+    this.time.addEvent({delay: 100, callback: () => player.clearTint()});
 
 }
 
@@ -210,6 +213,24 @@ function bombExplode(bomb){
   this.time.addEvent({delay: 100, callback: () => bomb.destroy()});
   bombNoise.play();
 }
+
+function platformBreak(player, platform){
+  if (platform.body.touching.up && platform.body.friction.x == 100){
+    platform.body.setFrictionX(0);
+    <!-- platform.setTexture('platform is gonna break!'); -->
+
+    this.time.addEvent({delay: 5000, callback: () => platform.body.enable = false});
+    <!-- this.time.addEvent({delay: 5000, callback: () => platform.setTexture('platform is broken')}); -->
+
+    this.time.addEvent({delay: 10000, callback: () => platform.body.enable = true});
+    this.time.addEvent({delay: 10000, callback: () => platform.body.setFrictionX(100)});
+    <!-- this.time.addEvent({delay: 10000, callback: () => platform.setTexture('platform is back to normal')}); -->
+
+
+  }
+
+}
+
 
 </script>
 

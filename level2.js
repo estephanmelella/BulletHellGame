@@ -177,7 +177,7 @@ class LevelTwo extends Phaser.Scene {
     enemyShot = true;
 
     //Back Button
-    menuButton = this.add.text(16, 16, 'Menu', { fontSize: '20px', fill: '#fff' });
+    var menuButton = this.add.text(16, 16, 'Menu', { fontSize: '20px', fill: '#fff' });
     menuButton.setInteractive();
     menuButton.on('pointerdown', () => this.scene.start('MainMenu'));
 
@@ -211,74 +211,60 @@ class LevelTwo extends Phaser.Scene {
   }
 
   update(){
-    if (gameOver)
-    {
-      if (!youWin){ //If you got killed before winning
+    if (gameOver){
+      if (!youWin){ //If you got killed after killing the boss
         this.physics.pause();
-        gameOverText.setText('GAME OVER');
-        this.time.addEvent({
-          delay: 5000, callback: () => this.scene.start('MainMenu')
-        });
+        this.time.addEvent({delay: 1000, callback: () => gameOverText.setText("G")});
+        this.time.addEvent({delay: 1250, callback: () => gameOverText.setText("GA")});
+        this.time.addEvent({delay: 1500, callback: () => gameOverText.setText("GAM")});
+        this.time.addEvent({delay: 1750, callback: () => gameOverText.setText("GAME")});
+        this.time.addEvent({delay: 2500, callback: () => gameOverText.setText("GAME O")});
+        this.time.addEvent({delay: 2750, callback: () => gameOverText.setText("GAME OV")});
+        this.time.addEvent({delay: 3000, callback: () => gameOverText.setText("GAME OVE")});
+        this.time.addEvent({delay: 3250, callback: () => gameOverText.setText("GAME OVER")});
+        this.time.addEvent({delay: 10000, callback: () => this.scene.start('MainMenu')});
         progress = 1;
       }
       gameOver = false;
     }
 
     if (youWin) {
-      youWinText.setText('YOU WIN! ONTO LVL 3');
-      if (progress === 2){
-        progress = 3;
-      }
-      this.time.addEvent({delay: 5000, callback: () => this.scene.start('LevelThree')});
+      this.time.addEvent({delay: 1000, callback: () => youWinText.setText("Y")});
+      this.time.addEvent({delay: 1250, callback: () => youWinText.setText("YO")});
+      this.time.addEvent({delay: 1500, callback: () => youWinText.setText("YOU")});
+      this.time.addEvent({delay: 1750, callback: () => youWinText.setText("YOU W")});
+      this.time.addEvent({delay: 2000, callback: () => youWinText.setText("YOU WI")});
+      this.time.addEvent({delay: 2250, callback: () => youWinText.setText("YOU WIN")});
+      this.time.addEvent({delay: 2500, callback: () => youWinText.setText("YOU WIN!")});
+      this.time.addEvent({delay: 5000, callback: () => this.scene.start('MainMenu')});
       this.time.addEvent({delay: 5000, callback: () => youWin = false});
     }
 
-    if(enemyHealth > 0 && enemyShot == true){
-      enemyShot = false;
-      //sound cue
-      this.enemyScatterAttack();
-      if (enemyHealth < 100){
-        for (var i = 0; i < 3; i++){
-          timedEvent = this.time.delayedCall(i*100, this.enemyShootAttack, [], this);
-        }
-      }
-      this.time.addEvent({delay: 4000, callback: () => enemyShot = true});
-
-    }
-
-
-    if (keys.A.isDown || cursors.left.isDown)
-    {
+    // Movement
+    if (keys.A.isDown || cursors.left.isDown){
         player.setVelocityX(-160);
 
         player.anims.play('left', true);
-    }
-    else if (keys.D.isDown || cursors.right.isDown)
-    {
+    } else if (keys.D.isDown || cursors.right.isDown){
         player.setVelocityX(160);
 
         player.anims.play('right', true);
-    }
-    else if (keys.S.isDown || cursors.down.isDown)
-    {
+    } else if (keys.S.isDown || cursors.down.isDown){
       player.setVelocityY(300);
       player.setVelocityX(0);
 
       player.anims.play('turn');
-
-    }
-    else {
+    } else {
         player.setVelocityX(0);
 
         player.anims.play('turn');
     }
-
-    if ((keys.W.isDown || cursors.up.isDown) && player.body.touching.down)
-    {
+    if ((keys.W.isDown || cursors.up.isDown) && player.body.touching.down){
         player.setVelocityY(-330);
         jumpNoise.play();
     }
 
+    // Switching Attacks
     if (keys.SPACE.isDown && !changeAttack){
       switchNoise.play();
       attackNum++;
@@ -286,32 +272,42 @@ class LevelTwo extends Phaser.Scene {
       attack = attackList[attackNum];
       changeAttack = true;
     }
+    if (!keys.SPACE.isDown){
+      changeAttack = false;
+    }
 
+    // Player Attack
     if (pointer.isDown && !hasShot){
-      if (attack == "single"){
+      switch (attack){
+        case "single":
         this.singleAttack();
-      } else if (attack == "triple"){
+        break;
+        case "triple":
         for (var i=0; i<3; i++){
           this.time.addEvent({delay: i*100, callback: () => this.tripleAttack()});
         }
-      }
-      if (attack == "bullet"){
-        shotNoise.play();
-        var bomb = projectile.create(player.x, player.y, 'lvl2projectile');
-      } else if (attack == "cannonball"){
-        cannonNoise.play();
-        var bomb = cannonball.create(player.x, player.y, 'bomb');
+        break;
       }
       hasShot = true;
     }
     if(!pointer.isDown){
       hasShot = false;
     }
-    if (!keys.SPACE.isDown){
-      changeAttack = false;
+
+    // Enemy Attack
+    if(enemyHealth > 0 && enemyShot == true){
+      enemyShot = false;
+      timedEvent = this.time.delayedCall(2500, this.enemyScatterAttack, [], this);
+      if (enemyHealth < 100){
+        for (var i = 0; i < 3; i++){
+          timedEvent = this.time.delayedCall(i*100, this.enemyShootAttack, [], this);
+        }
+      }
+      this.time.addEvent({delay: 3000, callback: () => enemyShot = true});
+
     }
   }
-
+  //Player Attacks
   singleAttack(){
     shotNoise.play();
     var projectile = projectiles.create(player.x, player.y, 'lvl2projectile');
@@ -319,12 +315,21 @@ class LevelTwo extends Phaser.Scene {
     var velocityY = (pointer.y - player.y)*4;
     projectile.setVelocity(velocityX, velocityY);
   }
+
   tripleAttack(){
     shotNoise.play();
     var projectile = projectiles.create(player.x, player.y, 'lvl2projectile');
     var velocityX = (pointer.x - player.x)*3;
     var velocityY = (pointer.y - player.y)*3;
     projectile.setVelocity(velocityX, velocityY);
+  }
+
+  //Enemy Attacks
+  enemyShootAttack(){ // Shoot at the player
+    var enemyBomb = enemyBombs.create(enemy.x, enemy.y, 'bomb');
+    enemyBomb.setCollideWorldBounds(true);
+    enemyBomb.setVelocity(Math.min(800,(player.x - enemy.x)*3), Math.min(800,(player.y - enemy.y)*3));
+    enemyBomb.allowGravity = true;
   }
 
   enemyScatterAttack(){ // Scatters a bunch of bombs
@@ -335,13 +340,6 @@ class LevelTwo extends Phaser.Scene {
       enemyBomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
       enemyBomb.allowGravity = true;
     }
-  }
-
-  enemyShootAttack(){ // Shoot at the player
-    var enemyBomb = enemyBombs.create(enemy.x, enemy.y, 'bomb');
-    enemyBomb.setCollideWorldBounds(true);
-    enemyBomb.setVelocity((player.x - enemy.x)*3, (player.y - enemy.y)*3);
-    enemyBomb.allowGravity = true;
   }
 
   movingBombExplode(platform, bomb){

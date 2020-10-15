@@ -29,10 +29,125 @@ class LevelThree extends Phaser.Scene {
 
     // Ground, ledges, and ceiling
     platforms.create(400, 568, 'ground').setScale(2).refreshBody();
-    platforms.create(600, 400, 'ground');
-    platforms.create(50, 250, 'ground');
-    platforms.create(750, 220, 'ground');
     platforms.create(400, -75, 'ground').setScale(2).refreshBody(); //ceiling
+
+    var plat1 = this.physics.add.image(100, 400, 'ground')
+      .setImmovable(true)
+      .setScale(0.5);
+    var plat2 = this.physics.add.image(300, 400, 'ground')
+      .setImmovable(true)
+      .setScale(0.5);
+    var plat3 = this.physics.add.image(500, 400, 'ground')
+      .setImmovable(true)
+      .setScale(0.5);
+    var plat4 = this.physics.add.image(700, 400, 'ground')
+      .setImmovable(true)
+      .setScale(0.5);
+    var plat5 = this.physics.add.image(400, 250, 'ground')
+      .setImmovable(true)
+      .setScale(0.5);
+    var plat6 = this.physics.add.image(400, 250, 'ground')
+      .setImmovable(true)
+      .setScale(0.5);
+    var plat7 = this.physics.add.image(400, 250, 'ground')
+      .setImmovable(true)
+      .setScale(0.5);
+    var plat8 = this.physics.add.image(400, 250, 'ground')
+      .setImmovable(true)
+      .setScale(0.5);
+
+      plat1.body.allowGravity = false;
+      plat2.body.allowGravity = false;
+      plat3.body.allowGravity = false;
+      plat4.body.allowGravity = false;
+      plat5.body.allowGravity = false;
+      plat6.body.allowGravity = false;
+      plat7.body.allowGravity = false;
+      plat8.body.allowGravity = false;
+
+    //Platform's movement around the screen
+    this.tweens.timeline({
+    targets: plat1.body.velocity,
+    loop: -1,
+    tweens: [
+      { x:  150, y:    0, duration: 3000, ease: 'Cubic' },
+      { x:    0, y:    0, duration: 5000, ease: 'Cubic' },
+      { x: -150, y:    0, duration: 3000, ease: 'Cubic' },
+      { x:    0, y:    0, duration: 5000, ease: 'Cubic' },
+      ]
+    });
+    this.tweens.timeline({
+    targets: plat2.body.velocity,
+    loop: -1,
+    tweens: [
+      { x:   50, y:    0, duration: 3000, ease: 'Cubic' },
+      { x:    0, y:    0, duration: 5000, ease: 'Cubic' },
+      { x:  -50, y:    0, duration: 3000, ease: 'Cubic' },
+      { x:    0, y:    0, duration: 5000, ease: 'Cubic' },
+      ]
+    });
+    this.tweens.timeline({
+    targets: plat3.body.velocity,
+    loop: -1,
+    tweens: [
+      { x:  -50, y:    0, duration: 3000, ease: 'Cubic' },
+      { x:    0, y:    0, duration: 5000, ease: 'Cubic' },
+      { x:   50, y:    0, duration: 3000, ease: 'Cubic' },
+      { x:    0, y:    0, duration: 5000, ease: 'Cubic' },
+      ]
+    });
+    this.tweens.timeline({
+    targets: plat4.body.velocity,
+    loop: -1,
+    tweens: [
+      { x: -150, y:    0, duration: 3000, ease: 'Cubic' },
+      { x:    0, y:    0, duration: 5000, ease: 'Cubic' },
+      { x:  150, y:    0, duration: 3000, ease: 'Cubic' },
+      { x:    0, y:    0, duration: 5000, ease: 'Cubic' },
+      ]
+    });
+    this.tweens.timeline({
+    targets: plat5.body.velocity,
+    loop: -1,
+    tweens: [
+      { x:  150, y:    0, duration: 3000, ease: 'Cubic' },
+      { x:    0, y:    0, duration: 5000, ease: 'Cubic' },
+      { x: -150, y:    0, duration: 3000, ease: 'Cubic' },
+      { x:    0, y:    0, duration: 5000, ease: 'Cubic' },
+      ]
+    });
+    this.tweens.timeline({
+    targets: plat6.body.velocity,
+    loop: -1,
+    tweens: [
+      { x:   50, y:    0, duration: 3000, ease: 'Cubic' },
+      { x:    0, y:    0, duration: 5000, ease: 'Cubic' },
+      { x:  -50, y:    0, duration: 3000, ease: 'Cubic' },
+      { x:    0, y:    0, duration: 5000, ease: 'Cubic' },
+      ]
+    });
+    this.tweens.timeline({
+    targets: plat7.body.velocity,
+    loop: -1,
+    tweens: [
+      { x:  -50, y:    0, duration: 3000, ease: 'Cubic' },
+      { x:    0, y:    0, duration: 5000, ease: 'Cubic' },
+      { x:   50, y:    0, duration: 3000, ease: 'Cubic' },
+      { x:    0, y:    0, duration: 5000, ease: 'Cubic' },
+      ]
+    });
+    this.tweens.timeline({
+    targets: plat8.body.velocity,
+    loop: -1,
+    tweens: [
+      { x: -150, y:    0, duration: 3000, ease: 'Cubic' },
+      { x:    0, y:    0, duration: 5000, ease: 'Cubic' },
+      { x:  150, y:    0, duration: 3000, ease: 'Cubic' },
+      { x:    0, y:    0, duration: 5000, ease: 'Cubic' },
+      ]
+    });
+
+      //Sounds
     jumpNoise = game.sound.add('jump');
     bombNoise = game.sound.add('boom');
     hitNoise = game.sound.add('hit');
@@ -84,7 +199,11 @@ class LevelThree extends Phaser.Scene {
     tweens: [
       { x:    0, y: -180, duration: 2500, ease: 'Stepped' },
       { x: -280, y:    0, duration: 2500, ease: 'Stepped' },
+      { x:  280, y:    0, duration: 2500, ease: 'Stepped' },
+      { x: -280, y:    0, duration: 2500, ease: 'Stepped' },
       { x:    0, y:  180, duration: 2500, ease: 'Stepped' },
+      { x:  280, y:    0, duration: 2500, ease: 'Stepped' },
+      { x: -280, y:    0, duration: 2500, ease: 'Stepped' },
       { x:  280, y:    0, duration: 2500, ease: 'Stepped' },
     ]
   });
@@ -112,7 +231,7 @@ class LevelThree extends Phaser.Scene {
     enemyHealthText = this.add.text(200, 16, 'Enemy Health: ' + enemyHealth, { fontSize: '32px', fill: '#000' });
 
     //Back Button
-    menuButton = this.add.text(16, 16, 'Menu', { fontSize: '20px', fill: '#000' });
+    var menuButton = this.add.text(16, 16, 'Menu', { fontSize: '20px', fill: '#000' });
     menuButton.setInteractive();
     menuButton.on('pointerdown', () => this.scene.start('MainMenu'));
 
@@ -122,43 +241,134 @@ class LevelThree extends Phaser.Scene {
     //You Win text
     youWinText = this.add.text(100,300,'', { fontSize: '50px', fill: '#0000ff' });
 
-    //  Collide the player and the stars with the platforms
+    //  Colliders
     this.physics.add.collider(player, platforms);
-    //this.physics.add.collider(bombs, platforms, bombExplode, null, this);
+    this.physics.add.collider(player, plat1);
+    this.physics.add.collider(player, plat2);
+    this.physics.add.collider(player, plat3);
+    this.physics.add.collider(player, plat4);
+    this.physics.add.collider(player, plat5);
+    this.physics.add.collider(player, plat6);
+    this.physics.add.collider(player, plat7);
+    this.physics.add.collider(player, plat8);
     this.physics.add.collider(enemyBombs, platforms, bombExplode, null, this);
+    this.physics.add.collider(plat1, enemyBombs, this.movingBombExplode, null, this);
+    this.physics.add.collider(plat2, enemyBombs, this.movingBombExplode, null, this);
+    this.physics.add.collider(plat3, enemyBombs, this.movingBombExplode, null, this);
+    this.physics.add.collider(plat4, enemyBombs, this.movingBombExplode, null, this);
+    this.physics.add.collider(plat5, enemyBombs, this.movingBombExplode, null, this);
+    this.physics.add.collider(plat6, enemyBombs, this.movingBombExplode, null, this);
+    this.physics.add.collider(plat7, enemyBombs, this.movingBombExplode, null, this);
+    this.physics.add.collider(plat8, enemyBombs, this.movingBombExplode, null, this);
     this.physics.add.collider(projectiles, platforms, bombExplode, null, this);
+    this.physics.add.collider(plat1, projectiles, this.movingBombExplode, null, this);
+    this.physics.add.collider(plat2, projectiles, this.movingBombExplode, null, this);
+    this.physics.add.collider(plat3, projectiles, this.movingBombExplode, null, this);
+    this.physics.add.collider(plat4, projectiles, this.movingBombExplode, null, this);
+    this.physics.add.collider(plat5, projectiles, this.movingBombExplode, null, this);
+    this.physics.add.collider(plat6, projectiles, this.movingBombExplode, null, this);
+    this.physics.add.collider(plat7, projectiles, this.movingBombExplode, null, this);
+    this.physics.add.collider(plat8, projectiles, this.movingBombExplode, null, this);
     this.physics.add.collider(player, enemyBombs, playerHitBomb, null, this);
     this.physics.add.collider(enemy, projectiles, enemyHitBomb, null, this);
+    // this.physics.add.collider(cannonball, platforms, bombExplode, null, this);
+    // this.physics.add.collider(enemy, cannonball, enemyHitCannon, null, this);
 
   }
 
   update(){
-    if (gameOver)
-    {
-      if (!youWin){ //If you got killed before winning
+    if (gameOver){
+      if (!youWin){ //If you got killed after killing the boss
         this.physics.pause();
-        gameOverText.setText('GAME OVER');
-        this.time.addEvent({
-          delay: 5000, callback: () => this.scene.start('MainMenu')
-        });
+        this.time.addEvent({delay: 1000, callback: () => gameOverText.setText("G")});
+        this.time.addEvent({delay: 1250, callback: () => gameOverText.setText("GA")});
+        this.time.addEvent({delay: 1500, callback: () => gameOverText.setText("GAM")});
+        this.time.addEvent({delay: 1750, callback: () => gameOverText.setText("GAME")});
+        this.time.addEvent({delay: 2500, callback: () => gameOverText.setText("GAME O")});
+        this.time.addEvent({delay: 2750, callback: () => gameOverText.setText("GAME OV")});
+        this.time.addEvent({delay: 3000, callback: () => gameOverText.setText("GAME OVE")});
+        this.time.addEvent({delay: 3250, callback: () => gameOverText.setText("GAME OVER")});
+        this.time.addEvent({delay: 10000, callback: () => this.scene.start('MainMenu')});
         progress = 1;
       }
       gameOver = false;
     }
 
     if (youWin) {
-      youWinText.setText('YOU WIN! ONTO LVL 4');
-      if (progress === 3){
-        progress = 4;
-      }
-      this.time.addEvent({delay: 5000, callback: () => this.scene.start('LevelFour')});
+      this.time.addEvent({delay: 1000, callback: () => youWinText.setText("Y")});
+      this.time.addEvent({delay: 1250, callback: () => youWinText.setText("YO")});
+      this.time.addEvent({delay: 1500, callback: () => youWinText.setText("YOU")});
+      this.time.addEvent({delay: 1750, callback: () => youWinText.setText("YOU W")});
+      this.time.addEvent({delay: 2000, callback: () => youWinText.setText("YOU WI")});
+      this.time.addEvent({delay: 2250, callback: () => youWinText.setText("YOU WIN")});
+      this.time.addEvent({delay: 2500, callback: () => youWinText.setText("YOU WIN!")});
+      this.time.addEvent({delay: 5000, callback: () => this.scene.start('MainMenu')});
       this.time.addEvent({delay: 5000, callback: () => youWin = false});
     }
+
+    // Movement
+    if (keys.A.isDown || cursors.left.isDown){
+        player.setVelocityX(-160);
+
+        player.anims.play('left', true);
+    } else if (keys.D.isDown || cursors.right.isDown){
+        player.setVelocityX(160);
+
+        player.anims.play('right', true);
+    } else if (keys.S.isDown || cursors.down.isDown){
+      player.setVelocityY(300);
+      player.setVelocityX(0);
+
+      player.anims.play('turn');
+    } else {
+        player.setVelocityX(0);
+
+        player.anims.play('turn');
+    }
+    if ((keys.W.isDown || cursors.up.isDown) && player.body.touching.down){
+        player.setVelocityY(-330);
+        jumpNoise.play();
+    }
+
+    // Switching Attacks
+    if (keys.SPACE.isDown && !changeAttack){
+      switchNoise.play();
+      attackNum++;
+      attackNum = attackNum%(attackList.length);
+      attack = attackList[attackNum];
+      changeAttack = true;
+    }
+    if (!keys.SPACE.isDown){
+      changeAttack = false;
+    }
+
+    // Player Attack
+    if (pointer.isDown && !hasShot){
+      switch (attack){
+        case "single":
+        this.singleAttack();
+        break;
+        case "triple":
+        for (var i=0; i<3; i++){
+          this.time.addEvent({delay: i*100, callback: () => this.tripleAttack()});
+        }
+        break;
+        case "spread":
+        for (var i=0; i<15; i++){
+          this.spreadAttack();
+        }
+        break;
+      }
+      hasShot = true;
+    }
+    if(!pointer.isDown){
+      hasShot = false;
+    }
+
+    // Enemy Attack
     if(enemyHealth > 0 && enemyShot == true){
       enemyShot = false;
-      for (var i=0; i<3; i++){
-        timedEvent = this.time.delayedCall(i*250, this.enemySprayAttack, [], this);
-      }
+      timedEvent = this.time.delayedCall(2500, this.enemySprayAttack, [], this);
       if (enemyHealth < 300){
         timedEvent = this.time.delayedCall(2500, this.enemyScatterAttack, [], this);
       }
@@ -170,70 +380,8 @@ class LevelThree extends Phaser.Scene {
       this.time.addEvent({delay: 3000, callback: () => enemyShot = true});
 
     }
-
-    if (keys.A.isDown || cursors.left.isDown)
-    {
-        player.setVelocityX(-160);
-
-        player.anims.play('left', true);
-    }
-    else if (keys.D.isDown || cursors.right.isDown)
-    {
-        player.setVelocityX(160);
-
-        player.anims.play('right', true);
-    }
-    else if (keys.S.isDown || cursors.down.isDown)
-    {
-      player.setVelocityY(300);
-      player.setVelocityX(0);
-
-      player.anims.play('turn');
-
-    }
-    else {
-        player.setVelocityX(0);
-
-        player.anims.play('turn');
-    }
-
-    if ((keys.W.isDown || cursors.up.isDown) && player.body.touching.down)
-    {
-        player.setVelocityY(-330);
-        jumpNoise.play();
-    }
-
-    if (keys.SPACE.isDown && !changeAttack){
-      switchNoise.play();
-      attackNum++;
-      attackNum = attackNum%(attackList.length);
-      attack = attackList[attackNum];
-      changeAttack = true;
-    }
-
-    if (pointer.isDown && !hasShot){
-      if (attack == "single"){
-        this.singleAttack();
-      } else if (attack == "triple"){
-        for (var i=0; i<3; i++){
-          this.time.addEvent({delay: i*100, callback: () => this.tripleAttack()});
-        }
-      } else if (attack == "spread"){
-        for (var i=0; i<15; i++){
-          this.spreadAttack();
-        }
-      }
-      hasShot = true;
-    }
-    if(!pointer.isDown){
-      hasShot = false;
-    }
-    if (!keys.SPACE.isDown){
-      changeAttack = false;
-    }
-
   }
-
+  //Player Attacks
   singleAttack(){
     shotNoise.play();
     var projectile = projectiles.create(player.x, player.y, 'lvl2projectile');
@@ -259,21 +407,11 @@ class LevelThree extends Phaser.Scene {
 
   }
 
-  enemySprayAttack(){ // Sprays a bunch of bombs
-    for (var i = 1; i <= 16; i++){
-      var enemyBomb = enemyBombs.create(enemy.x, enemy.y, 'bomb');
-      // enemyBomb.setCollideWorldBounds(true);
-      // var velocityX =
-      // var velocityY =
-      enemyBomb.setVelocity(Math.cos(Math.PI * i/6)*500, Math.sin(Math.PI * i/6)*500);
-      enemyBomb.allowGravity = true;
-    }
-  }
-
+  //Enemy Attacks
   enemyShootAttack(){ // Shoot at the player
     var enemyBomb = enemyBombs.create(enemy.x, enemy.y, 'bomb');
     enemyBomb.setCollideWorldBounds(true);
-    enemyBomb.setVelocity((player.x - enemy.x)*3, (player.y - enemy.y)*3);
+    enemyBomb.setVelocity(Math.min(800,(player.x - enemy.x)*3), Math.min(800,(player.y - enemy.y)*3));
     enemyBomb.allowGravity = true;
   }
 
@@ -285,6 +423,21 @@ class LevelThree extends Phaser.Scene {
       enemyBomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
       enemyBomb.allowGravity = true;
     }
+  }
+
+  enemySprayAttack(){ // Sprays a bunch of bombs
+    for (var i = 1; i <= 16; i++){
+      var enemyBomb = enemyBombs.create(enemy.x, enemy.y, 'bomb');
+      enemyBomb.setVelocity(Math.cos(Math.PI * i/6)*500, Math.sin(Math.PI * i/6)*500);
+      enemyBomb.allowGravity = true;
+    }
+  }
+
+  movingBombExplode(platform, bomb){
+    bomb.setTexture('star');
+    bomb.setVelocity(0,0);
+    this.time.addEvent({delay: 100, callback: () => bomb.destroy()});
+    bombNoise.play();
   }
 
 

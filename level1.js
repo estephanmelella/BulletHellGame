@@ -28,10 +28,31 @@ class LevelOne extends Phaser.Scene {
 
     // Ground, ledges, and ceiling
     platforms.create(400, 568, 'ground').setScale(2).refreshBody();
-    platforms.create(400, 400, 'ground');
-    platforms.create(200, 250, 'ground').setScale(0.5).refreshBody();
-    platforms.create(600, 250, 'ground').setScale(0.5).refreshBody();
     platforms.create(400, -75, 'ground').setScale(2).refreshBody(); //ceiling
+
+    var plat1 = this.physics.add.image(200, 200, 'ground')
+      .setImmovable(true)
+      .setFrictionX(100)
+      .setScale(0.5);
+    var plat2 = this.physics.add.image(600, 200, 'ground')
+      .setImmovable(true)
+      .setFrictionX(100)
+      .setScale(0.5);
+    var plat3 = this.physics.add.image(200, 400, 'ground')
+      .setImmovable(true)
+      .setFrictionX(100)
+      .setScale(0.5);
+    var plat4 = this.physics.add.image(600, 400, 'ground')
+      .setImmovable(true)
+      .setFrictionX(100)
+      .setScale(0.5);
+
+      plat1.body.allowGravity = false;
+      plat2.body.allowGravity = false;
+      plat3.body.allowGravity = false;
+      plat4.body.allowGravity = false;
+
+    //Sounds
     jumpNoise = game.sound.add('jump');
     bombNoise = game.sound.add('boom');
     hitNoise = game.sound.add('hit');
@@ -39,7 +60,7 @@ class LevelOne extends Phaser.Scene {
     winNoise = game.sound.add('win');
     shotNoise = game.sound.add('shot');
 
-    // The player and its settings
+    // The player
     player = this.physics.add.sprite(100, 450, 'dude');
 
     //  Player physics properties
@@ -53,13 +74,11 @@ class LevelOne extends Phaser.Scene {
         frameRate: 10,
         repeat: -1
     });
-
     this.anims.create({
         key: 'turn',
         frames: [ { key: 'dude', frame: 4 } ],
         frameRate: 20
     });
-
     this.anims.create({
         key: 'right',
         frames: this.anims.generateFrameNumbers('dude', { start: 5, end: 8 }),
@@ -112,7 +131,7 @@ class LevelOne extends Phaser.Scene {
     enemyHealthText = this.add.text(200, 16, 'Enemy Health: ' + enemyHealth, { fontSize: '32px', fill: '#fff' });
 
     //Back Button
-    menuButton = this.add.text(16, 16, 'Menu', { fontSize: '20px', fill: '#fff' });
+    var menuButton = this.add.text(16, 16, 'Menu', { fontSize: '20px', fill: '#fff' });
     menuButton.setInteractive();
     menuButton.on('pointerdown', () => this.scene.start('MainMenu'));
 
@@ -124,6 +143,10 @@ class LevelOne extends Phaser.Scene {
 
     //  Collide the player and the stars with the platforms
     this.physics.add.collider(player, platforms);
+    this.physics.add.collider(player, plat1, platformBreak, null, this);
+    this.physics.add.collider(player, plat2, platformBreak, null, this);
+    this.physics.add.collider(player, plat3, platformBreak, null, this);
+    this.physics.add.collider(player, plat4, platformBreak, null, this);
     this.physics.add.collider(enemyBombs, platforms, bombExplode, null, this);
     this.physics.add.collider(projectiles, platforms, bombExplode, null, this);
     this.physics.add.collider(player, enemyBombs, playerHitBomb, null, this);
@@ -132,96 +155,95 @@ class LevelOne extends Phaser.Scene {
   }
 
   update(){
-    if (gameOver)
-    {
-      if (!youWin){ //If you got killed before winning
+    if (gameOver){
+      if (!youWin){ //If you got killed after killing the boss
         this.physics.pause();
-        gameOverText.setText('GAME OVER');
-        this.time.addEvent({
-          delay: 5000, callback: () => this.scene.start('MainMenu')
-        });
+        this.time.addEvent({delay: 1000, callback: () => gameOverText.setText("G")});
+        this.time.addEvent({delay: 1250, callback: () => gameOverText.setText("GA")});
+        this.time.addEvent({delay: 1500, callback: () => gameOverText.setText("GAM")});
+        this.time.addEvent({delay: 1750, callback: () => gameOverText.setText("GAME")});
+        this.time.addEvent({delay: 2500, callback: () => gameOverText.setText("GAME O")});
+        this.time.addEvent({delay: 2750, callback: () => gameOverText.setText("GAME OV")});
+        this.time.addEvent({delay: 3000, callback: () => gameOverText.setText("GAME OVE")});
+        this.time.addEvent({delay: 3250, callback: () => gameOverText.setText("GAME OVER")});
+        this.time.addEvent({delay: 10000, callback: () => this.scene.start('MainMenu')});
         progress = 1;
       }
       gameOver = false;
     }
 
     if (youWin) {
-      youWinText.setText('YOU WIN! ONTO LVL 2');
-      if (progress === 1){
-        progress = 2;
-      }
-      this.time.addEvent({delay: 5000, callback: () => this.scene.start('LevelTwo')});
+      this.time.addEvent({delay: 1000, callback: () => youWinText.setText("Y")});
+      this.time.addEvent({delay: 1250, callback: () => youWinText.setText("YO")});
+      this.time.addEvent({delay: 1500, callback: () => youWinText.setText("YOU")});
+      this.time.addEvent({delay: 1750, callback: () => youWinText.setText("YOU W")});
+      this.time.addEvent({delay: 2000, callback: () => youWinText.setText("YOU WI")});
+      this.time.addEvent({delay: 2250, callback: () => youWinText.setText("YOU WIN")});
+      this.time.addEvent({delay: 2500, callback: () => youWinText.setText("YOU WIN!")});
+      this.time.addEvent({delay: 5000, callback: () => this.scene.start('MainMenu')});
       this.time.addEvent({delay: 5000, callback: () => youWin = false});
+    }
 
-    }
-    if(enemyHealth > 0 && enemyShot == true){
-      enemyShot = false;
-      for (var i = 0; i < 3; i++){
-        timedEvent = this.time.delayedCall(i*100, this.enemyAttack, [], this);
-      }
-      this.time.addEvent({delay: 4000, callback: () => enemyShot = true});
-    }
-    if (keys.A.isDown || cursors.left.isDown)
-    {
+    // Movement
+    if (keys.A.isDown || cursors.left.isDown){
         player.setVelocityX(-160);
 
         player.anims.play('left', true);
-    }
-    else if (keys.D.isDown || cursors.right.isDown)
-    {
+    } else if (keys.D.isDown || cursors.right.isDown){
         player.setVelocityX(160);
 
         player.anims.play('right', true);
-    }
-    else if (keys.S.isDown || cursors.down.isDown)
-    {
+    } else if (keys.S.isDown || cursors.down.isDown){
       player.setVelocityY(300);
       player.setVelocityX(0);
 
       player.anims.play('turn');
-
-    }
-    else {
+    } else {
         player.setVelocityX(0);
 
         player.anims.play('turn');
     }
-
-    if ((keys.W.isDown || keys.SPACE.isDown || cursors.up.isDown) && player.body.touching.down)
-    {
+    if ((keys.W.isDown || cursors.up.isDown) && player.body.touching.down){
         player.setVelocityY(-330);
         jumpNoise.play();
     }
 
+    // Player Attack
     if (pointer.isDown && !hasShot){
-        shotNoise.play();
-        var projectile = projectiles.create(player.x, player.y, 'bomb');
-        var velocityX = (pointer.x - player.x)*4;
-        var velocityY = (pointer.y - player.y)*4;
-        projectile.setVelocity(velocityX, velocityY);
-        projectile.allowGravity = false;
-        hasShot = true;
-
+      this.singleAttack();
+      hasShot = true;
     }
     if(!pointer.isDown){
       hasShot = false;
     }
-  }
 
-  playerAttack(){
-    for (var i = 0; i < 1; i++){
-      var projectile = projectiles.create(player.x, player.y, 'bomb');
-      var velocityX = (pointer.x - player.x)*4;
-      var velocityY = (pointer.y - player.y)*4;
-      projectile.setVelocity(velocityX, velocityY);
-      projectile.allowGravity = false;
+    // Enemy Attack
+    if(enemyHealth > 0 && enemyShot == true){
+      enemyShot = false;
+      for (var i = 0; i < 3; i++){
+        timedEvent = this.time.delayedCall(i*100, this.enemyShootAttack, [], this);
+      }
+      this.time.addEvent({delay: 3000, callback: () => enemyShot = true});
     }
   }
-  enemyAttack(){ // Shoot at the player
+
+  //Player Attacks
+  singleAttack(){
+    shotNoise.play();
+    var projectile = projectiles.create(player.x, player.y, 'lvl2projectile');
+    var velocityX = (pointer.x - player.x)*4;
+    var velocityY = (pointer.y - player.y)*4;
+    projectile.setVelocity(velocityX, velocityY);
+  }
+
+
+  //Enemy Attacks
+  enemyShootAttack(){ // Shoot at the player
     var enemyBomb = enemyBombs.create(enemy.x, enemy.y, 'bomb');
     enemyBomb.setCollideWorldBounds(true);
-    enemyBomb.setVelocity((player.x - enemy.x)*2, (player.y - enemy.y)*2);
+    enemyBomb.setVelocity(Math.min(800,(player.x - enemy.x)*3), Math.min(800,(player.y - enemy.y)*3));
     enemyBomb.allowGravity = true;
   }
+
 
 }
