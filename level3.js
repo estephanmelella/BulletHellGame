@@ -298,6 +298,7 @@ class LevelThree extends Phaser.Scene {
     }
 
     if (youWin) {
+      youWin = false;
       this.time.addEvent({delay: 1000, callback: () => youWinText.setText("Y")});
       this.time.addEvent({delay: 1250, callback: () => youWinText.setText("YO")});
       this.time.addEvent({delay: 1500, callback: () => youWinText.setText("YOU")});

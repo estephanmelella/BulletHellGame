@@ -220,14 +220,14 @@ function bombExplode(bomb){
 function platformBreak(player, platform){
   if (platform.body.touching.up && platform.body.friction.x == 100){
     platform.body.setFrictionX(0);
-    <!-- platform.setTexture('platform is gonna break!'); -->
+    //!-- platform.setTexture('platform is gonna break!'); -->
 
     this.time.addEvent({delay: 5000, callback: () => platform.body.enable = false});
-    <!-- this.time.addEvent({delay: 5000, callback: () => platform.setTexture('platform is broken')}); -->
+    //<!-- this.time.addEvent({delay: 5000, callback: () => platform.setTexture('platform is broken')}); -->
 
     this.time.addEvent({delay: 10000, callback: () => platform.body.enable = true});
     this.time.addEvent({delay: 10000, callback: () => platform.body.setFrictionX(100)});
-    <!-- this.time.addEvent({delay: 10000, callback: () => platform.setTexture('platform is back to normal')}); -->
+    //<!-- this.time.addEvent({delay: 10000, callback: () => platform.setTexture('platform is back to normal')}); -->
 
 
   }
