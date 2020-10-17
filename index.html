@@ -1,41 +1,45 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <title>Blaster Master</title>
-    <script src="//cdn.jsdelivr.net/npm/phaser@3.11.0/dist/phaser.js"></script>
-    <!--<script src="phaser.js"></script>--->
-    <script src="mainMenu.js"></script>
-    <script src="levelSelect.js"></script>
-    <script src="tutorial.js"></script>
-    <script src="level1.js"></script>
-    <script src="level2.js"></script>
-    <script src="level3.js"></script>
-    <script src="level4.js"></script>
-    <style type="text/css">
-        body {
-            margin: 0;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <title>Blaster Master</title>
+  <script src="//cdn.jsdelivr.net/npm/phaser@3.11.0/dist/phaser.js" sync></script>
+  <!--<script src="phaser.js"></script>--->
+  <script src="mainMenu.js" sync></script>
+  <script src="levelSelect.js" sync></script>
+  <script src="tutorial.js" sync></script>
+  <script src="level1_intro.js" sync></script>
+  <script src="level1.js" sync></script>
+  <script src="level2_intro.js" sync></script>
+  <script src="level2.js" sync></script>
+  <script src="level3_intro.js" sync></script>
+  <script src="level3.js" sync></script>
+  <script src="level4_intro.js" sync></script>
+  <script src="level4.js" sync></script>
+  <style type="text/css">
+      body {
+          margin: 0;
+      }
+  </style>
 </head>
 
 <body>
 
 <script type="text/javascript">
 
-  var config = {
-      type: Phaser.AUTO,
-      width: 800,
-      height: 600,
-      physics: {
-          default: 'arcade',
-          arcade: {
-              gravity: { y: 300 },
-              debug: false
-          }
-      },
-      scene: [MainMenu, LevelSelect, Tutorial, LevelOne, LevelTwo, LevelThree, LevelFour]
-  };
+var config = {
+    type: Phaser.AUTO,
+    width: 800,
+    height: 600,
+    physics: {
+        default: 'arcade',
+        arcade: {
+            gravity: { y: 500 },
+            debug: false
+        }
+    },
+    scene: [MainMenu, LevelSelect, Tutorial, LevelOneIntro, LevelOne, LevelTwoIntro, LevelTwo, LevelThreeIntro, LevelThree, LevelFourIntro, LevelFour]
+};
 
 
 var player;
@@ -104,7 +108,7 @@ function playerHitBomb (player, enemyBombs){
 
       //Set Textures
       player.setTint(0xff0000);
-      enemyBombs.setTexture('star');
+      enemyBombs.setTexture('explosion');
       enemyBombs.setVelocity(0,0);
 
       this.time.addEvent({delay: 100, callback: () => enemyBombs.destroy()});
@@ -138,7 +142,7 @@ function enemyHitBomb (enemy, bomb){
 
     //Set Textures
     enemy.setTint(0xff0000);
-    bomb.setTexture('star');
+    bomb.setTexture('explosion');
     bomb.setVelocity(0,0);
     this.time.addEvent({delay: 100, callback: () => bomb.destroy()});
     bombNoise.play();
@@ -146,7 +150,7 @@ function enemyHitBomb (enemy, bomb){
     if (enemyHealth === 0){
       winNoise.play();
       enemyHealth = null;
-      enemy.setTexture('star');
+      enemy.setTexture('explosion');
       this.time.addEvent({delay: 1000, callback: () => enemy.destroy()});
 
       this.time.addEvent({delay: 1000, callback: () => player.setTint(0xff0000)});
@@ -157,7 +161,7 @@ function enemyHitBomb (enemy, bomb){
       this.time.addEvent({delay: 3500, callback: () => player.setTint(0x7f00ff)});
       this.time.addEvent({delay: 4000, callback: () => player.clearTint()});
 
-      levelKey = this.physics.add.sprite(100, 450, 'win');
+      levelKey = this.physics.add.sprite(100, 450, 'door');
       this.physics.add.collider(platforms, levelKey);
       this.physics.add.collider(player, levelKey, collectKey, null, this);
 
@@ -167,48 +171,47 @@ function enemyHitBomb (enemy, bomb){
 
 }
 
-function enemyHitCannon(enemy, bomb)
-{
+function enemyHitCannon(enemy, bomb){
   //Reduce Enemy Health
   if (enemyHealth > 0){
       enemyHealth = enemyHealth - 5;
     }
-    if (enemyHealth != null) {
-      enemyHealthText.setText('Enemy Health: ' + enemyHealth);
-    }
+  if (enemyHealth != null) {
+    enemyHealthText.setText('Enemy Health: ' + enemyHealth);
+  }
 
-    //Set Textures
-    enemy.setTint(0xff0000);
-    bomb.setTexture('star');
-    bomb.setVelocity(0,0);
-    this.time.addEvent({delay: 100, callback: () => bomb.destroy()});
-    bombNoise.play();
+  //Set Textures
+  enemy.setTint(0xff0000);
+  bomb.setTexture('explosion');
+  bomb.setVelocity(0,0);
+  this.time.addEvent({delay: 100, callback: () => bomb.destroy()});
+  bombNoise.play();
 
-    if (enemyHealth <= 0){
-      winNoise.play();
-      enemyHealth = null;
-      enemy.setTexture('star');
-      this.time.addEvent({delay: 1000, callback: () => enemy.destroy()});
+  if (enemyHealth <= 0){
+    winNoise.play();
+    enemyHealth = null;
+    enemy.setTexture('explosion');
+    this.time.addEvent({delay: 1000, callback: () => enemy.destroy()});
 
-      this.time.addEvent({delay: 1000, callback: () => player.setTint(0xff0000)});
-      this.time.addEvent({delay: 1500, callback: () => player.setTint(0xffa500)});
-      this.time.addEvent({delay: 2000, callback: () => player.setTint(0xffff00)});
-      this.time.addEvent({delay: 2500, callback: () => player.setTint(0x00ff00)});
-      this.time.addEvent({delay: 3000, callback: () => player.setTint(0x008080)});
-      this.time.addEvent({delay: 3500, callback: () => player.setTint(0x7f00ff)});
-      this.time.addEvent({delay: 4000, callback: () => player.clearTint()});
+    this.time.addEvent({delay: 1000, callback: () => player.setTint(0xff0000)});
+    this.time.addEvent({delay: 1500, callback: () => player.setTint(0xffa500)});
+    this.time.addEvent({delay: 2000, callback: () => player.setTint(0xffff00)});
+    this.time.addEvent({delay: 2500, callback: () => player.setTint(0x00ff00)});
+    this.time.addEvent({delay: 3000, callback: () => player.setTint(0x008080)});
+    this.time.addEvent({delay: 3500, callback: () => player.setTint(0x7f00ff)});
+    this.time.addEvent({delay: 4000, callback: () => player.clearTint()});
 
-      levelKey = this.physics.add.sprite(100, 450, 'win');
-      this.physics.add.collider(platforms, levelKey);
-      this.physics.add.collider(player, levelKey, collectKey, null, this);
+    levelKey = this.physics.add.sprite(100, 450, 'door');
+    this.physics.add.collider(platforms, levelKey);
+    this.physics.add.collider(player, levelKey, collectKey, null, this);
 
 
-    }
-    this.time.addEvent({delay: 200, callback: () => enemy.clearTint()});
+  }
+  this.time.addEvent({delay: 200, callback: () => enemy.clearTint()});
 }
 
 function bombExplode(bomb){
-  bomb.setTexture('star');
+  bomb.setTexture('explosion');
   bomb.setVelocity(0,0);
   this.time.addEvent({delay: 100, callback: () => bomb.destroy()});
   bombNoise.play();

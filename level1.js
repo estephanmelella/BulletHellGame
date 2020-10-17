@@ -4,13 +4,15 @@ class LevelOne extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image('lvl1background_bigger', 'assets/lvl1background_bigger.png');
-    this.load.image('boss', 'assets/boss.png')
-    this.load.image('ground', 'assets/platform.png');
-    this.load.image('star', 'assets/explosion.png');
-    this.load.image('win', 'assets/star.png');
+    this.load.image('lvl1background', 'assets/lvl1background_bigger.png');
+    this.load.image('lvl1boss', 'assets/boss.png')
+    this.load.image('lvl1ground', 'assets/platform.png');
+    this.load.image('explosion', 'assets/explosion.png');
+    this.load.image('door', 'assets/star.png');
     this.load.image('bomb', 'assets/bomb.png');
+    this.load.image('lvl1projectile', 'assets/bomb.png');
     this.load.spritesheet('dude', 'assets/main.png', { frameWidth: 56, frameHeight: 45 });
+
     this.load.audio('jump', ['assets/Jump.ogg', 'assets/Jump.mp3', 'assets/Jump.m4a']);
     this.load.audio('shot', ['assets/Shot.ogg', 'assets/Shot.mp3', 'assets/Shot.m4a']);
     this.load.audio('hit', ['assets/Player Hit.ogg', 'assets/Player Hit.mp3', 'assets/Player Hit.m4a']);
@@ -21,28 +23,32 @@ class LevelOne extends Phaser.Scene {
 
   create() {
     //  A simple background for our game
-    this.add.image(400, 300, 'lvl1background_bigger');
+    this.add.image(400, 300, 'lvl1background');
     youWin = false;
     //  The platforms group contains the ground and the 2 ledges we can jump on
     platforms = this.physics.add.staticGroup();
 
     // Ground, ledges, and ceiling
-    platforms.create(400, 568, 'ground').setScale(2).refreshBody();
-    platforms.create(400, -75, 'ground').setScale(2).refreshBody(); //ceiling
+    platforms.create(400, 568, 'lvl1ground').setScale(2).refreshBody();
+    platforms.create(400, -75, 'lvl1ground').setScale(2).refreshBody(); //ceiling
 
-    var plat1 = this.physics.add.image(200, 200, 'ground')
+    var plat1 = this.physics.add.image(200, 200, 'lvl1ground')
       .setImmovable(true)
       .setFrictionX(100)
       .setScale(0.5);
-    var plat2 = this.physics.add.image(600, 200, 'ground')
+    var plat2 = this.physics.add.image(600, 200, 'lvl1ground')
       .setImmovable(true)
       .setFrictionX(100)
       .setScale(0.5);
-    var plat3 = this.physics.add.image(200, 400, 'ground')
+    var plat3 = this.physics.add.image(200, 400, 'lvl1ground')
       .setImmovable(true)
       .setFrictionX(100)
       .setScale(0.5);
-    var plat4 = this.physics.add.image(600, 400, 'ground')
+    var plat4 = this.physics.add.image(600, 400, 'lvl1ground')
+      .setImmovable(true)
+      .setFrictionX(100)
+      .setScale(0.5);
+    var plat5 = this.physics.add.image(400, 300, 'lvl1ground')
       .setImmovable(true)
       .setFrictionX(100)
       .setScale(0.5);
@@ -51,6 +57,7 @@ class LevelOne extends Phaser.Scene {
       plat2.body.allowGravity = false;
       plat3.body.allowGravity = false;
       plat4.body.allowGravity = false;
+      plat5.body.allowGravity = false;
 
     //Sounds
     jumpNoise = game.sound.add('jump');
@@ -87,7 +94,7 @@ class LevelOne extends Phaser.Scene {
     });
 
     //Enemy
-    enemy = this.physics.add.sprite(750 ,500,'boss');
+    enemy = this.physics.add.sprite(750 ,500,'lvl1boss');
     enemy.body.allowGravity = false;
     enemy.body.immovable = true;
     enemyShot = false;
@@ -147,6 +154,7 @@ class LevelOne extends Phaser.Scene {
     this.physics.add.collider(player, plat2, platformBreak, null, this);
     this.physics.add.collider(player, plat3, platformBreak, null, this);
     this.physics.add.collider(player, plat4, platformBreak, null, this);
+    this.physics.add.collider(player, plat5, platformBreak, null, this);
     this.physics.add.collider(enemyBombs, platforms, bombExplode, null, this);
     this.physics.add.collider(projectiles, platforms, bombExplode, null, this);
     this.physics.add.collider(player, enemyBombs, playerHitBomb, null, this);
@@ -204,7 +212,7 @@ class LevelOne extends Phaser.Scene {
         player.anims.play('turn');
     }
     if ((keys.W.isDown || cursors.up.isDown) && player.body.touching.down){
-        player.setVelocityY(-330);
+        player.setVelocityY(-400);
         jumpNoise.play();
     }
 
@@ -230,7 +238,7 @@ class LevelOne extends Phaser.Scene {
   //Player Attacks
   singleAttack(){
     shotNoise.play();
-    var projectile = projectiles.create(player.x, player.y, 'lvl2projectile');
+    var projectile = projectiles.create(player.x, player.y, 'lvl1projectile');
     var velocityX = (pointer.x - player.x)*4;
     var velocityY = (pointer.y - player.y)*4;
     projectile.setVelocity(velocityX, velocityY);
@@ -241,7 +249,7 @@ class LevelOne extends Phaser.Scene {
   enemyShootAttack(){ // Shoot at the player
     var enemyBomb = enemyBombs.create(enemy.x, enemy.y, 'bomb');
     enemyBomb.setCollideWorldBounds(true);
-    enemyBomb.setVelocity(Math.min(800,(player.x - enemy.x)*3), Math.min(800,(player.y - enemy.y)*3));
+    enemyBomb.setVelocity(Math.min(800,(player.x - enemy.x)*2), Math.min(800,(player.y - enemy.y)*2));
     enemyBomb.allowGravity = true;
   }
 

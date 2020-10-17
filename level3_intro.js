@@ -1,11 +1,10 @@
-class LevelThree extends Phaser.Scene {
+class LevelThreeIntro extends Phaser.Scene {
   constructor(){
-    super('LevelThree');
+    super('LevelThreeIntro');
   }
 
   preload() {
     this.load.image('lvl3background', 'assets/sky.png');
-    this.load.image('lvl3boss', 'assets/boss.png')
     this.load.image('lvl3ground', 'assets/platform.png');
     this.load.image('explosion', 'assets/explosion.png');
     this.load.image('bomb', 'assets/bomb.png');
@@ -188,29 +187,6 @@ class LevelThree extends Phaser.Scene {
         repeat: -1
     });
 
-    //Enemy
-    enemy = this.physics.add.sprite(750 ,500,'lvl3boss');
-    enemy.body.allowGravity = false;
-    enemy.body.immovable = true;
-    enemyShot = false;
-    this.time.addEvent({delay: 5000, callback: () => enemyShot = true});
-
-    //Enemy's movement around the screen
-    this.tweens.timeline({
-    targets: enemy.body.velocity,
-    loop: -1,
-    tweens: [
-      { x:    0, y: -180, duration: 2500, ease: 'Stepped' },
-      { x: -280, y:    0, duration: 2500, ease: 'Stepped' },
-      { x:  280, y:    0, duration: 2500, ease: 'Stepped' },
-      { x: -280, y:    0, duration: 2500, ease: 'Stepped' },
-      { x:    0, y:  180, duration: 2500, ease: 'Stepped' },
-      { x:  280, y:    0, duration: 2500, ease: 'Stepped' },
-      { x: -280, y:    0, duration: 2500, ease: 'Stepped' },
-      { x:  280, y:    0, duration: 2500, ease: 'Stepped' },
-    ]
-  });
-
     //  Input Events
     cursors = this.input.keyboard.createCursorKeys();
     keys = this.input.keyboard.addKeys('W,A,S,D,SPACE,ESC');
@@ -223,26 +199,11 @@ class LevelThree extends Phaser.Scene {
 
     // projectiles
     projectiles = this.physics.add.group();
-    enemyBombs = this.physics.add.group();
-
-    // The hp
-    hp = 100;
-    hpText = this.add.text(600, 16, 'HP: ' + hp, { fontSize: '32px', fill: '#000' });
-
-    // Enemy Health
-    enemyHealth = 500;
-    enemyHealthText = this.add.text(200, 16, 'Enemy Health: ' + enemyHealth, { fontSize: '32px', fill: '#000' });
 
     //Back Button
     var menuButton = this.add.text(16, 16, 'Menu', { fontSize: '20px', fill: '#000' });
     menuButton.setInteractive();
     menuButton.on('pointerdown', () => this.scene.start('MainMenu'));
-
-    //Game Over text
-    gameOverText = this.add.text(200,300,'', { fontSize: '72px', fill: '#ff0000' });
-
-    //You Win text
-    youWinText = this.add.text(100,300,'', { fontSize: '50px', fill: '#0000ff' });
 
     //  Colliders
     this.physics.add.collider(player, platforms);
@@ -254,15 +215,6 @@ class LevelThree extends Phaser.Scene {
     this.physics.add.collider(player, plat6);
     this.physics.add.collider(player, plat7);
     this.physics.add.collider(player, plat8);
-    this.physics.add.collider(enemyBombs, platforms, bombExplode, null, this);
-    this.physics.add.collider(plat1, enemyBombs, this.movingBombExplode, null, this);
-    this.physics.add.collider(plat2, enemyBombs, this.movingBombExplode, null, this);
-    this.physics.add.collider(plat3, enemyBombs, this.movingBombExplode, null, this);
-    this.physics.add.collider(plat4, enemyBombs, this.movingBombExplode, null, this);
-    this.physics.add.collider(plat5, enemyBombs, this.movingBombExplode, null, this);
-    this.physics.add.collider(plat6, enemyBombs, this.movingBombExplode, null, this);
-    this.physics.add.collider(plat7, enemyBombs, this.movingBombExplode, null, this);
-    this.physics.add.collider(plat8, enemyBombs, this.movingBombExplode, null, this);
     this.physics.add.collider(projectiles, platforms, bombExplode, null, this);
     this.physics.add.collider(plat1, projectiles, this.movingBombExplode, null, this);
     this.physics.add.collider(plat2, projectiles, this.movingBombExplode, null, this);
@@ -272,43 +224,10 @@ class LevelThree extends Phaser.Scene {
     this.physics.add.collider(plat6, projectiles, this.movingBombExplode, null, this);
     this.physics.add.collider(plat7, projectiles, this.movingBombExplode, null, this);
     this.physics.add.collider(plat8, projectiles, this.movingBombExplode, null, this);
-    this.physics.add.collider(player, enemyBombs, playerHitBomb, null, this);
-    this.physics.add.collider(enemy, projectiles, enemyHitBomb, null, this);
-    // this.physics.add.collider(cannonball, platforms, bombExplode, null, this);
-    // this.physics.add.collider(enemy, cannonball, enemyHitCannon, null, this);
 
   }
 
   update(){
-    if (gameOver){
-      if (!youWin){ //If you got killed after killing the boss
-        this.physics.pause();
-        this.time.addEvent({delay: 1000, callback: () => gameOverText.setText("G")});
-        this.time.addEvent({delay: 1250, callback: () => gameOverText.setText("GA")});
-        this.time.addEvent({delay: 1500, callback: () => gameOverText.setText("GAM")});
-        this.time.addEvent({delay: 1750, callback: () => gameOverText.setText("GAME")});
-        this.time.addEvent({delay: 2500, callback: () => gameOverText.setText("GAME O")});
-        this.time.addEvent({delay: 2750, callback: () => gameOverText.setText("GAME OV")});
-        this.time.addEvent({delay: 3000, callback: () => gameOverText.setText("GAME OVE")});
-        this.time.addEvent({delay: 3250, callback: () => gameOverText.setText("GAME OVER")});
-        this.time.addEvent({delay: 10000, callback: () => this.scene.start('MainMenu')});
-        progress = 1;
-      }
-      gameOver = false;
-    }
-
-    if (youWin) {
-      this.time.addEvent({delay: 1000, callback: () => youWinText.setText("Y")});
-      this.time.addEvent({delay: 1250, callback: () => youWinText.setText("YO")});
-      this.time.addEvent({delay: 1500, callback: () => youWinText.setText("YOU")});
-      this.time.addEvent({delay: 1750, callback: () => youWinText.setText("YOU W")});
-      this.time.addEvent({delay: 2000, callback: () => youWinText.setText("YOU WI")});
-      this.time.addEvent({delay: 2250, callback: () => youWinText.setText("YOU WIN")});
-      this.time.addEvent({delay: 2500, callback: () => youWinText.setText("YOU WIN!")});
-      this.time.addEvent({delay: 5000, callback: () => this.scene.start('MainMenu')});
-      this.time.addEvent({delay: 5000, callback: () => youWin = false});
-    }
-
     // Movement
     if (keys.A.isDown || cursors.left.isDown){
         player.setVelocityX(-160);
@@ -368,22 +287,8 @@ class LevelThree extends Phaser.Scene {
       hasShot = false;
     }
 
-    // Enemy Attack
-    if(enemyHealth > 0 && enemyShot == true){
-      enemyShot = false;
-      timedEvent = this.time.delayedCall(2500, this.enemySprayAttack, [], this);
-      if (enemyHealth < 300){
-        timedEvent = this.time.delayedCall(2500, this.enemyScatterAttack, [], this);
-      }
-      if (enemyHealth < 100){
-        for (var i = 0; i < 3; i++){
-          timedEvent = this.time.delayedCall(i*100, this.enemyShootAttack, [], this);
-        }
-      }
-      this.time.addEvent({delay: 3000, callback: () => enemyShot = true});
-
-    }
   }
+
   //Player Attacks
   singleAttack(){
     shotNoise.play();
@@ -408,32 +313,6 @@ class LevelThree extends Phaser.Scene {
     var velocityY = (pointer.y - player.y)*4 + Phaser.Math.Between(-100, 100);
     bomb.setVelocity(velocityX, velocityY);
 
-  }
-
-  //Enemy Attacks
-  enemyShootAttack(){ // Shoot at the player
-    var enemyBomb = enemyBombs.create(enemy.x, enemy.y, 'bomb');
-    enemyBomb.setCollideWorldBounds(true);
-    enemyBomb.setVelocity(Math.min(800,(player.x - enemy.x)*3), Math.min(800,(player.y - enemy.y)*3));
-    enemyBomb.allowGravity = true;
-  }
-
-  enemyScatterAttack(){ // Scatters a bunch of bombs
-    for (var i = 0; i < 10; i++){
-      var enemyBomb = enemyBombs.create(enemy.x, enemy.y, 'bomb');
-      enemyBomb.setBounce(1);
-      enemyBomb.setCollideWorldBounds(true);
-      enemyBomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
-      enemyBomb.allowGravity = true;
-    }
-  }
-
-  enemySprayAttack(){ // Sprays a bunch of bombs
-    for (var i = 1; i <= 16; i++){
-      var enemyBomb = enemyBombs.create(enemy.x, enemy.y, 'bomb');
-      enemyBomb.setVelocity(Math.cos(Math.PI * i/6)*500, Math.sin(Math.PI * i/6)*500);
-      enemyBomb.allowGravity = true;
-    }
   }
 
   movingBombExplode(platform, bomb){
