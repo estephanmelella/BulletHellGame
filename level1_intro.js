@@ -9,7 +9,7 @@ class LevelOneIntro extends Phaser.Scene {
     this.load.image('star', 'assets/explosion.png');
     this.load.image('win', 'assets/star.png');
     this.load.image('bomb', 'assets/bomb.png');
-    this.load.image('door', '');
+    this.load.image('door', 'assets/star.png');
     this.load.spritesheet('dude', 'assets/main.png', { frameWidth: 56, frameHeight: 45 });
 
     this.load.audio('jump', ['assets/Jump.ogg', 'assets/Jump.mp3', 'assets/Jump.m4a']);
