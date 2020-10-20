@@ -32,17 +32,18 @@ class LevelTwoIntro extends Phaser.Scene {
     // Ground, ledges, and ceiling
     platforms.create(400, 568, 'lvl2ground').setScale(2).refreshBody();
     platforms.create(400, -75, 'lvl2ground').setScale(2).refreshBody(); //ceiling
+    platforms.create(700,  75, 'lvl2ground').setScale(0.5).refreshBody(); //ceiling
 
-    var plat1 = this.physics.add.image(200, 200, 'lvl2ground')
+    var plat1 = this.physics.add.image(100, 100, 'lvl2ground')
       .setImmovable(true)
       .setScale(0.5);
-    var plat2 = this.physics.add.image(600, 200, 'lvl2ground')
+    var plat2 = this.physics.add.image(700, 100, 'lvl2ground')
       .setImmovable(true)
       .setScale(0.5);
-    var plat3 = this.physics.add.image(200, 400, 'lvl2ground')
+    var plat3 = this.physics.add.image(100, 400, 'lvl2ground')
       .setImmovable(true)
       .setScale(0.5);
-    var plat4 = this.physics.add.image(600, 400, 'lvl2ground')
+    var plat4 = this.physics.add.image(700, 400, 'lvl2ground')
       .setImmovable(true)
       .setScale(0.5);
 
@@ -56,10 +57,10 @@ class LevelTwoIntro extends Phaser.Scene {
     targets: plat1.body.velocity,
     loop: -1,
     tweens: [
-      { x:  200, y:    0, duration: 2000, ease: 'Stepped' },
-      { x:    0, y:  100, duration: 2000, ease: 'Stepped' },
-      { x: -200, y:    0, duration: 2000, ease: 'Stepped' },
-      { x:    0, y: -100, duration: 2000, ease: 'Stepped' },
+      { x:  200, y:    0, duration: 3000, ease: 'Stepped' },
+      { x:    0, y:  100, duration: 3000, ease: 'Stepped' },
+      { x: -200, y:    0, duration: 3000, ease: 'Stepped' },
+      { x:    0, y: -100, duration: 3000, ease: 'Stepped' },
       { x:    0, y:    0, duration: 1000, ease: 'Stepped' },
       ]
     });
@@ -67,10 +68,10 @@ class LevelTwoIntro extends Phaser.Scene {
     targets: plat2.body.velocity,
     loop: -1,
     tweens: [
-      { x:    0, y:  100, duration: 2000, ease: 'Stepped' },
-      { x: -200, y:    0, duration: 2000, ease: 'Stepped' },
-      { x:    0, y: -100, duration: 2000, ease: 'Stepped' },
-      { x:  200, y:    0, duration: 2000, ease: 'Stepped' },
+      { x:    0, y:  100, duration: 3000, ease: 'Stepped' },
+      { x: -200, y:    0, duration: 3000, ease: 'Stepped' },
+      { x:    0, y: -100, duration: 3000, ease: 'Stepped' },
+      { x:  200, y:    0, duration: 3000, ease: 'Stepped' },
       { x:    0, y:    0, duration: 1000, ease: 'Stepped' },
       ]
     });
@@ -78,10 +79,10 @@ class LevelTwoIntro extends Phaser.Scene {
     targets: plat3.body.velocity,
     loop: -1,
     tweens: [
-      { x:    0, y: -100, duration: 2000, ease: 'Stepped' },
-      { x:  200, y:    0, duration: 2000, ease: 'Stepped' },
-      { x:    0, y:  100, duration: 2000, ease: 'Stepped' },
-      { x: -200, y:    0, duration: 2000, ease: 'Stepped' },
+      { x:    0, y: -100, duration: 3000, ease: 'Stepped' },
+      { x:  200, y:    0, duration: 3000, ease: 'Stepped' },
+      { x:    0, y:  100, duration: 3000, ease: 'Stepped' },
+      { x: -200, y:    0, duration: 3000, ease: 'Stepped' },
       { x:    0, y:    0, duration: 1000, ease: 'Stepped' },
       ]
     });
@@ -89,10 +90,10 @@ class LevelTwoIntro extends Phaser.Scene {
     targets: plat4.body.velocity,
     loop: -1,
     tweens: [
-      { x: -200, y:    0, duration: 2000, ease: 'Stepped' },
-      { x:    0, y: -100, duration: 2000, ease: 'Stepped' },
-      { x:  200, y:    0, duration: 2000, ease: 'Stepped' },
-      { x:    0, y:  100, duration: 2000, ease: 'Stepped' },
+      { x: -200, y:    0, duration: 3000, ease: 'Stepped' },
+      { x:    0, y: -100, duration: 3000, ease: 'Stepped' },
+      { x:  200, y:    0, duration: 3000, ease: 'Stepped' },
+      { x:    0, y:  100, duration: 3000, ease: 'Stepped' },
       { x:    0, y:    0, duration: 1000, ease: 'Stepped' },
       ]
     });
@@ -154,6 +155,15 @@ class LevelTwoIntro extends Phaser.Scene {
     menuButton.setInteractive();
     menuButton.on('pointerdown', () => this.scene.start('MainMenu'));
 
+    //Level Door
+    levelDoor = this.physics.add.sprite(750, 50, 'door');
+    this.physics.add.collider(platforms, levelDoor);
+    this.physics.add.collider(plat1, levelDoor);
+    this.physics.add.collider(plat2, levelDoor);
+    this.physics.add.collider(plat3, levelDoor);
+    this.physics.add.collider(plat4, levelDoor);
+    this.physics.add.collider(player, levelDoor, enterDoor, null, this);
+
     //  Colliders
     this.physics.add.collider(player, platforms);
     this.physics.add.collider(player, plat1);
@@ -170,6 +180,11 @@ class LevelTwoIntro extends Phaser.Scene {
   }
 
   update(){
+    // Win Condition
+    if (youWin){
+      this.scene.start('LevelTwo');
+    }
+
     // Movement
     if (keys.A.isDown || cursors.left.isDown){
         player.setVelocityX(-160);

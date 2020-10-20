@@ -32,44 +32,48 @@ class LevelFourIntro extends Phaser.Scene {
     // Ground, ledges, and ceiling
     platforms.create(400, 568, 'lvl4ground').setScale(2).refreshBody();
     platforms.create(400, -75, 'lvl4ground').setScale(2).refreshBody(); //ceiling
+    platforms.create(700, 100, 'lvl4ground').setScale(0.5).refreshBody(); //ceiling
 
-    var plat1 = this.physics.add.image(150, 200, 'lvl4ground')
+    var plat1 = this.physics.add.image(100, 175, 'lvl4ground')
       .setImmovable(true)
       .setScale(0.5);
-    var plat2 = this.physics.add.image(400, 200, 'lvl4ground')
+    var plat2 = this.physics.add.image(400, 175, 'lvl4ground')
       .setImmovable(true)
       .setScale(0.5);
-    var plat3 = this.physics.add.image(650, 200, 'lvl4ground')
+    var plat3 = this.physics.add.image(700, 175, 'lvl4ground')
       .setImmovable(true)
       .setScale(0.5);
-    var plat4 = this.physics.add.image(150, 300, 'lvl4ground')
+    var plat4 = this.physics.add.image(100, 300, 'lvl4ground')
       .setImmovable(true)
       .setScale(0.5);
     var plat5 = this.physics.add.image(400, 300, 'lvl4ground')
       .setImmovable(true)
       .setScale(0.5);
-    var plat6 = this.physics.add.image(650, 300, 'lvl4ground')
+    var plat6 = this.physics.add.image(700, 300, 'lvl4ground')
       .setImmovable(true)
       .setScale(0.5);
-    var plat7 = this.physics.add.image(150, 400, 'lvl4ground')
+    var plat7 = this.physics.add.image(100, 450, 'lvl4ground')
       .setImmovable(true)
       .setScale(0.5);
-    var plat8 = this.physics.add.image(400, 400, 'lvl4ground')
+    var plat8 = this.physics.add.image(400, 450, 'lvl4ground')
       .setImmovable(true)
       .setScale(0.5);
-    var plat9 = this.physics.add.image(650, 400, 'lvl4ground')
+    var plat9 = this.physics.add.image(700, 450, 'lvl4ground')
       .setImmovable(true)
       .setScale(0.5);
 
-      plat1.body.allowGravity = false;
-      plat2.body.allowGravity = false;
-      plat3.body.allowGravity = false;
-      plat4.body.allowGravity = false;
-      plat5.body.allowGravity = false;
-      plat6.body.allowGravity = false;
-      plat7.body.allowGravity = false;
-      plat8.body.allowGravity = false;
-      plat9.body.allowGravity = false;
+    plat1.body.allowGravity = false;
+    plat2.body.allowGravity = false;
+    plat3.body.allowGravity = false;
+    plat4.body.allowGravity = false;
+    plat5.body.allowGravity = false;
+    plat6.body.allowGravity = false;
+    plat7.body.allowGravity = false;
+    plat8.body.allowGravity = false;
+    plat9.body.allowGravity = false;
+
+    //Storage for safe keeping
+    plats = [plat1, plat2, plat3, plat4, plat5, plat6, plat7, plat8, plat9];
 
     //Sounds
     jumpNoise = game.sound.add('jump');
@@ -82,7 +86,7 @@ class LevelFourIntro extends Phaser.Scene {
   	cannonNoise = game.sound.add('cannon');
 
     // The player and its settings
-    player = this.physics.add.sprite(100, 450, 'dude');
+    player = this.physics.add.sprite(100, 500, 'dude');
 
     //  Player physics properties
     player.setBounce(0);
@@ -128,6 +132,15 @@ class LevelFourIntro extends Phaser.Scene {
     menuButton.setInteractive();
     menuButton.on('pointerdown', () => this.scene.start('MainMenu'));
 
+    //Level Door
+    levelDoor = this.physics.add.sprite(700, 50, 'door');
+    this.physics.add.collider(platforms, levelDoor);
+    this.physics.add.collider(plat1, levelDoor);
+    this.physics.add.collider(plat2, levelDoor);
+    this.physics.add.collider(plat3, levelDoor);
+    this.physics.add.collider(plat4, levelDoor);
+    this.physics.add.collider(player, levelDoor, enterDoor, null, this);
+
     //  Collide the player and the stars with the platforms
     this.physics.add.collider(player, platforms);
     this.physics.add.collider(player, plat1);
@@ -152,6 +165,11 @@ class LevelFourIntro extends Phaser.Scene {
   }
 
   update(){
+    // Win Condition
+    if (youWin){
+      this.scene.start('LevelFour');
+    }
+
     // Movement
     if (keys.A.isDown || cursors.left.isDown){
         player.setVelocityX(-160);
@@ -213,6 +231,8 @@ class LevelFourIntro extends Phaser.Scene {
       hasShot = false;
     }
 
+    //Platform Toggles
+    this.platformToggle(Phaser.Math.Between(0,100), plats[Phaser.Math.Between(0,8)])
   }
 
   //Player Attacks
@@ -246,6 +266,36 @@ class LevelFourIntro extends Phaser.Scene {
     bomb.setVelocity(0,0);
     this.time.addEvent({delay: 100, callback: () => bomb.destroy()});
     bombNoise.play();
+  }
+
+  platformToggle(odds, plat){
+    if (odds < 3){
+      if (plat.alpha == 1){
+        plat.setAlpha(0.9);
+        this.time.addEvent({delay:  100, callback: () => plat.setAlpha(0.8)});
+        this.time.addEvent({delay:  200, callback: () => plat.setAlpha(0.7)});
+        this.time.addEvent({delay:  300, callback: () => plat.setAlpha(0.6)});
+        this.time.addEvent({delay:  400, callback: () => plat.setAlpha(0.5)});
+        this.time.addEvent({delay:  500, callback: () => plat.setAlpha(0.4)});
+        this.time.addEvent({delay:  600, callback: () => plat.setAlpha(0.3)});
+        this.time.addEvent({delay:  700, callback: () => plat.setAlpha(0.2)});
+        this.time.addEvent({delay:  800, callback: () => plat.setAlpha(0.1)});
+        this.time.addEvent({delay:  900, callback: () => plat.setAlpha(0)});
+        this.time.addEvent({delay: 1000, callback: () => plat.body.enable = false});
+      } else if (plat.alpha == 0){
+        plat.setAlpha(0.1);
+        plat.body.enable = true;
+        this.time.addEvent({delay:  100, callback: () => plat.setAlpha(0.2)});
+        this.time.addEvent({delay:  200, callback: () => plat.setAlpha(0.3)});
+        this.time.addEvent({delay:  300, callback: () => plat.setAlpha(0.4)});
+        this.time.addEvent({delay:  400, callback: () => plat.setAlpha(0.5)});
+        this.time.addEvent({delay:  500, callback: () => plat.setAlpha(0.6)});
+        this.time.addEvent({delay:  600, callback: () => plat.setAlpha(0.7)});
+        this.time.addEvent({delay:  700, callback: () => plat.setAlpha(0.8)});
+        this.time.addEvent({delay:  800, callback: () => plat.setAlpha(0.9)});
+        this.time.addEvent({delay:  900, callback: () => plat.setAlpha(1)});
+      }
+    }
   }
 
 }

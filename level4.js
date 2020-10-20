@@ -34,43 +34,55 @@ class LevelFour extends Phaser.Scene {
     platforms.create(400, 568, 'lvl4ground').setScale(2).refreshBody();
     platforms.create(400, -75, 'lvl4ground').setScale(2).refreshBody(); //ceiling
 
-    var plat1 = this.physics.add.image(150, 200, 'lvl4ground')
+    var plat1 = this.physics.add.image(100, 100, 'lvl4ground')
       .setImmovable(true)
+      .setAlpha(1)
       .setScale(0.5);
     var plat2 = this.physics.add.image(400, 200, 'lvl4ground')
       .setImmovable(true)
+      .setAlpha(1)
       .setScale(0.5);
-    var plat3 = this.physics.add.image(650, 200, 'lvl4ground')
+    var plat3 = this.physics.add.image(700, 100, 'lvl4ground')
       .setImmovable(true)
+      .setAlpha(1)
       .setScale(0.5);
-    var plat4 = this.physics.add.image(150, 300, 'lvl4ground')
+    var plat4 = this.physics.add.image(100, 300, 'lvl4ground')
       .setImmovable(true)
+      .setAlpha(1)
       .setScale(0.5);
-    var plat5 = this.physics.add.image(400, 300, 'lvl4ground')
+    var plat5 = this.physics.add.image(400, 600, 'lvl4ground')
       .setImmovable(true)
+      .setAlpha(1)
       .setScale(0.5);
-    var plat6 = this.physics.add.image(650, 300, 'lvl4ground')
+    var plat6 = this.physics.add.image(700, 300, 'lvl4ground')
       .setImmovable(true)
+      .setAlpha(1)
       .setScale(0.5);
-    var plat7 = this.physics.add.image(150, 400, 'lvl4ground')
+    var plat7 = this.physics.add.image(100, 500, 'lvl4ground')
       .setImmovable(true)
+      .setAlpha(1)
       .setScale(0.5);
     var plat8 = this.physics.add.image(400, 400, 'lvl4ground')
       .setImmovable(true)
+      .setAlpha(1)
       .setScale(0.5);
-    var plat9 = this.physics.add.image(650, 400, 'lvl4ground')
+    var plat9 = this.physics.add.image(700, 500, 'lvl4ground')
       .setImmovable(true)
+      .setAlpha(1)
       .setScale(0.5);
 
-      plat1.body.allowGravity = false;
-      plat2.body.allowGravity = false;
-      plat3.body.allowGravity = false;
-      plat4.body.allowGravity = false;
-      plat5.body.allowGravity = false;
-      plat6.body.allowGravity = false;
-      plat7.body.allowGravity = false;
-      plat8.body.allowGravity = false;
-      plat9.body.allowGravity = false;
+    plat1.body.allowGravity = false;
+    plat2.body.allowGravity = false;
+    plat3.body.allowGravity = false;
+    plat4.body.allowGravity = false;
+    plat5.body.allowGravity = false;
+    plat6.body.allowGravity = false;
+    plat7.body.allowGravity = false;
+    plat8.body.allowGravity = false;
+    plat9.body.allowGravity = false;
+
+    //Storage for safe keeping
+    plats = [plat1, plat2, plat3, plat4, plat5, plat6, plat7, plat8, plat9];
 
     //Sounds
     jumpNoise = game.sound.add('jump');
@@ -152,7 +164,7 @@ class LevelFour extends Phaser.Scene {
     enemyBombs = this.physics.add.group();
 
     // The hp
-    hp = 100;
+    hp = 10;
     hpText = this.add.text(600, 16, 'HP: ' + hp, { fontSize: '32px', fill: '#000' });
 
     // Enemy Health
@@ -226,15 +238,15 @@ class LevelFour extends Phaser.Scene {
 
     if (youWin) {
       youWin = false;
-      this.time.addEvent({delay: 1000, callback: () => youWinText.setText("Y")});
-      this.time.addEvent({delay: 1250, callback: () => youWinText.setText("YO")});
-      this.time.addEvent({delay: 1500, callback: () => youWinText.setText("YOU")});
-      this.time.addEvent({delay: 1750, callback: () => youWinText.setText("YOU W")});
-      this.time.addEvent({delay: 2000, callback: () => youWinText.setText("YOU WI")});
-      this.time.addEvent({delay: 2250, callback: () => youWinText.setText("YOU WIN")});
-      this.time.addEvent({delay: 2500, callback: () => youWinText.setText("YOU WIN!")});
-      this.time.addEvent({delay: 5000, callback: () => this.scene.start('MainMenu')});
-      this.time.addEvent({delay: 5000, callback: () => youWin = false});
+      this.time.addEvent({delay:    0, callback: () => youWinText.setText("Y")});
+      this.time.addEvent({delay:  250, callback: () => youWinText.setText("YO")});
+      this.time.addEvent({delay:  500, callback: () => youWinText.setText("YOU")});
+      this.time.addEvent({delay:  750, callback: () => youWinText.setText("YOU W")});
+      this.time.addEvent({delay: 1000, callback: () => youWinText.setText("YOU WI")});
+      this.time.addEvent({delay: 1250, callback: () => youWinText.setText("YOU WIN")});
+      this.time.addEvent({delay: 1500, callback: () => youWinText.setText("YOU WIN!")});
+      this.time.addEvent({delay: 2000, callback: () => this.scene.start('MainMenu')});
+      this.time.addEvent({delay: 2000, callback: () => youWin = false});
     }
 
     // Movement
@@ -318,6 +330,15 @@ class LevelFour extends Phaser.Scene {
       this.time.addEvent({delay: 3000, callback: () => enemyShot = true});
 
     }
+
+    //If player falls through the ground
+    if (player.y > 514){
+      player.y = 514;
+    }
+
+    //Platform Toggles
+    this.platformToggle(Phaser.Math.Between(0,100), plats[Phaser.Math.Between(0,8)])
+
   }
 
   //Player Attacks
@@ -377,6 +398,36 @@ class LevelFour extends Phaser.Scene {
     bomb.setVelocity(0,0);
     this.time.addEvent({delay: 100, callback: () => bomb.destroy()});
     bombNoise.play();
+  }
+
+  platformToggle(odds, plat){
+    if (odds < 3){
+      if (plat.alpha == 1){
+        plat.setAlpha(0.9);
+        this.time.addEvent({delay:  100, callback: () => plat.setAlpha(0.8)});
+        this.time.addEvent({delay:  200, callback: () => plat.setAlpha(0.7)});
+        this.time.addEvent({delay:  300, callback: () => plat.setAlpha(0.6)});
+        this.time.addEvent({delay:  400, callback: () => plat.setAlpha(0.5)});
+        this.time.addEvent({delay:  500, callback: () => plat.setAlpha(0.4)});
+        this.time.addEvent({delay:  600, callback: () => plat.setAlpha(0.3)});
+        this.time.addEvent({delay:  700, callback: () => plat.setAlpha(0.2)});
+        this.time.addEvent({delay:  800, callback: () => plat.setAlpha(0.1)});
+        this.time.addEvent({delay:  900, callback: () => plat.setAlpha(0)});
+        this.time.addEvent({delay: 1000, callback: () => plat.body.enable = false});
+      } else if (plat.alpha == 0){
+        plat.setAlpha(0.1);
+        plat.body.enable = true;
+        this.time.addEvent({delay:  100, callback: () => plat.setAlpha(0.2)});
+        this.time.addEvent({delay:  200, callback: () => plat.setAlpha(0.3)});
+        this.time.addEvent({delay:  300, callback: () => plat.setAlpha(0.4)});
+        this.time.addEvent({delay:  400, callback: () => plat.setAlpha(0.5)});
+        this.time.addEvent({delay:  500, callback: () => plat.setAlpha(0.6)});
+        this.time.addEvent({delay:  600, callback: () => plat.setAlpha(0.7)});
+        this.time.addEvent({delay:  700, callback: () => plat.setAlpha(0.8)});
+        this.time.addEvent({delay:  800, callback: () => plat.setAlpha(0.9)});
+        this.time.addEvent({delay:  900, callback: () => plat.setAlpha(1)});
+      }
+    }
   }
 
 }

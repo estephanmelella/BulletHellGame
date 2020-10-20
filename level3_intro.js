@@ -32,29 +32,31 @@ class LevelThreeIntro extends Phaser.Scene {
     // Ground, ledges, and ceiling
     platforms.create(400, 568, 'lvl3ground').setScale(2).refreshBody();
     platforms.create(400, -75, 'lvl3ground').setScale(2).refreshBody(); //ceiling
+    platforms.create(100, 500, 'lvl3ground').setScale(0.5).refreshBody(); //ceiling
+    platforms.create(700, 100, 'lvl3ground').setScale(0.5).refreshBody(); //ceiling
 
-    var plat1 = this.physics.add.image(100, 400, 'lvl3ground')
+    var plat1 = this.physics.add.image(700, 400, 'lvl3ground')
       .setImmovable(true)
       .setScale(0.5);
-    var plat2 = this.physics.add.image(300, 400, 'lvl3ground')
+    var plat2 = this.physics.add.image(700, 400, 'lvl3ground')
       .setImmovable(true)
       .setScale(0.5);
-    var plat3 = this.physics.add.image(500, 400, 'lvl3ground')
+    var plat3 = this.physics.add.image(700, 400, 'lvl3ground')
       .setImmovable(true)
       .setScale(0.5);
     var plat4 = this.physics.add.image(700, 400, 'lvl3ground')
       .setImmovable(true)
       .setScale(0.5);
-    var plat5 = this.physics.add.image(400, 250, 'lvl3ground')
+    var plat5 = this.physics.add.image(100, 250, 'lvl3ground')
       .setImmovable(true)
       .setScale(0.5);
-    var plat6 = this.physics.add.image(400, 250, 'lvl3ground')
+    var plat6 = this.physics.add.image(100, 250, 'lvl3ground')
       .setImmovable(true)
       .setScale(0.5);
-    var plat7 = this.physics.add.image(400, 250, 'lvl3ground')
+    var plat7 = this.physics.add.image(100, 250, 'lvl3ground')
       .setImmovable(true)
       .setScale(0.5);
-    var plat8 = this.physics.add.image(400, 250, 'lvl3ground')
+    var plat8 = this.physics.add.image(100, 250, 'lvl3ground')
       .setImmovable(true)
       .setScale(0.5);
 
@@ -72,9 +74,9 @@ class LevelThreeIntro extends Phaser.Scene {
     targets: plat1.body.velocity,
     loop: -1,
     tweens: [
-      { x:  150, y:    0, duration: 3000, ease: 'Cubic' },
-      { x:    0, y:    0, duration: 5000, ease: 'Cubic' },
       { x: -150, y:    0, duration: 3000, ease: 'Cubic' },
+      { x:    0, y:    0, duration: 5000, ease: 'Cubic' },
+      { x:  150, y:    0, duration: 3000, ease: 'Cubic' },
       { x:    0, y:    0, duration: 5000, ease: 'Cubic' },
       ]
     });
@@ -82,9 +84,9 @@ class LevelThreeIntro extends Phaser.Scene {
     targets: plat2.body.velocity,
     loop: -1,
     tweens: [
-      { x:   50, y:    0, duration: 3000, ease: 'Cubic' },
+      { x: -100, y:    0, duration: 3000, ease: 'Cubic' },
       { x:    0, y:    0, duration: 5000, ease: 'Cubic' },
-      { x:  -50, y:    0, duration: 3000, ease: 'Cubic' },
+      { x:  100, y:    0, duration: 3000, ease: 'Cubic' },
       { x:    0, y:    0, duration: 5000, ease: 'Cubic' },
       ]
     });
@@ -102,9 +104,9 @@ class LevelThreeIntro extends Phaser.Scene {
     targets: plat4.body.velocity,
     loop: -1,
     tweens: [
-      { x: -150, y:    0, duration: 3000, ease: 'Cubic' },
+      { x:    0, y:    0, duration: 3000, ease: 'Cubic' },
       { x:    0, y:    0, duration: 5000, ease: 'Cubic' },
-      { x:  150, y:    0, duration: 3000, ease: 'Cubic' },
+      { x:    0, y:    0, duration: 3000, ease: 'Cubic' },
       { x:    0, y:    0, duration: 5000, ease: 'Cubic' },
       ]
     });
@@ -122,9 +124,9 @@ class LevelThreeIntro extends Phaser.Scene {
     targets: plat6.body.velocity,
     loop: -1,
     tweens: [
-      { x:   50, y:    0, duration: 3000, ease: 'Cubic' },
+      { x:  100, y:    0, duration: 3000, ease: 'Cubic' },
       { x:    0, y:    0, duration: 5000, ease: 'Cubic' },
-      { x:  -50, y:    0, duration: 3000, ease: 'Cubic' },
+      { x: -100, y:    0, duration: 3000, ease: 'Cubic' },
       { x:    0, y:    0, duration: 5000, ease: 'Cubic' },
       ]
     });
@@ -132,9 +134,9 @@ class LevelThreeIntro extends Phaser.Scene {
     targets: plat7.body.velocity,
     loop: -1,
     tweens: [
-      { x:  -50, y:    0, duration: 3000, ease: 'Cubic' },
-      { x:    0, y:    0, duration: 5000, ease: 'Cubic' },
       { x:   50, y:    0, duration: 3000, ease: 'Cubic' },
+      { x:    0, y:    0, duration: 5000, ease: 'Cubic' },
+      { x:  -50, y:    0, duration: 3000, ease: 'Cubic' },
       { x:    0, y:    0, duration: 5000, ease: 'Cubic' },
       ]
     });
@@ -142,9 +144,9 @@ class LevelThreeIntro extends Phaser.Scene {
     targets: plat8.body.velocity,
     loop: -1,
     tweens: [
-      { x: -150, y:    0, duration: 3000, ease: 'Cubic' },
+      { x:    0, y:    0, duration: 3000, ease: 'Cubic' },
       { x:    0, y:    0, duration: 5000, ease: 'Cubic' },
-      { x:  150, y:    0, duration: 3000, ease: 'Cubic' },
+      { x:    0, y:    0, duration: 3000, ease: 'Cubic' },
       { x:    0, y:    0, duration: 5000, ease: 'Cubic' },
       ]
     });
@@ -205,6 +207,15 @@ class LevelThreeIntro extends Phaser.Scene {
     menuButton.setInteractive();
     menuButton.on('pointerdown', () => this.scene.start('MainMenu'));
 
+    //Level Door
+    levelDoor = this.physics.add.sprite(750, 40, 'door');
+    this.physics.add.collider(platforms, levelDoor);
+    this.physics.add.collider(plat1, levelDoor);
+    this.physics.add.collider(plat2, levelDoor);
+    this.physics.add.collider(plat3, levelDoor);
+    this.physics.add.collider(plat4, levelDoor);
+    this.physics.add.collider(player, levelDoor, enterDoor, null, this);
+
     //  Colliders
     this.physics.add.collider(player, platforms);
     this.physics.add.collider(player, plat1);
@@ -228,6 +239,12 @@ class LevelThreeIntro extends Phaser.Scene {
   }
 
   update(){
+
+    // Win Condition
+    if (youWin){
+      this.scene.start('LevelThree');
+    }
+
     // Movement
     if (keys.A.isDown || cursors.left.isDown){
         player.setVelocityX(-160);

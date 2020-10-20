@@ -38,7 +38,11 @@ var config = {
             debug: false
         }
     },
-    scene: [MainMenu, LevelSelect, Tutorial, LevelOneIntro, LevelOne, LevelTwoIntro, LevelTwo, LevelThreeIntro, LevelThree, LevelFourIntro, LevelFour]
+    scene: [MainMenu, LevelSelect, Tutorial,
+    LevelOneIntro, LevelOne,
+    LevelTwoIntro, LevelTwo,
+    LevelThreeIntro, LevelThree,
+    LevelFourIntro, LevelFour]
 };
 
 
@@ -47,7 +51,7 @@ var timedEvent;
 var timedEvent2;
 var enemyShot = true;
 var enemy;
-var levelKey;
+var levelDoor;
 var bombs;
 var platforms;
 var pointer;
@@ -89,11 +93,13 @@ var cannonball;
 var tutorialSong;
 var plat1, plat2, plat3, plat4, plat5, plat6, plat7, plat8, plat9;
 var invincible;
+var plats;
+var time;
 
 var game = new Phaser.Game(config);
 
-function collectKey (player, levelKey){
-    levelKey.destroy();
+function enterDoor (player, levelDoor){
+    levelDoor.destroy();
     keyNoise.play();
     youWin = true;
 }
@@ -161,9 +167,9 @@ function enemyHitBomb (enemy, bomb){
       this.time.addEvent({delay: 3500, callback: () => player.setTint(0x7f00ff)});
       this.time.addEvent({delay: 4000, callback: () => player.clearTint()});
 
-      levelKey = this.physics.add.sprite(100, 450, 'door');
-      this.physics.add.collider(platforms, levelKey);
-      this.physics.add.collider(player, levelKey, collectKey, null, this);
+      levelDoor = this.physics.add.sprite(100, 450, 'door');
+      this.physics.add.collider(platforms, levelDoor);
+      this.physics.add.collider(player, levelDoor, enterDoor, null, this);
 
 
     }
@@ -201,9 +207,9 @@ function enemyHitCannon(enemy, bomb){
     this.time.addEvent({delay: 3500, callback: () => player.setTint(0x7f00ff)});
     this.time.addEvent({delay: 4000, callback: () => player.clearTint()});
 
-    levelKey = this.physics.add.sprite(100, 450, 'door');
-    this.physics.add.collider(platforms, levelKey);
-    this.physics.add.collider(player, levelKey, collectKey, null, this);
+    levelDoor = this.physics.add.sprite(100, 450, 'door');
+    this.physics.add.collider(platforms, levelDoor);
+    this.physics.add.collider(player, levelDoor, enterDoor, null, this);
 
 
   }

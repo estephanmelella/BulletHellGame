@@ -44,13 +44,13 @@ class LevelSelect extends Phaser.Scene {
 
   level1(errorText){
     selectNoise.play();
-    this.scene.start('LevelOne');
+    this.scene.start('LevelOneIntro');
   }
 
   level2(errorText){
     if (progress >= 1){
       selectNoise.play();
-      this.scene.start('LevelTwo');
+      this.scene.start('LevelTwoIntro');
     } else {
       errNoise.play();
       errorText.setText('Level 2 Locked');
@@ -60,7 +60,7 @@ class LevelSelect extends Phaser.Scene {
   level3(errorText){
     if (progress >= 1){
       selectNoise.play();
-      this.scene.start('LevelThree');
+      this.scene.start('LevelThreeIntro');
     } else {
       errNoise.play();
       errorText.setText("Level 3 Locked");
@@ -70,7 +70,7 @@ class LevelSelect extends Phaser.Scene {
   level4(errorText){
     if (progress === 1){
       selectNoise.play();
-      this.scene.start('LevelFour');
+      this.scene.start('LevelFourIntro');
     } else {
       errNoise.play();
       errorText.setText('Level 4 Locked');

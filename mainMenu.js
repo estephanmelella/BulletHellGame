@@ -58,16 +58,16 @@ class MainMenu extends Phaser.Scene {
 
     switch (progress){
       case 1:
-      this.scene.start('LevelOne');
+      this.scene.start('LevelOneIntro');
       break;
       case 2:
-      this.scene.start('LevelTwo');
+      this.scene.start('LevelTwoIntro');
       break;
       case 3:
-      this.scene.start('LevelThree');
+      this.scene.start('LevelThreeIntro');
       break;
       case 4:
-      this.scene.start('LevelFour');
+      this.scene.start('LevelFourIntro');
       break;
     }
   }

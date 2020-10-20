@@ -5,10 +5,12 @@ class LevelOneIntro extends Phaser.Scene {
 
   preload() {
     this.load.image('lvl1background_bigger', 'assets/lvl1background_bigger.png');
-    this.load.image('ground', 'assets/platform.png');
-    this.load.image('star', 'assets/explosion.png');
+    this.load.image('lvl1ground', 'assets/moonrock.png');
+    this.load.image('lvl1ground_breaking', 'assets/cracked_moonrock.png');
+    this.load.image('lvl1ground_broken', 'assets/broken_moonrock.png');
+    this.load.image('explosion', 'assets/explosion.png');
     this.load.image('win', 'assets/star.png');
-    this.load.image('bomb', 'assets/bomb.png');
+    this.load.image('lvl1projectile', 'assets/bomb.png');
     this.load.image('door', 'assets/star.png');
     this.load.spritesheet('dude', 'assets/main.png', { frameWidth: 56, frameHeight: 45 });
 
@@ -28,22 +30,22 @@ class LevelOneIntro extends Phaser.Scene {
     platforms = this.physics.add.staticGroup();
 
     // Ground, ledges, and ceiling
-    platforms.create(400, 568, 'ground').setScale(2).refreshBody();
-    platforms.create(400, -75, 'ground').setScale(2).refreshBody(); //ceiling
+    platforms.create(400, 568, 'lvl1ground').setScale(2).refreshBody();
+    platforms.create(400, -75, 'lvl1ground').setScale(2).refreshBody(); //ceiling
 
-    var plat1 = this.physics.add.image(200, 500, 'ground')
+    var plat1 = this.physics.add.image(550, 400, 'lvl1ground')
       .setImmovable(true)
       .setFrictionX(100)
       .setScale(0.5);
-    var plat2 = this.physics.add.image(300, 400, 'ground')
+    var plat2 = this.physics.add.image(400, 250, 'lvl1ground')
       .setImmovable(true)
       .setFrictionX(100)
       .setScale(0.5);
-    var plat3 = this.physics.add.image(400, 500, 'ground')
+    var plat3 = this.physics.add.image(100, 100, 'lvl1ground')
       .setImmovable(true)
       .setFrictionX(100)
       .setScale(0.5);
-    var plat4 = this.physics.add.image(600, 600, 'ground')
+    var plat4 = this.physics.add.image(700, 100, 'lvl1ground')
       .setImmovable(true)
       .setFrictionX(100)
       .setScale(0.5);
@@ -100,6 +102,15 @@ class LevelOneIntro extends Phaser.Scene {
     menuButton.setInteractive();
     menuButton.on('pointerdown', () => this.scene.start('MainMenu'));
 
+    //Level Door
+    levelDoor = this.physics.add.sprite(100, 40, 'door');
+    this.physics.add.collider(platforms, levelDoor);
+    this.physics.add.collider(plat1, levelDoor);
+    this.physics.add.collider(plat2, levelDoor);
+    this.physics.add.collider(plat3, levelDoor);
+    this.physics.add.collider(plat4, levelDoor);
+    this.physics.add.collider(player, levelDoor, enterDoor, null, this);
+
     //  Collide the player and the stars with the platforms
     this.physics.add.collider(player, platforms);
     this.physics.add.collider(player, plat1, platformBreak, null, this);
@@ -107,10 +118,19 @@ class LevelOneIntro extends Phaser.Scene {
     this.physics.add.collider(player, plat3, platformBreak, null, this);
     this.physics.add.collider(player, plat4, platformBreak, null, this);
     this.physics.add.collider(projectiles, platforms, bombExplode, null, this);
+    this.physics.add.collider(plat1, projectiles, this.movingBombExplode, null, this);
+    this.physics.add.collider(plat2, projectiles, this.movingBombExplode, null, this);
+    this.physics.add.collider(plat3, projectiles, this.movingBombExplode, null, this);
+    this.physics.add.collider(plat4, projectiles, this.movingBombExplode, null, this);
 
   }
 
   update(){
+    // Win Condition
+    if (youWin){
+      this.scene.start('LevelOne');
+    }
+    
     // Movement
     if (keys.A.isDown || cursors.left.isDown){
         player.setVelocityX(-160);
@@ -148,10 +168,17 @@ class LevelOneIntro extends Phaser.Scene {
   //Player Attacks
   singleAttack(){
     shotNoise.play();
-    var projectile = projectiles.create(player.x, player.y, 'lvl2projectile');
+    var projectile = projectiles.create(player.x, player.y, 'lvl1projectile');
     var velocityX = (pointer.x - player.x)*4;
     var velocityY = (pointer.y - player.y)*4;
     projectile.setVelocity(velocityX, velocityY);
+  }
+
+  movingBombExplode(platform, bomb){
+    bomb.setTexture('explosion');
+    bomb.setVelocity(0,0);
+    this.time.addEvent({delay: 100, callback: () => bomb.destroy()});
+    bombNoise.play();
   }
 
 }

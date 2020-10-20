@@ -108,17 +108,11 @@ class LevelOne extends Phaser.Scene {
     loop: -1,
     tweens: [
       { x:    0, y:  -90, duration: 5000, ease: 'Stepped' },
-      //{ x:    0, y:    0, duration: 1000, ease: 'Stepped' },
       { x: -140, y:    0, duration: 5000, ease: 'Stepped' },
-      //{ x:    0, y:    0, duration: 1000, ease: 'Stepped' },
       { x:    0, y:   90, duration: 5000, ease: 'Stepped' },
-      //{ x:    0, y:    0, duration: 1000, ease: 'Stepped' },
       { x:    0, y:  -90, duration: 5000, ease: 'Stepped' },
-    //  { x:    0, y:    0, duration: 1000, ease: 'Stepped' },
       { x:  140, y:    0, duration: 5000, ease: 'Stepped' },
-    //  { x:    0, y:    0, duration: 1000, ease: 'Stepped' },
       { x:    0, y:   90, duration: 5000, ease: 'Stepped' },
-      //{ x:    0, y:    0, duration: 1000, ease: 'Stepped' }
     ]
   });
 
@@ -132,7 +126,7 @@ class LevelOne extends Phaser.Scene {
     enemyBombs = this.physics.add.group();
 
     // The hp
-    hp = 100;
+    hp = 10;
     hpText = this.add.text(600, 16, 'HP: ' + hp, { fontSize: '32px', fill: '#fff' });
 
     // Enemy Health
@@ -158,7 +152,16 @@ class LevelOne extends Phaser.Scene {
     this.physics.add.collider(player, plat4, platformBreak, null, this);
     this.physics.add.collider(player, plat5, platformBreak, null, this);
     this.physics.add.collider(enemyBombs, platforms, bombExplode, null, this);
+    this.physics.add.collider(plat1, enemyBombs, this.movingBombExplode, null, this);
+    this.physics.add.collider(plat2, enemyBombs, this.movingBombExplode, null, this);
+    this.physics.add.collider(plat3, enemyBombs, this.movingBombExplode, null, this);
+    this.physics.add.collider(plat4, enemyBombs, this.movingBombExplode, null, this);
+    this.physics.add.collider(plat5, enemyBombs, this.movingBombExplode, null, this);
     this.physics.add.collider(projectiles, platforms, bombExplode, null, this);
+    this.physics.add.collider(plat1, projectiles, this.movingBombExplode, null, this);
+    this.physics.add.collider(plat2, projectiles, this.movingBombExplode, null, this);
+    this.physics.add.collider(plat3, projectiles, this.movingBombExplode, null, this);
+    this.physics.add.collider(plat4, projectiles, this.movingBombExplode, null, this);
     this.physics.add.collider(player, enemyBombs, playerHitBomb, null, this);
     this.physics.add.collider(enemy, projectiles, enemyHitBomb, null, this);
 
@@ -184,15 +187,15 @@ class LevelOne extends Phaser.Scene {
 
     if (youWin) {
       youWin = false;
-      this.time.addEvent({delay: 1000, callback: () => youWinText.setText("Y")});
-      this.time.addEvent({delay: 1250, callback: () => youWinText.setText("YO")});
-      this.time.addEvent({delay: 1500, callback: () => youWinText.setText("YOU")});
-      this.time.addEvent({delay: 1750, callback: () => youWinText.setText("YOU W")});
-      this.time.addEvent({delay: 2000, callback: () => youWinText.setText("YOU WI")});
-      this.time.addEvent({delay: 2250, callback: () => youWinText.setText("YOU WIN")});
-      this.time.addEvent({delay: 2500, callback: () => youWinText.setText("YOU WIN!")});
-      this.time.addEvent({delay: 5000, callback: () => this.scene.start('MainMenu')});
-      this.time.addEvent({delay: 5000, callback: () => youWin = false});
+      this.time.addEvent({delay:    0, callback: () => youWinText.setText("Y")});
+      this.time.addEvent({delay:  250, callback: () => youWinText.setText("YO")});
+      this.time.addEvent({delay:  500, callback: () => youWinText.setText("YOU")});
+      this.time.addEvent({delay:  750, callback: () => youWinText.setText("YOU W")});
+      this.time.addEvent({delay: 1000, callback: () => youWinText.setText("YOU WI")});
+      this.time.addEvent({delay: 1250, callback: () => youWinText.setText("YOU WIN")});
+      this.time.addEvent({delay: 1500, callback: () => youWinText.setText("YOU WIN!")});
+      this.time.addEvent({delay: 2000, callback: () => this.scene.start('LevelTwoIntro')});
+      this.time.addEvent({delay: 2000, callback: () => youWin = false});
     }
 
     // Movement
@@ -236,6 +239,11 @@ class LevelOne extends Phaser.Scene {
       }
       this.time.addEvent({delay: 3000, callback: () => enemyShot = true});
     }
+
+    //If player falls through the ground
+    if (player.y > 514){
+      player.y = 514;
+    }
   }
 
   //Player Attacks
@@ -256,5 +264,11 @@ class LevelOne extends Phaser.Scene {
     enemyBomb.allowGravity = true;
   }
 
+  movingBombExplode(platform, bomb){
+    bomb.setTexture('explosion');
+    bomb.setVelocity(0,0);
+    this.time.addEvent({delay: 100, callback: () => bomb.destroy()});
+    bombNoise.play();
+  }
 
 }

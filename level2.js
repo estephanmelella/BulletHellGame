@@ -169,7 +169,7 @@ class LevelTwo extends Phaser.Scene {
     cannonball = this.physics.add.group();
 
     // The hp
-    hp = 100;
+    hp = 10;
     hpText = this.add.text(600, 16, 'HP: ' + hp, { fontSize: '32px', fill: '#fff' });
 
     // Enemy Health
@@ -231,15 +231,15 @@ class LevelTwo extends Phaser.Scene {
 
     if (youWin) {
       youWin = false;
-      this.time.addEvent({delay: 1000, callback: () => youWinText.setText("Y")});
-      this.time.addEvent({delay: 1250, callback: () => youWinText.setText("YO")});
-      this.time.addEvent({delay: 1500, callback: () => youWinText.setText("YOU")});
-      this.time.addEvent({delay: 1750, callback: () => youWinText.setText("YOU W")});
-      this.time.addEvent({delay: 2000, callback: () => youWinText.setText("YOU WI")});
-      this.time.addEvent({delay: 2250, callback: () => youWinText.setText("YOU WIN")});
-      this.time.addEvent({delay: 2500, callback: () => youWinText.setText("YOU WIN!")});
-      this.time.addEvent({delay: 5000, callback: () => this.scene.start('MainMenu')});
-      this.time.addEvent({delay: 5000, callback: () => youWin = false});
+      this.time.addEvent({delay:    0, callback: () => youWinText.setText("Y")});
+      this.time.addEvent({delay:  250, callback: () => youWinText.setText("YO")});
+      this.time.addEvent({delay:  500, callback: () => youWinText.setText("YOU")});
+      this.time.addEvent({delay:  750, callback: () => youWinText.setText("YOU W")});
+      this.time.addEvent({delay: 1000, callback: () => youWinText.setText("YOU WI")});
+      this.time.addEvent({delay: 1250, callback: () => youWinText.setText("YOU WIN")});
+      this.time.addEvent({delay: 1500, callback: () => youWinText.setText("YOU WIN!")});
+      this.time.addEvent({delay: 2000, callback: () => this.scene.start('LevelThreeIntro')});
+      this.time.addEvent({delay: 2000, callback: () => youWin = false});
     }
 
     // Movement
@@ -308,6 +308,12 @@ class LevelTwo extends Phaser.Scene {
       this.time.addEvent({delay: 3000, callback: () => enemyShot = true});
 
     }
+
+    //If player falls through the ground
+    if (player.y > 514){
+      player.y = 514;
+    }
+
   }
   //Player Attacks
   singleAttack(){
