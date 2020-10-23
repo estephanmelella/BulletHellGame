@@ -164,11 +164,12 @@ class LevelOneIntro extends Phaser.Scene {
     // Player Attack
     if (pointer.isDown && !hasShot){
       this.singleAttack();
+      this.time.addEvent({delay: 150, callback: () => hasShot = false});
       hasShot = true;
     }
-    if(!pointer.isDown){
+    /* if(!pointer.isDown){
       hasShot = false;
-    }
+    } */
   }
 
   //Player Attacks

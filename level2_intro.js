@@ -234,18 +234,20 @@ class LevelTwoIntro extends Phaser.Scene {
       switch (attack){
         case "single":
         this.singleAttack();
+        this.time.addEvent({delay: 150, callback: () => hasShot = false});
         break;
         case "triple":
         for (var i=0; i<3; i++){
           this.time.addEvent({delay: i*100, callback: () => this.tripleAttack()});
         }
+        this.time.addEvent({delay: 400, callback: () => hasShot = false})
         break;
       }
       hasShot = true;
     }
-    if(!pointer.isDown){
+    /*if(!pointer.isDown){
       hasShot = false;
-    }
+    }*/
 
   }
   //Player Attacks

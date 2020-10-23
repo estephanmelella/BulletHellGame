@@ -167,11 +167,12 @@ class Tutorial extends Phaser.Scene {
         bomb.setVelocity(velocityX, velocityY);
         bomb.allowGravity = false;
         hasShot = true;
+        this.time.addEvent({delay: 150, callback: () => hasShot = false});
 
     }
-    if(!pointer.isDown){
+    /* if(!pointer.isDown){
       hasShot = false;
-    }
+    } */
   }
 
   playerAttack(){
