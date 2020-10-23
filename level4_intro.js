@@ -76,14 +76,22 @@ class LevelFourIntro extends Phaser.Scene {
     plats = [plat1, plat2, plat3, plat4, plat5, plat6, plat7, plat8, plat9];
 
     //Sounds
-    jumpNoise = game.sound.add('jump');
-    bombNoise = game.sound.add('boom');
-    hitNoise = game.sound.add('hit');
-    keyNoise = game.sound.add('key');
-    winNoise = game.sound.add('win');
-    shotNoise = game.sound.add('shot');
-    switchNoise = game.sound.add('switch');
-  	cannonNoise = game.sound.add('cannon');
+    jumpNoise = game.sound.add('jump', {volume: .5});
+    jumpNoise.setVolume(.5);
+    bombNoise = game.sound.add('boom', {volume: .5});
+    bombNoise.setVolume(.5);
+    hitNoise = game.sound.add('hit', {volume: .5});
+    hitNoise.setVolume(.5);
+    keyNoise = game.sound.add('key'), {volume: .5};
+    keyNoise.setVolume(.5);
+    winNoise = game.sound.add('win', {volume: .5});
+    winNoise.setVolume(.5);
+    shotNoise = game.sound.add('shot', {volume: .5});
+    shotNoise.setVolume(.5);
+  	switchNoise = game.sound.add('switch', {volume: .5});
+    switchNoise.setVolume(.5);
+    cannonNoise = game.sound.add('cannon', {volume: .5});
+    cannonNoise.setVolume(.5);
 
     // The player and its settings
     player = this.physics.add.sprite(100, 500, 'dude');
