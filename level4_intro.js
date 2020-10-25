@@ -235,6 +235,7 @@ class LevelFourIntro extends Phaser.Scene {
         this.time.addEvent({delay: 1000, callback: () => hasShot = false})
         break;
         case "cannon":
+        this.time.addEvent({delay: 150, callback: () => hasShot = false});
         break;
       }
       hasShot = true;
