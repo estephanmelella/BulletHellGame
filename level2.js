@@ -8,7 +8,7 @@ class LevelTwo extends Phaser.Scene {
     this.load.image('lvl2villain', 'assets/lvl2villain.png')
     this.load.image('lvl2ground', 'assets/new_plat.png');
     this.load.image('explosion', 'assets/explosion.png');
-    this.load.image('door', 'assets/star.png');
+    this.load.image('star', 'assets/star.png');
     this.load.image('bomb', 'assets/bomb.png');
     this.load.image('lvl2projectile', 'assets/new_lvl2_proj.png');
     this.load.spritesheet('dude', 'assets/main.png', { frameWidth: 56, frameHeight: 45 });
