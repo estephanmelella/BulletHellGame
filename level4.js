@@ -237,7 +237,6 @@ class LevelFour extends Phaser.Scene {
     }
 
     if (youWin) {
-      youWin = false;
       this.time.addEvent({delay:    0, callback: () => youWinText.setText("Y")});
       this.time.addEvent({delay:  250, callback: () => youWinText.setText("YO")});
       this.time.addEvent({delay:  500, callback: () => youWinText.setText("YOU")});
