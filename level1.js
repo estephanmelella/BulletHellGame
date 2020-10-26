@@ -10,7 +10,7 @@ class LevelOne extends Phaser.Scene {
     this.load.image('lvl1ground_breaking', 'assets/cracked_moonrock.png');
     this.load.image('lvl1ground_broken', 'assets/broken_moonrock.png');
     this.load.image('explosion', 'assets/explosion.png');
-    this.load.image('door', 'assets/star.png');
+    this.load.image('door', 'assets/door.png');
     this.load.image('bomb', 'assets/bomb.png');
     this.load.image('lvl1projectile', 'assets/bomb.png');
     this.load.spritesheet('dude', 'assets/main.png', { frameWidth: 56, frameHeight: 45 });

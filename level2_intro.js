@@ -7,7 +7,7 @@ class LevelTwoIntro extends Phaser.Scene {
     this.load.image('lvl2background', 'assets/bigger_background.png');
     this.load.image('lvl2ground', 'assets/new_plat.png');
     this.load.image('explosion', 'assets/explosion.png');
-    this.load.image('door', 'assets/star.png');
+    this.load.image('door', 'assets/door.png');
     this.load.image('bomb', 'assets/bomb.png');
     this.load.image('lvl2projectile', 'assets/new_lvl2_proj.png');
     this.load.spritesheet('dude', 'assets/main.png', { frameWidth: 56, frameHeight: 45 });
@@ -165,7 +165,7 @@ class LevelTwoIntro extends Phaser.Scene {
     menuButton.on('pointerdown', () => this.scene.start('MainMenu'));
 
     //Level Door
-    levelDoor = this.physics.add.sprite(750, 50, 'door');
+    levelDoor = this.physics.add.sprite(750, 30, 'door');
     this.physics.add.collider(platforms, levelDoor);
     this.physics.add.collider(plat1, levelDoor);
     this.physics.add.collider(plat2, levelDoor);

@@ -7,7 +7,7 @@ class LevelFourIntro extends Phaser.Scene {
     this.load.image('lvl4background', 'assets/sky.png');
     this.load.image('lvl4ground', 'assets/platform.png');
     this.load.image('explosion', 'assets/explosion.png');
-    this.load.image('door', 'assets/star.png');
+    this.load.image('door', 'assets/door.png');
     this.load.image('bomb', 'assets/bomb.png');
     this.load.image('lvl4projectile', 'assets/bomb.png');
     this.load.spritesheet('dude', 'assets/main.png', { frameWidth: 56, frameHeight: 45 });
