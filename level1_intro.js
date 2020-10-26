@@ -26,6 +26,7 @@ class LevelOneIntro extends Phaser.Scene {
     //  A simple background for our game
     this.add.image(400, 300, 'lvl1background_bigger');
     youWin = false;
+    hasShot = false;
     //  The platforms group contains the ground and the 2 ledges we can jump on
     platforms = this.physics.add.staticGroup();
 
@@ -56,12 +57,18 @@ class LevelOneIntro extends Phaser.Scene {
       plat4.body.allowGravity = false;
 
     //Sounds
-    jumpNoise = game.sound.add('jump');
-    bombNoise = game.sound.add('boom');
-    hitNoise = game.sound.add('hit');
-    keyNoise = game.sound.add('key');
-    winNoise = game.sound.add('win');
-    shotNoise = game.sound.add('shot');
+    jumpNoise = game.sound.add('jump', {volume: .5});
+    jumpNoise.setVolume(.5);
+    bombNoise = game.sound.add('boom', {volume: .5});
+    bombNoise.setVolume(.5);
+    hitNoise = game.sound.add('hit', {volume: .5});
+    hitNoise.setVolume(.5);
+    keyNoise = game.sound.add('key', {volume: .5});
+    keyNoise.setVolume(.5);
+    winNoise = game.sound.add('win', {volume: .5});
+    winNoise.setVolume(.5);
+    shotNoise = game.sound.add('shot', {volume: .5});
+    shotNoise.setVolume(.5);
 
     // The player
     player = this.physics.add.sprite(100, 450, 'dude');
@@ -158,11 +165,12 @@ class LevelOneIntro extends Phaser.Scene {
     // Player Attack
     if (pointer.isDown && !hasShot){
       this.singleAttack();
+      this.time.addEvent({delay: 150, callback: () => hasShot = false});
       hasShot = true;
     }
-    if(!pointer.isDown){
+    /* if(!pointer.isDown){
       hasShot = false;
-    }
+    } */
   }
 
   //Player Attacks

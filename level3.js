@@ -27,6 +27,7 @@ class LevelThree extends Phaser.Scene {
     //  A simple background for our game
     this.add.image(400, 300, 'lvl3background');
     youWin = false;
+    hasShot = false;
     //  The platforms group contains the ground and the 2 ledges we can jump on
     platforms = this.physics.add.staticGroup();
 
@@ -151,14 +152,22 @@ class LevelThree extends Phaser.Scene {
     });
 
       //Sounds
-    jumpNoise = game.sound.add('jump');
-    bombNoise = game.sound.add('boom');
-    hitNoise = game.sound.add('hit');
-    keyNoise = game.sound.add('key');
-    winNoise = game.sound.add('win');
-    shotNoise = game.sound.add('shot');
-    switchNoise = game.sound.add('switch');
-  	cannonNoise = game.sound.add('cannon');
+    jumpNoise = game.sound.add('jump', {volume: .5});
+    jumpNoise.setVolume(.5);
+    bombNoise = game.sound.add('boom', {volume: .5});
+    bombNoise.setVolume(.5);
+    hitNoise = game.sound.add('hit', {volume: .5});
+    hitNoise.setVolume(.5);
+    keyNoise = game.sound.add('key'), {volume: .5};
+    keyNoise.setVolume(.5);
+    winNoise = game.sound.add('win', {volume: .5});
+    winNoise.setVolume(.5);
+    shotNoise = game.sound.add('shot', {volume: .5});
+    shotNoise.setVolume(.5);
+    switchNoise = game.sound.add('switch', {volume: .5});
+    switchNoise.setVolume(.5);
+    cannonNoise = game.sound.add('cannon', {volume: .5});
+    cannonNoise.setVolume(.5);
 
     // The player and its settings
     player = this.physics.add.sprite(100, 450, 'dude');
@@ -350,23 +359,26 @@ class LevelThree extends Phaser.Scene {
       switch (attack){
         case "single":
         this.singleAttack();
+        this.time.addEvent({delay: 150, callback: () => hasShot = false});
         break;
         case "triple":
         for (var i=0; i<3; i++){
           this.time.addEvent({delay: i*100, callback: () => this.tripleAttack()});
         }
+        this.time.addEvent({delay: 400, callback: () => hasShot = false})
         break;
         case "spread":
         for (var i=0; i<15; i++){
           this.spreadAttack();
         }
+        this.time.addEvent({delay: 1000, callback: () => hasShot = false})
         break;
       }
       hasShot = true;
     }
-    if(!pointer.isDown){
+    /* if(!pointer.isDown){
       hasShot = false;
-    }
+    } */
 
     // Enemy Attack
     if(enemyHealth > 0 && enemyShot == true){
