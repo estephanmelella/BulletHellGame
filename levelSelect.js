@@ -14,7 +14,9 @@ class LevelSelect extends Phaser.Scene {
     //  A simple background for our game
     this.add.image(400, 300, 'sky');
     selectNoise = game.sound.add('select');
+    selectNoise.setVolume(.25);
     errNoise = game.sound.add('error')
+    errNoise.setVolume(.25);
 
 
     //Menu text

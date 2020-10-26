@@ -14,6 +14,7 @@ class MainMenu extends Phaser.Scene {
     //  A simple background for our game
     this.add.image(400, 300, 'sky');
     selectNoise = game.sound.add('select');
+    selectNoise.setVolume(.25);
     if(!tutorialSong){
       tutorialSong = game.sound.add('tutorial song');
       tutorialSong.setLoop(true);
