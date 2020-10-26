@@ -239,6 +239,7 @@ class LevelTwo extends Phaser.Scene {
     }
 
     if (youWin) {
+      youWin = false; //this makes it so it doesn't call this part of the code every frame
       this.time.addEvent({delay:    0, callback: () => youWinText.setText("Y")});
       this.time.addEvent({delay:  250, callback: () => youWinText.setText("YO")});
       this.time.addEvent({delay:  500, callback: () => youWinText.setText("YOU")});
@@ -247,7 +248,7 @@ class LevelTwo extends Phaser.Scene {
       this.time.addEvent({delay: 1250, callback: () => youWinText.setText("YOU WIN")});
       this.time.addEvent({delay: 1500, callback: () => youWinText.setText("YOU WIN!")});
       this.time.addEvent({delay: 2000, callback: () => this.scene.start('LevelThreeIntro')});
-      this.time.addEvent({delay: 2000, callback: () => youWin = false});
+      //this.time.addEvent({delay: 2000, callback: () => youWin = false});
     }
 
     // Movement
