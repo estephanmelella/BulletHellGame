@@ -16,7 +16,7 @@ class MainMenu extends Phaser.Scene {
     selectNoise = game.sound.add('select');
     selectNoise.setVolume(.25);
     if(!tutorialSong){
-      tutorialSong = game.sound.add('tutorial song');
+      tutorialSong = game.sound.add('tutorial song', {volume: 0.25});
       tutorialSong.setLoop(true);
     }
 
