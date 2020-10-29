@@ -35,18 +35,12 @@ class Tutorial extends Phaser.Scene {
     platforms.create(100, 300, 'ground');
     platforms.create(700, 220, 'ground');
     platforms.create(400, -75, 'ground').setScale(2).refreshBody(); //ceiling
-    jumpNoise = game.sound.add('jump', {volume: .5});
-    jumpNoise.setVolume(.25);
-    bombNoise = game.sound.add('boom', {volume: .5});
-    bombNoise.setVolume(.25);
-    hitNoise = game.sound.add('hit', {volume: .5});
-    hitNoise.setVolume(.25);
-    keyNoise = game.sound.add('key', {volume: .5});
-    keyNoise.setVolume(.25);
-    winNoise = game.sound.add('win', {volume: .5});
-    winNoise.setVolume(.25);
-    shotNoise = game.sound.add('shot', {volume: .5});
-    shotNoise.setVolume(.25);
+    jumpNoise = game.sound.add('jump', {volume: .25});
+    bombNoise = game.sound.add('boom', {volume: .25});
+    hitNoise = game.sound.add('hit', {volume: .25});
+    keyNoise = game.sound.add('key', {volume: .25});
+    winNoise = game.sound.add('win', {volume: .25});
+    shotNoise = game.sound.add('shot', {volume: .25});
     //tutorialSong = game.sound.add('tutorial song');
     //tutorialSong.setLoop(true);
     tutorialSong.play();

@@ -86,22 +86,14 @@ class LevelFour extends Phaser.Scene {
     plats = [plat1, plat2, plat3, plat4, plat5, plat6, plat7, plat8, plat9];
 
     //Sounds
-    jumpNoise = game.sound.add('jump', {volume: .5});
-    jumpNoise.setVolume(.25);
-    bombNoise = game.sound.add('boom', {volume: .5});
-    bombNoise.setVolume(.25);
-    hitNoise = game.sound.add('hit', {volume: .5});
-    hitNoise.setVolume(.25);
-    keyNoise = game.sound.add('key'), {volume: .5};
-    keyNoise.setVolume(.25);
-    winNoise = game.sound.add('win', {volume: .5});
-    winNoise.setVolume(.25);
-    shotNoise = game.sound.add('shot', {volume: .5});
-    shotNoise.setVolume(.25);
-  	switchNoise = game.sound.add('switch', {volume: .5});
-    switchNoise.setVolume(.25);
-    cannonNoise = game.sound.add('cannon', {volume: .5});
-    cannonNoise.setVolume(.25);
+    jumpNoise = game.sound.add('jump', {volume: .25});
+    bombNoise = game.sound.add('boom', {volume: .25});
+    hitNoise = game.sound.add('hit', {volume: .25});
+    keyNoise = game.sound.add('key', {volume: .25});
+    winNoise = game.sound.add('win', {volume: .25});
+    shotNoise = game.sound.add('shot', {volume: .25});
+    switchNoise = game.sound.add('switch', {volume: .25});
+    cannonNoise = game.sound.add('cannon', {volume: .25});
 
     // The player and its settings
     player = this.physics.add.sprite(100, 450, 'dude');
@@ -137,26 +129,6 @@ class LevelFour extends Phaser.Scene {
     enemy.body.immovable = true;
     enemyShot = false;
     this.time.addEvent({delay: 5000, callback: () => enemyShot = true});
-
-  //   //Enemy's movement around the screen
-  //   this.tweens.timeline({
-  //   targets: enemy.body.velocity,
-  //   loop: -1,
-  //   tweens: [
-  //     { x:    0, y: -90, duration: 5000, ease: 'Stepped' },
-  //     //{ x:    0, y:    0, duration: 1000, ease: 'Stepped' },
-  //     { x: -140, y:    0, duration: 5000, ease: 'Stepped' },
-  //     //{ x:    0, y:    0, duration: 1000, ease: 'Stepped' },
-  //     { x:    0, y:  100, duration: 5000, ease: 'Stepped' },
-  //     //{ x:    0, y:    0, duration: 1000, ease: 'Stepped' },
-  //     { x:    0, y: -100, duration: 5000, ease: 'Stepped' },
-  //   //  { x:    0, y:    0, duration: 1000, ease: 'Stepped' },
-  //     { x:  140, y:    0, duration: 5000, ease: 'Stepped' },
-  //   //  { x:    0, y:    0, duration: 1000, ease: 'Stepped' },
-  //     { x:    0, y:  90, duration: 5000, ease: 'Stepped' },
-  //     //{ x:    0, y:    0, duration: 1000, ease: 'Stepped' }
-  //   ]
-  // });
 
     //  Input Events
     cursors = this.input.keyboard.createCursorKeys();
