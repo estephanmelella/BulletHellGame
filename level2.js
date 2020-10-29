@@ -175,14 +175,13 @@ class LevelTwo extends Phaser.Scene {
     // projectiles
     projectiles = this.physics.add.group();
     enemyBombs = this.physics.add.group();
-    cannonball = this.physics.add.group();
 
     // The hp
-    hp = 10;
+    hp = 100;
     hpText = this.add.text(600, 16, 'HP: ' + hp, { fontSize: '32px', fill: '#fff' });
 
     // Enemy Health
-    enemyHealth = 300;
+    enemyHealth = 200;
     enemyHealthText = this.add.text(200, 16, 'Enemy Health: ' + enemyHealth, { fontSize: '32px', fill: '#fff' });
     enemyShot = true;
 
@@ -215,8 +214,6 @@ class LevelTwo extends Phaser.Scene {
     this.physics.add.collider(plat4, projectiles, this.movingBombExplode, null, this);
     this.physics.add.collider(player, enemyBombs, playerHitBomb, null, this);
     this.physics.add.collider(enemy, projectiles, enemyHitBomb, null, this);
-    this.physics.add.collider(cannonball, platforms, bombExplode, null, this);
-    this.physics.add.collider(enemy, cannonball, enemyHitCannon, null, this);
 
   }
 

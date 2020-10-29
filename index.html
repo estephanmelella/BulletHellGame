@@ -89,7 +89,7 @@ var attackList;
 var attackNum;
 var switchNoise;
 var cannonNoise;
-var cannonball;
+var cannons;
 var tutorialSong;
 var plat1, plat2, plat3, plat4, plat5, plat6, plat7, plat8, plat9;
 var invincible;
@@ -180,7 +180,7 @@ function enemyHitBomb (enemy, bomb){
 function enemyHitCannon(enemy, bomb){
   //Reduce Enemy Health
   if (enemyHealth > 0){
-      enemyHealth = enemyHealth - 5;
+      enemyHealth = enemyHealth - 50;
     }
   if (enemyHealth != null) {
     enemyHealthText.setText('Enemy Health: ' + enemyHealth);

@@ -133,7 +133,7 @@ class LevelOne extends Phaser.Scene {
     enemyBombs = this.physics.add.group();
 
     // The hp
-    hp = 10;
+    hp = 100;
     hpText = this.add.text(600, 16, 'HP: ' + hp, { fontSize: '32px', fill: '#fff' });
 
     // Enemy Health

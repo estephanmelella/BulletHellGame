@@ -134,6 +134,7 @@ class LevelFourIntro extends Phaser.Scene {
 
     // Projectiles
     projectiles = this.physics.add.group();
+    cannons = this.physics.add.group();
     enemyBombs = this.physics.add.group();
 
     //Back Button
@@ -171,6 +172,17 @@ class LevelFourIntro extends Phaser.Scene {
     this.physics.add.collider(plat7, projectiles, this.movingBombExplode, null, this);
     this.physics.add.collider(plat8, projectiles, this.movingBombExplode, null, this);
     this.physics.add.collider(plat9, projectiles, this.movingBombExplode, null, this);
+    this.physics.add.collider(cannons, platforms, bombExplode, null, this);
+    this.physics.add.collider(plat1, cannons, this.movingBombExplode, null, this);
+    this.physics.add.collider(plat2, cannons, this.movingBombExplode, null, this);
+    this.physics.add.collider(plat3, cannons, this.movingBombExplode, null, this);
+    this.physics.add.collider(plat4, cannons, this.movingBombExplode, null, this);
+    this.physics.add.collider(plat5, cannons, this.movingBombExplode, null, this);
+    this.physics.add.collider(plat6, cannons, this.movingBombExplode, null, this);
+    this.physics.add.collider(plat7, cannons, this.movingBombExplode, null, this);
+    this.physics.add.collider(plat8, cannons, this.movingBombExplode, null, this);
+    this.physics.add.collider(plat9, cannons, this.movingBombExplode, null, this);
+
   }
 
   update(){
@@ -235,7 +247,8 @@ class LevelFourIntro extends Phaser.Scene {
         this.time.addEvent({delay: 1000, callback: () => hasShot = false})
         break;
         case "cannon":
-        this.time.addEvent({delay: 150, callback: () => hasShot = false});
+        this.cannonAttack();
+        this.time.addEvent({delay: 1500, callback: () => hasShot = false});
         break;
       }
       hasShot = true;
@@ -272,6 +285,14 @@ class LevelFourIntro extends Phaser.Scene {
     var velocityY = (pointer.y - player.y)*4 + Phaser.Math.Between(-100, 100);
     bomb.setVelocity(velocityX, velocityY);
 
+  }
+
+  cannonAttack(){
+    cannonNoise.play();
+    var cannon = cannons.create(player.x, player.y, 'lvl4projectile');
+    var velocityX = (pointer.x - player.x)*6;
+    var velocityY = (pointer.y - player.y)*6;
+    cannon.setVelocity(velocityX, velocityY);
   }
 
   movingBombExplode(platform, bomb){

@@ -157,7 +157,6 @@ class LevelTwoIntro extends Phaser.Scene {
 
     // projectiles
     projectiles = this.physics.add.group();
-    cannonball = this.physics.add.group();
 
     //Back Button
     var menuButton = this.add.text(16, 16, 'Menu', { fontSize: '20px', fill: '#fff' });
@@ -184,7 +183,6 @@ class LevelTwoIntro extends Phaser.Scene {
     this.physics.add.collider(plat2, projectiles, this.movingBombExplode, null, this);
     this.physics.add.collider(plat3, projectiles, this.movingBombExplode, null, this);
     this.physics.add.collider(plat4, projectiles, this.movingBombExplode, null, this);
-    this.physics.add.collider(cannonball, platforms, bombExplode, null, this);
 
   }
 

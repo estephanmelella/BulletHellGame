@@ -59,7 +59,7 @@ class LevelFour extends Phaser.Scene {
       .setImmovable(true)
       .setAlpha(1)
       .setScale(0.5);
-    var plat7 = this.physics.add.image(100, 500, 'lvl4ground')
+    var plat7 = this.physics.add.image(100, 400, 'lvl4ground')
       .setImmovable(true)
       .setAlpha(1)
       .setScale(0.5);
@@ -67,7 +67,7 @@ class LevelFour extends Phaser.Scene {
       .setImmovable(true)
       .setAlpha(1)
       .setScale(0.5);
-    var plat9 = this.physics.add.image(700, 500, 'lvl4ground')
+    var plat9 = this.physics.add.image(700, 400, 'lvl4ground')
       .setImmovable(true)
       .setAlpha(1)
       .setScale(0.5);
@@ -170,14 +170,15 @@ class LevelFour extends Phaser.Scene {
 
     // Projectiles
     projectiles = this.physics.add.group();
+    cannons = this.physics.add.group();
     enemyBombs = this.physics.add.group();
 
     // The hp
-    hp = 10;
+    hp = 100;
     hpText = this.add.text(600, 16, 'HP: ' + hp, { fontSize: '32px', fill: '#000' });
 
     // Enemy Health
-    enemyHealth = 1000;
+    enemyHealth = 500;
     enemyHealthText = this.add.text(200, 16, 'Enemy Health: ' + enemyHealth, { fontSize: '32px', fill: '#000' });
 
     //Back Button
@@ -222,8 +223,19 @@ class LevelFour extends Phaser.Scene {
     this.physics.add.collider(plat7, projectiles, this.movingBombExplode, null, this);
     this.physics.add.collider(plat8, projectiles, this.movingBombExplode, null, this);
     this.physics.add.collider(plat9, projectiles, this.movingBombExplode, null, this);
-    this.physics.add.collider(player, enemyBombs, playerHitBomb, null, this);
     this.physics.add.collider(enemy, projectiles, enemyHitBomb, null, this);
+    this.physics.add.collider(cannons, platforms, bombExplode, null, this);
+    this.physics.add.collider(plat1, cannons, this.movingBombExplode, null, this);
+    this.physics.add.collider(plat2, cannons, this.movingBombExplode, null, this);
+    this.physics.add.collider(plat3, cannons, this.movingBombExplode, null, this);
+    this.physics.add.collider(plat4, cannons, this.movingBombExplode, null, this);
+    this.physics.add.collider(plat5, cannons, this.movingBombExplode, null, this);
+    this.physics.add.collider(plat6, cannons, this.movingBombExplode, null, this);
+    this.physics.add.collider(plat7, cannons, this.movingBombExplode, null, this);
+    this.physics.add.collider(plat8, cannons, this.movingBombExplode, null, this);
+    this.physics.add.collider(plat9, cannons, this.movingBombExplode, null, this);
+    this.physics.add.collider(enemy, cannons, enemyHitCannon, null, this);
+    this.physics.add.collider(player, enemyBombs, playerHitBomb, null, this);
 
   }
 
@@ -314,34 +326,28 @@ class LevelFour extends Phaser.Scene {
         this.time.addEvent({delay: 1000, callback: () => hasShot = false})
         break;
         case "cannon":
-        this.time.addEvent({delay: 2000, callback: () => hasShot = false});
+        this.cannonAttack();
+        this.time.addEvent({delay: 1500, callback: () => hasShot = false});
         break;
       }
       hasShot = true;
     }
-    /* if(!pointer.isDown){
-      hasShot = false;
-    } */
 
     // Enemy Attack
-    if(enemyHealth > 0 && enemyShot == true){
+    if(enemyHealth > 0 && enemyShot){
       enemyShot = false;
       for (var i=0; i<3; i++){
         timedEvent = this.time.delayedCall(i*250, this.enemySprayAttack, [], this);
       }
-      if (enemyHealth < 500){
-        timedEvent = this.time.delayedCall(2500, this.enemySprayAttack, [], this);
-      }
       if (enemyHealth < 300){
-        timedEvent = this.time.delayedCall(2500, this.enemyScatterAttack, [], this);
+        this.enemyScatterAttack;
       }
       if (enemyHealth < 100){
         for (var i = 0; i < 3; i++){
           timedEvent = this.time.delayedCall(i*100, this.enemyShootAttack, [], this);
         }
       }
-      this.time.addEvent({delay: 3000, callback: () => enemyShot = true});
-
+      this.enemyToggle(enemy);
     }
 
     //If player falls through the ground
@@ -377,7 +383,14 @@ class LevelFour extends Phaser.Scene {
     var velocityX = ((pointer.x - player.x)*4) + Phaser.Math.Between(-100, 100);
     var velocityY = (pointer.y - player.y)*4 + Phaser.Math.Between(-100, 100);
     bomb.setVelocity(velocityX, velocityY);
+  }
 
+  cannonAttack(){
+    cannonNoise.play();
+    var cannon = cannons.create(player.x, player.y, 'lvl4projectile');
+    var velocityX = (pointer.x - player.x)*6;
+    var velocityY = (pointer.y - player.y)*6;
+    cannon.setVelocity(velocityX, velocityY);
   }
 
   //Enemy Attacks
@@ -441,6 +454,31 @@ class LevelFour extends Phaser.Scene {
         this.time.addEvent({delay:  900, callback: () => plat.setAlpha(1)});
       }
     }
+  }
+
+  enemyToggle(enemy){
+    enemy.setAlpha(0.9);
+    this.time.addEvent({delay:  100, callback: () => enemy.setAlpha(0.8)});
+    this.time.addEvent({delay:  200, callback: () => enemy.setAlpha(0.7)});
+    this.time.addEvent({delay:  300, callback: () => enemy.setAlpha(0.6)});
+    this.time.addEvent({delay:  400, callback: () => enemy.setAlpha(0.5)});
+    this.time.addEvent({delay:  500, callback: () => enemy.setAlpha(0.4)});
+    this.time.addEvent({delay:  600, callback: () => enemy.setAlpha(0.3)});
+    this.time.addEvent({delay:  700, callback: () => enemy.setAlpha(0.2)});
+    this.time.addEvent({delay:  800, callback: () => enemy.setAlpha(0.1)});
+    this.time.addEvent({delay:  900, callback: () => enemy.setAlpha(0)});
+    this.time.addEvent({delay: 1000, callback: () => enemy.setPosition(Phaser.Math.Between(50,750),Phaser.Math.Between(50,450))});
+    this.time.addEvent({delay: 3000, callback: () => enemy.setAlpha(0.1)});
+    this.time.addEvent({delay: 3100, callback: () => enemy.setAlpha(0.2)});
+    this.time.addEvent({delay: 3200, callback: () => enemy.setAlpha(0.3)});
+    this.time.addEvent({delay: 3300, callback: () => enemy.setAlpha(0.4)});
+    this.time.addEvent({delay: 3400, callback: () => enemy.setAlpha(0.5)});
+    this.time.addEvent({delay: 3500, callback: () => enemy.setAlpha(0.6)});
+    this.time.addEvent({delay: 3600, callback: () => enemy.setAlpha(0.7)});
+    this.time.addEvent({delay: 3700, callback: () => enemy.setAlpha(0.8)});
+    this.time.addEvent({delay: 3800, callback: () => enemy.setAlpha(0.9)});
+    this.time.addEvent({delay: 3900, callback: () => enemy.setAlpha(1)});
+    this.time.addEvent({delay: 4000, callback: () => enemyShot = true});
   }
 
 }

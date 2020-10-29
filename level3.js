@@ -235,11 +235,11 @@ class LevelThree extends Phaser.Scene {
     enemyBombs = this.physics.add.group();
 
     // The hp
-    hp = 10;
+    hp = 100;
     hpText = this.add.text(600, 16, 'HP: ' + hp, { fontSize: '32px', fill: '#000' });
 
     // Enemy Health
-    enemyHealth = 500;
+    enemyHealth = 300;
     enemyHealthText = this.add.text(200, 16, 'Enemy Health: ' + enemyHealth, { fontSize: '32px', fill: '#000' });
 
     //Back Button
@@ -385,7 +385,7 @@ class LevelThree extends Phaser.Scene {
     if(enemyHealth > 0 && enemyShot == true){
       enemyShot = false;
       timedEvent = this.time.delayedCall(2500, this.enemySprayAttack, [], this);
-      if (enemyHealth < 300){
+      if (enemyHealth < 200){
         timedEvent = this.time.delayedCall(2500, this.enemyScatterAttack, [], this);
       }
       if (enemyHealth < 100){
