@@ -8,6 +8,8 @@ class MainMenu extends Phaser.Scene {
     //this.load.image('star', 'assets/explosion.png');
     this.load.audio('select', ['assets/Select.ogg', 'assets/Select.mp3', 'assets/Select.m4a']);
     this.load.audio('tutorial song', ['assets/Tutorial Song.ogg', 'assets/Tutorial Song.mp3', 'assets/Tutorial Song.m4a'])
+    this.load.audio('lv1 intro', ['assets/Level 1 Intro Theme.ogg', 'assets/Level 1 Intro Theme.mp3', 'assets/Level 1 Intro Theme.m4a'])
+    this.load.audio('lv1', ['assets/Level 1 Boss Theme.ogg', 'assets/Level 1 Boss Theme.mp3', 'assets/Level 1 Boss Theme.m4a'])
   }
 
   create() {
@@ -18,6 +20,14 @@ class MainMenu extends Phaser.Scene {
     if(!tutorialSong){
       tutorialSong = game.sound.add('tutorial song', {volume: 0.25});
       tutorialSong.setLoop(true);
+    }
+    if(!lv1ISong){
+      lv1ISong = game.sound.add('lv1 intro', {volume: 0.25});
+      lv1ISong.setLoop(true);
+    }
+    if(!lv1Song){
+      lv1Song = game.sound.add('lv1', {volume: 0.25});
+      lv1Song.setLoop(true);
     }
 
 
@@ -41,6 +51,12 @@ class MainMenu extends Phaser.Scene {
     tutorialButton.on('pointerdown', () => this.tutorialStart());
     if(tutorialSong.isPlaying){
       tutorialSong.stop();
+    }
+    if(lv1ISong.isPlaying){
+      lv1ISong.stop();
+    }
+    if(lv1Song.isPlaying){
+      lv1Song.stop();
     }
     youWin = false;
 

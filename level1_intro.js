@@ -27,6 +27,7 @@ class LevelOneIntro extends Phaser.Scene {
     this.add.image(400, 300, 'lvl1background_bigger');
     youWin = false;
     hasShot = false;
+    
     //  The platforms group contains the ground and the 2 ledges we can jump on
     platforms = this.physics.add.staticGroup();
 
@@ -63,6 +64,7 @@ class LevelOneIntro extends Phaser.Scene {
     keyNoise = game.sound.add('key', {volume: .25});
     winNoise = game.sound.add('win', {volume: .25});
     shotNoise = game.sound.add('shot', {volume: .25});
+    lv1ISong.play();
 
     // The player
     player = this.physics.add.sprite(100, 450, 'dude');
@@ -129,6 +131,7 @@ class LevelOneIntro extends Phaser.Scene {
   update(){
     // Win Condition
     if (youWin){
+      lv1ISong.stop();
       this.scene.start('LevelOne');
     }
 

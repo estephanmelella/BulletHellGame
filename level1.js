@@ -69,6 +69,7 @@ class LevelOne extends Phaser.Scene {
     keyNoise = game.sound.add('key', {volume: .25});
     winNoise = game.sound.add('win', {volume: .25});
     shotNoise = game.sound.add('shot', {volume: .25});
+    lv1Song.play();
 
     // The player
     player = this.physics.add.sprite(100, 450, 'dude');
@@ -180,6 +181,7 @@ class LevelOne extends Phaser.Scene {
         this.time.addEvent({delay: 2750, callback: () => gameOverText.setText("GAME OV")});
         this.time.addEvent({delay: 3000, callback: () => gameOverText.setText("GAME OVE")});
         this.time.addEvent({delay: 3250, callback: () => gameOverText.setText("GAME OVER")});
+        this.time.addEvent({delay: 10000, callback: () => lv1Song.stop()});
         this.time.addEvent({delay: 10000, callback: () => this.scene.start('MainMenu')});
         progress = 1;
       }
@@ -195,6 +197,7 @@ class LevelOne extends Phaser.Scene {
       this.time.addEvent({delay: 1000, callback: () => youWinText.setText("YOU WI")});
       this.time.addEvent({delay: 1250, callback: () => youWinText.setText("YOU WIN")});
       this.time.addEvent({delay: 1500, callback: () => youWinText.setText("YOU WIN!")});
+      this.time.addEvent({delay: 2000, callback: () => lv1Song.stop()});
       this.time.addEvent({delay: 2000, callback: () => this.scene.start('LevelTwoIntro')});
       //this.time.addEvent({delay: 2000, callback: () => youWin = false});
     }
