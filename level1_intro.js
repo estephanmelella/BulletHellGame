@@ -27,7 +27,7 @@ class LevelOneIntro extends Phaser.Scene {
     this.add.image(400, 300, 'lvl1background_bigger');
     youWin = false;
     hasShot = false;
-    
+
     //  The platforms group contains the ground and the 2 ledges we can jump on
     platforms = this.physics.add.staticGroup();
 

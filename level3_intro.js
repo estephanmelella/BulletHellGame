@@ -4,10 +4,10 @@ class LevelThreeIntro extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image('lvl3background', 'assets/sky.png');
+    this.load.image('lvl3background', 'assets/lvl3background.png');
     this.load.image('lvl3ground', 'assets/platform.png');
     this.load.image('explosion', 'assets/explosion.png');
-    this.load.image('bomb', 'assets/bomb.png');
+    this.load.image('bomb', 'assets/magmabullet.png');
     this.load.image('lvl3projectile', 'assets/bomb.png');
     this.load.image('door', 'assets/door.png')
     this.load.spritesheet('dude', 'assets/main.png', { frameWidth: 56, frameHeight: 45 });
@@ -24,7 +24,7 @@ class LevelThreeIntro extends Phaser.Scene {
 
   create() {
     //  A simple background for our game
-    this.add.image(400, 300, 'lvl3background');
+    this.add.image(400, 300, 'lvl3background').setScale(2);
     youWin = false;
     hasShot = false;
     //  The platforms group contains the ground and the 2 ledges we can jump on
