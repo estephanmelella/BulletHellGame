@@ -22,11 +22,11 @@ class MainMenu extends Phaser.Scene {
       tutorialSong.setLoop(true);
     }
     if(!lv1ISong){
-      lv1ISong = game.sound.add('lv1 intro', {volume: 0.25});
+      lv1ISong = game.sound.add('lv1 intro', {volume: 0.125});
       lv1ISong.setLoop(true);
     }
     if(!lv1Song){
-      lv1Song = game.sound.add('lv1', {volume: 0.25});
+      lv1Song = game.sound.add('lv1', {volume: 0.125});
       lv1Song.setLoop(true);
     }
 
