@@ -155,7 +155,7 @@ function enemyHitBomb (enemy, bomb){
     this.time.addEvent({delay: 100, callback: () => bomb.destroy()});
     bombNoise.play();
 
-    if (enemyHealth === 0){
+    if (enemyHealth <= 0){
       winNoise.play();
       enemyHealth = null;
       enemy.setTexture('explosion');
@@ -181,8 +181,10 @@ function enemyHitBomb (enemy, bomb){
 
 function enemyHitCannon(enemy, bomb){
   //Reduce Enemy Health
-  if (enemyHealth > 0){
+  if (enemyHealth > 50){
       enemyHealth = enemyHealth - 50;
+    } else {
+      enemyHealth = 0;
     }
   if (enemyHealth != null) {
     enemyHealthText.setText('Enemy Health: ' + enemyHealth);
@@ -198,6 +200,7 @@ function enemyHitCannon(enemy, bomb){
   if (enemyHealth <= 0){
     winNoise.play();
     enemyHealth = null;
+    enemyHealthText.setText('Enemy Health: 0');
     enemy.setTexture('explosion');
     this.time.addEvent({delay: 1000, callback: () => enemy.destroy()});
 
