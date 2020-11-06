@@ -149,6 +149,12 @@ class LevelTwoIntro extends Phaser.Scene {
     // projectiles
     projectiles = this.physics.add.group();
 
+    //Tutorial text
+    tutorialText = this.add.text(350,550,'Press SPACE to swap weapons', { fontSize: '25px', fill: '#000000' });
+
+    //Weapon text
+    weaponText = this.add.text(50,550,'Weapon: single', { fontSize: '30px', fill: '#000000' });
+
     //Back Button
     var menuButton = this.add.text(16, 16, 'Menu', { fontSize: '20px', fill: '#fff' });
     menuButton.setInteractive();
@@ -214,6 +220,9 @@ class LevelTwoIntro extends Phaser.Scene {
       attackNum = attackNum%(attackList.length);
       attack = attackList[attackNum];
       changeAttack = true;
+      tutorialText.setText('');
+      weaponText.setText('Weapon: ' + attack);
+
     }
     if (!keys.SPACE.isDown){
       changeAttack = false;

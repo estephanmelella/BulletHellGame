@@ -234,6 +234,9 @@ class LevelThree extends Phaser.Scene {
     enemyHealth = 300;
     enemyHealthText = this.add.text(200, 16, 'Enemy Health: ' + enemyHealth, { fontSize: '32px', fill: '#000' });
 
+    //Weapon text
+    weaponText = this.add.text(50,550,'Weapon: single', { fontSize: '30px', fill: '#000000' });
+
     //Back Button
     var menuButton = this.add.text(16, 16, 'Menu', { fontSize: '20px', fill: '#000' });
     menuButton.setInteractive();
@@ -342,6 +345,8 @@ class LevelThree extends Phaser.Scene {
       attackNum = attackNum%(attackList.length);
       attack = attackList[attackNum];
       changeAttack = true;
+      weaponText.setText('Weapon: ' + attack);
+
     }
     if (!keys.SPACE.isDown){
       changeAttack = false;

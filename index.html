@@ -97,6 +97,9 @@ var plats;
 var time;
 var lv1ISong;
 var lv1Song;
+var tutorialText;
+var weaponText;
+var moved, firstShot;
 
 var game = new Phaser.Game(config);
 
@@ -169,7 +172,7 @@ function enemyHitBomb (enemy, bomb){
       this.time.addEvent({delay: 3500, callback: () => player.setTint(0x7f00ff)});
       this.time.addEvent({delay: 4000, callback: () => player.clearTint()});
 
-      levelDoor = this.physics.add.sprite(100, 450, 'door');
+      levelDoor = this.physics.add.sprite(100, 514, 'door');
       this.physics.add.collider(platforms, levelDoor);
       this.physics.add.collider(player, levelDoor, enterDoor, null, this);
 
@@ -212,7 +215,7 @@ function enemyHitCannon(enemy, bomb){
     this.time.addEvent({delay: 3500, callback: () => player.setTint(0x7f00ff)});
     this.time.addEvent({delay: 4000, callback: () => player.clearTint()});
 
-    levelDoor = this.physics.add.sprite(100, 450, 'star');
+    levelDoor = this.physics.add.sprite(100, 514, 'star');
     this.physics.add.collider(platforms, levelDoor);
     this.physics.add.collider(player, levelDoor, enterDoor, null, this);
 

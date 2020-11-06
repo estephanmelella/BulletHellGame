@@ -104,7 +104,15 @@ class Tutorial extends Phaser.Scene {
     gameOverText = this.add.text(200,300,'', { fontSize: '72px', fill: '#ff0000' });
 
     //You Win text
-    youWinText = this.add.text(100,300,'', { fontSize: '50px', fill: '#0000ff' });
+    youWinText = this.add.text(100,350,'', { fontSize: '50px', fill: '#0000ff' });
+
+    //Tutorial text
+    tutorialText = this.add.text(400,550,'Use WASD to move', { fontSize: '30px', fill: '#000000' });
+    var moved = false;
+    var firstShot = false;
+
+    //Weapon text
+    weaponText = this.add.text(50,550,'Weapon: single', { fontSize: '30px', fill: '#000000' });
 
     //  Collide the player and the stars with the platforms
     this.physics.add.collider(player, platforms);
@@ -128,12 +136,14 @@ class Tutorial extends Phaser.Scene {
         player.setVelocityX(-160);
 
         player.anims.play('left', true);
+        moved = true;
     }
     else if (keys.D.isDown || cursors.right.isDown)
     {
         player.setVelocityX(160);
 
         player.anims.play('right', true);
+        moved = true;
     }
     else if (keys.S.isDown || cursors.down.isDown)
     {
@@ -153,6 +163,7 @@ class Tutorial extends Phaser.Scene {
     {
         player.setVelocityY(-400);
         jumpNoise.play();
+        moved = true;
     }
 
     if (pointer.isDown && !hasShot){
@@ -165,10 +176,16 @@ class Tutorial extends Phaser.Scene {
         hasShot = true;
         this.time.addEvent({delay: 150, callback: () => hasShot = false});
 
+        firstShot = true;
     }
-    /* if(!pointer.isDown){
-      hasShot = false;
-    } */
+
+    if (moved){
+      if (!firstShot){
+        tutorialText.setText('Click to shoot');
+      } else {
+        tutorialText.setText('Hold to rapid fire');
+      }
+    }
   }
 
   playerAttack(){
