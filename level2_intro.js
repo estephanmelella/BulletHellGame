@@ -107,6 +107,7 @@ class LevelTwoIntro extends Phaser.Scene {
     shotNoise = game.sound.add('shot', {volume: .25});
   	switchNoise = game.sound.add('switch', {volume: .25});
     cannonNoise = game.sound.add('cannon', {volume: .25});
+    lv2ISong.play();
 
     // The player and its settings
     player = this.physics.add.sprite(100, 450, 'dude');
@@ -186,6 +187,7 @@ class LevelTwoIntro extends Phaser.Scene {
   update(){
     // Win Condition
     if (youWin){
+      lv2ISong.stop();
       this.scene.start('LevelTwo');
     }
 
