@@ -79,23 +79,23 @@ class LevelOne extends Phaser.Scene {
     player.setCollideWorldBounds(true);
 
     //  Our player animations, turning, walking left and walking right.
-    this.anims.create({
-        key: 'left',
-        frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
-        frameRate: 10,
-        repeat: -1
-    });
-    this.anims.create({
-        key: 'turn',
-        frames: [ { key: 'dude', frame: 4 } ],
-        frameRate: 20
-    });
-    this.anims.create({
-        key: 'right',
-        frames: this.anims.generateFrameNumbers('dude', { start: 5, end: 8 }),
-        frameRate: 10,
-        repeat: -1
-    });
+    // this.anims.create({
+    //     key: 'left',
+    //     frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
+    //     frameRate: 10,
+    //     repeat: -1
+    // });
+    // this.anims.create({
+    //     key: 'turn',
+    //     frames: [ { key: 'dude', frame: 4 } ],
+    //     frameRate: 20
+    // });
+    // this.anims.create({
+    //     key: 'right',
+    //     frames: this.anims.generateFrameNumbers('dude', { start: 5, end: 8 }),
+    //     frameRate: 10,
+    //     repeat: -1
+    // });
 
     //Enemy
     enemy = this.physics.add.sprite(750 ,500,'lvl1boss');
@@ -193,16 +193,20 @@ class LevelOne extends Phaser.Scene {
 
     if (youWin) {
       youWin = false; //this makes it so it doesn't call this part of the code every frame
-      this.time.addEvent({delay:    0, callback: () => youWinText.setText("Y")});
-      this.time.addEvent({delay:  250, callback: () => youWinText.setText("YO")});
-      this.time.addEvent({delay:  500, callback: () => youWinText.setText("YOU")});
-      this.time.addEvent({delay:  750, callback: () => youWinText.setText("YOU W")});
-      this.time.addEvent({delay: 1000, callback: () => youWinText.setText("YOU WI")});
-      this.time.addEvent({delay: 1250, callback: () => youWinText.setText("YOU WIN")});
-      this.time.addEvent({delay: 1500, callback: () => youWinText.setText("YOU WIN!")});
-      this.time.addEvent({delay: 2000, callback: () => lv1Song.stop()});
-      this.time.addEvent({delay: 2000, callback: () => this.scene.start('LevelTwoIntro')});
-      //this.time.addEvent({delay: 2000, callback: () => youWin = false});
+      this.time.addEvent({delay:    0, callback: () => youWinText.setText("\t\t\t\t\t\tY")});
+      this.time.addEvent({delay:  100, callback: () => youWinText.setText("\t\t\t\t\t\tYO")});
+      this.time.addEvent({delay:  200, callback: () => youWinText.setText("\t\t\t\t\t\tYOU")});
+      this.time.addEvent({delay:  300, callback: () => youWinText.setText("\t\t\t\t\t\tYOU W")});
+      this.time.addEvent({delay:  400, callback: () => youWinText.setText("\t\t\t\t\t\tYOU WI")});
+      this.time.addEvent({delay:  500, callback: () => youWinText.setText("\t\t\t\t\t\tYOU WIN")});
+      this.time.addEvent({delay:  600, callback: () => youWinText.setText("\t\t\t\t\t\tYOU WIN!")});
+      this.time.addEvent({delay: 1000, callback: () => youWinText.setText("\t\t\t\t\t\tYOU WIN! \nNEW WEAPON UNLOCKED!")});
+      this.time.addEvent({delay: 1500, callback: () => youWinText.setText("\t\t\t\t\t\tYOU WIN!")});
+      this.time.addEvent({delay: 2000, callback: () => youWinText.setText("\t\t\t\t\t\tYOU WIN! \nNEW WEAPON UNLOCKED!")});
+      this.time.addEvent({delay: 2500, callback: () => youWinText.setText("\t\t\t\t\t\tYOU WIN!")});
+      this.time.addEvent({delay: 3000, callback: () => youWinText.setText("\t\t\t\t\t\tYOU WIN! \nNEW WEAPON UNLOCKED!")});
+      this.time.addEvent({delay: 4000, callback: () => lv1Song.stop()});
+      this.time.addEvent({delay: 4000, callback: () => this.scene.start('LevelTwoIntro')});
     }
 
     // Movement

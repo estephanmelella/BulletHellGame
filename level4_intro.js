@@ -94,25 +94,25 @@ class LevelFourIntro extends Phaser.Scene {
     player.setCollideWorldBounds(true);
 
     //  Our player animations, turning, walking left and walking right.
-    this.anims.create({
-        key: 'left',
-        frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
-        frameRate: 10,
-        repeat: -1
-    });
-
-    this.anims.create({
-        key: 'turn',
-        frames: [ { key: 'dude', frame: 4 } ],
-        frameRate: 20
-    });
-
-    this.anims.create({
-        key: 'right',
-        frames: this.anims.generateFrameNumbers('dude', { start: 5, end: 8 }),
-        frameRate: 10,
-        repeat: -1
-    });
+    // this.anims.create({
+    //     key: 'left',
+    //     frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
+    //     frameRate: 10,
+    //     repeat: -1
+    // });
+    //
+    // this.anims.create({
+    //     key: 'turn',
+    //     frames: [ { key: 'dude', frame: 4 } ],
+    //     frameRate: 20
+    // });
+    //
+    // this.anims.create({
+    //     key: 'right',
+    //     frames: this.anims.generateFrameNumbers('dude', { start: 5, end: 8 }),
+    //     frameRate: 10,
+    //     repeat: -1
+    // });
 
     //  Input Events
     cursors = this.input.keyboard.createCursorKeys();
@@ -128,6 +128,13 @@ class LevelFourIntro extends Phaser.Scene {
     projectiles = this.physics.add.group();
     cannons = this.physics.add.group();
     enemyBombs = this.physics.add.group();
+
+    //Tutorial text
+    if (!firstSwitch){
+      tutorialText = this.add.text(350,550,'Press SPACE to swap weapons', { fontSize: '25px', fill: '#000000' });
+    } else {
+      tutorialText = this.add.text(350,550,'', { fontSize: '25px', fill: '#000000' });
+    }
 
     //Weapon text
     weaponText = this.add.text(50,550,'Weapon: single', { fontSize: '30px', fill: '#000000' });
@@ -217,11 +224,16 @@ class LevelFourIntro extends Phaser.Scene {
       attackNum = attackNum%(attackList.length);
       attack = attackList[attackNum];
       changeAttack = true;
+      firstSwitch = true;
       weaponText.setText('Weapon: ' + attack);
 
     }
     if (!keys.SPACE.isDown){
       changeAttack = false;
+    }
+
+    if (firstSwitch){
+      tutorialText.setText('');
     }
 
     // Player Attack

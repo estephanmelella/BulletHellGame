@@ -103,25 +103,25 @@ class LevelFour extends Phaser.Scene {
     player.setCollideWorldBounds(true);
 
     //  Our player animations, turning, walking left and walking right.
-    this.anims.create({
-        key: 'left',
-        frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
-        frameRate: 10,
-        repeat: -1
-    });
-
-    this.anims.create({
-        key: 'turn',
-        frames: [ { key: 'dude', frame: 4 } ],
-        frameRate: 20
-    });
-
-    this.anims.create({
-        key: 'right',
-        frames: this.anims.generateFrameNumbers('dude', { start: 5, end: 8 }),
-        frameRate: 10,
-        repeat: -1
-    });
+    // this.anims.create({
+    //     key: 'left',
+    //     frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
+    //     frameRate: 10,
+    //     repeat: -1
+    // });
+    //
+    // this.anims.create({
+    //     key: 'turn',
+    //     frames: [ { key: 'dude', frame: 4 } ],
+    //     frameRate: 20
+    // });
+    //
+    // this.anims.create({
+    //     key: 'right',
+    //     frames: this.anims.generateFrameNumbers('dude', { start: 5, end: 8 }),
+    //     frameRate: 10,
+    //     repeat: -1
+    // });
 
     //Enemy
     enemy = this.physics.add.sprite(750 ,500,'lvl4boss');
@@ -152,6 +152,13 @@ class LevelFour extends Phaser.Scene {
     // Enemy Health
     enemyHealth = 500;
     enemyHealthText = this.add.text(200, 16, 'Enemy Health: ' + enemyHealth, { fontSize: '32px', fill: '#000' });
+
+    //Tutorial text
+    if (!firstSwitch){
+      tutorialText = this.add.text(350,550,'Press SPACE to swap weapons', { fontSize: '25px', fill: '#000000' });
+    } else {
+      tutorialText = this.add.text(350,550,'', { fontSize: '25px', fill: '#000000' });
+    }
 
     //Weapon text
     weaponText = this.add.text(50,550,'Weapon: single', { fontSize: '30px', fill: '#000000' });
@@ -234,15 +241,19 @@ class LevelFour extends Phaser.Scene {
 
     if (youWin) {
       youWin = false; //this makes it so it doesn't call this part of the code every frame
-      this.time.addEvent({delay:    0, callback: () => youWinText.setText("Y")});
-      this.time.addEvent({delay:  250, callback: () => youWinText.setText("YO")});
-      this.time.addEvent({delay:  500, callback: () => youWinText.setText("YOU")});
-      this.time.addEvent({delay:  750, callback: () => youWinText.setText("YOU W")});
-      this.time.addEvent({delay: 1000, callback: () => youWinText.setText("YOU WI")});
-      this.time.addEvent({delay: 1250, callback: () => youWinText.setText("YOU WIN")});
-      this.time.addEvent({delay: 1500, callback: () => youWinText.setText("YOU WIN!")});
-      this.time.addEvent({delay: 2000, callback: () => this.scene.start('MainMenu')});
-      //this.time.addEvent({delay: 2000, callback: () => youWin = false});
+      this.time.addEvent({delay:    0, callback: () => youWinText.setText("\t\t\t\t\t\tY")});
+      this.time.addEvent({delay:  100, callback: () => youWinText.setText("\t\t\t\t\t\tYO")});
+      this.time.addEvent({delay:  200, callback: () => youWinText.setText("\t\t\t\t\t\tYOU")});
+      this.time.addEvent({delay:  300, callback: () => youWinText.setText("\t\t\t\t\t\tYOU W")});
+      this.time.addEvent({delay:  400, callback: () => youWinText.setText("\t\t\t\t\t\tYOU WI")});
+      this.time.addEvent({delay:  500, callback: () => youWinText.setText("\t\t\t\t\t\tYOU WIN")});
+      this.time.addEvent({delay:  600, callback: () => youWinText.setText("\t\t\t\t\t\tYOU WIN!")});
+      this.time.addEvent({delay: 1000, callback: () => youWinText.setText("\t\t\t\t\t\tYOU WIN! \n\t\tCONGRATULATIONS!")});
+      this.time.addEvent({delay: 1500, callback: () => youWinText.setText("\t\t\t\t\t\tYOU WIN!")});
+      this.time.addEvent({delay: 2000, callback: () => youWinText.setText("\t\t\t\t\t\tYOU WIN! \n\t\tCONGRATULATIONS!")});
+      this.time.addEvent({delay: 2500, callback: () => youWinText.setText("\t\t\t\t\t\tYOU WIN!")});
+      this.time.addEvent({delay: 3000, callback: () => youWinText.setText("\t\t\t\t\t\tYOU WIN! \n\t\tCONGRATULATIONS!")});
+      this.time.addEvent({delay: 4000, callback: () => this.scene.start('MainMenu')});
     }
 
     // Movement
@@ -276,11 +287,16 @@ class LevelFour extends Phaser.Scene {
       attackNum = attackNum%(attackList.length);
       attack = attackList[attackNum];
       changeAttack = true;
+      firstSwitch = true;
       weaponText.setText('Weapon: ' + attack);
 
     }
     if (!keys.SPACE.isDown){
       changeAttack = false;
+    }
+
+    if (firstSwitch){
+      tutorialText.setText('');
     }
 
     // Player Attack
@@ -444,7 +460,7 @@ class LevelFour extends Phaser.Scene {
     this.time.addEvent({delay:  700, callback: () => enemy.setAlpha(0.2)});
     this.time.addEvent({delay:  800, callback: () => enemy.setAlpha(0.1)});
     this.time.addEvent({delay:  900, callback: () => enemy.setAlpha(0)});
-    this.time.addEvent({delay: 1000, callback: () => enemy.setPosition(Phaser.Math.Between(50,750),Phaser.Math.Between(50,450))});
+    this.time.addEvent({delay: 1000, callback: () => enemy.setPosition(Phaser.Math.Between(50,750), enemyHealth - (enemyHealth/10))});
     this.time.addEvent({delay: 3000, callback: () => enemy.setAlpha(0.1)});
     this.time.addEvent({delay: 3100, callback: () => enemy.setAlpha(0.2)});
     this.time.addEvent({delay: 3200, callback: () => enemy.setAlpha(0.3)});
