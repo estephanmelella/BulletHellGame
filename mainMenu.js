@@ -14,6 +14,7 @@ class MainMenu extends Phaser.Scene {
     this.load.audio('lv2', ['assets/Level 2 Boss Theme.ogg', 'assets/Level 2 Boss Theme.mp3', 'assets/Level 2 Boss Theme.m4a'])
     this.load.audio('lv3 intro', ['assets/Level 3 Intro Theme.ogg', 'assets/Level 3 Intro Theme.mp3', 'assets/Level 3 Intro Theme.m4a'])
     this.load.audio('lv3', ['assets/Level 3 Boss Theme.ogg', 'assets/Level 3 Boss Theme.mp3', 'assets/Level 3 Boss Theme.m4a'])
+    this.load.audio('lv4 intro', ['assets/Level 4 Intro Theme.ogg', 'assets/Level 4 Intro Theme.mp3', 'assets/Level 4 Intro Theme.m4a'])
   }
 
   create() {
@@ -48,6 +49,10 @@ class MainMenu extends Phaser.Scene {
     if(!lv3Song){
       lv3Song = game.sound.add('lv3');
       lv3Song.setLoop(true);
+    }
+    if(!lv4ISong){
+      lv4ISong = game.sound.add('lv4 intro');
+      lv4ISong.setLoop(true);
     }
 
 
@@ -89,6 +94,9 @@ class MainMenu extends Phaser.Scene {
     }
     if(lv3Song.isPlaying){
       lv3Song.stop();
+    }
+    if(lv4ISong.isPlaying){
+      lv4ISong.stop();
     }
     youWin = false;
 
