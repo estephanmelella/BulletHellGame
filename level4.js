@@ -4,12 +4,12 @@ class LevelFour extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image('lvl4background', 'assets/sky.png');
-    this.load.image('lvl4boss', 'assets/boss.png')
+    this.load.image('lvl4background', 'assets/lvl4background.png');
+    this.load.image('lvl4boss', 'assets/lvl4boss.png')
     this.load.image('lvl4ground', 'assets/platform.png');
     this.load.image('explosion', 'assets/explosion.png');
     this.load.image('door', 'assets/door.png');
-    this.load.image('bomb', 'assets/bomb.png');
+    this.load.image('bomb', 'assets/level4bossbullet.png');
     this.load.image('lvl4projectile', 'assets/bomb.png');
     this.load.spritesheet('dude', 'assets/main.png', { frameWidth: 56, frameHeight: 45 });
 
@@ -25,7 +25,7 @@ class LevelFour extends Phaser.Scene {
 
   create() {
     //  A simple background for our game
-    this.add.image(400, 300, 'lvl4background');
+    this.add.image(400, 300, 'lvl4background').setScale(2);
     youWin = false;
     hasShot = false;
     //  The platforms group contains the ground and the 2 ledges we can jump on
@@ -448,6 +448,15 @@ class LevelFour extends Phaser.Scene {
         this.time.addEvent({delay:  700, callback: () => plat.setAlpha(0.8)});
         this.time.addEvent({delay:  800, callback: () => plat.setAlpha(0.9)});
         this.time.addEvent({delay:  900, callback: () => plat.setAlpha(1)});
+        this.time.addEvent({delay:  100, callback: () => plat.body.enable = true});
+        this.time.addEvent({delay:  200, callback: () => plat.body.enable = true});
+        this.time.addEvent({delay:  300, callback: () => plat.body.enable = true});
+        this.time.addEvent({delay:  400, callback: () => plat.body.enable = true});
+        this.time.addEvent({delay:  500, callback: () => plat.body.enable = true});
+        this.time.addEvent({delay:  600, callback: () => plat.body.enable = true});
+        this.time.addEvent({delay:  700, callback: () => plat.body.enable = true});
+        this.time.addEvent({delay:  800, callback: () => plat.body.enable = true});
+        this.time.addEvent({delay:  900, callback: () => plat.body.enable = true});
       }
     }
   }
