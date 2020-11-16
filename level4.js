@@ -94,6 +94,7 @@ class LevelFour extends Phaser.Scene {
     shotNoise = game.sound.add('shot', {volume: .25});
     switchNoise = game.sound.add('switch', {volume: .25});
     cannonNoise = game.sound.add('cannon', {volume: .25});
+    lv4Song.play();
 
     // The player and its settings
     player = this.physics.add.sprite(100, 450, 'dude');
@@ -233,6 +234,7 @@ class LevelFour extends Phaser.Scene {
         this.time.addEvent({delay: 2750, callback: () => gameOverText.setText("GAME OV")});
         this.time.addEvent({delay: 3000, callback: () => gameOverText.setText("GAME OVE")});
         this.time.addEvent({delay: 3250, callback: () => gameOverText.setText("GAME OVER")});
+        this.time.addEvent({delay: 10000, callback: () => lv4Song.stop()});
         this.time.addEvent({delay: 10000, callback: () => this.scene.start('MainMenu')});
         progress = 1;
       }
@@ -253,6 +255,7 @@ class LevelFour extends Phaser.Scene {
       this.time.addEvent({delay: 2000, callback: () => youWinText.setText("\t\t\t\t\t\tYOU WIN! \n\t\tCONGRATULATIONS!")});
       this.time.addEvent({delay: 2500, callback: () => youWinText.setText("\t\t\t\t\t\tYOU WIN!")});
       this.time.addEvent({delay: 3000, callback: () => youWinText.setText("\t\t\t\t\t\tYOU WIN! \n\t\tCONGRATULATIONS!")});
+      this.time.addEvent({delay: 4000, callback: () => lv4Song.stop()});
       this.time.addEvent({delay: 4000, callback: () => this.scene.start('MainMenu')});
     }
 
