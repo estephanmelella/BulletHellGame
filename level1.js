@@ -11,8 +11,8 @@ class LevelOne extends Phaser.Scene {
     this.load.image('lvl1ground_broken', 'assets/broken_moonrock.png');
     this.load.image('explosion', 'assets/explosion.png');
     this.load.image('door', 'assets/door.png');
-    this.load.image('bomb', 'assets/bomb.png');
-    this.load.image('lvl1projectile', 'assets/bomb.png');
+    this.load.image('level1projectile', 'assets/bomb.png');
+    this.load.image('bullet', 'assets/bomb.png');
     this.load.spritesheet('dude', 'assets/main.png', { frameWidth: 56, frameHeight: 45 });
 
     this.load.audio('jump', ['assets/Jump.ogg', 'assets/Jump.mp3', 'assets/Jump.m4a']);
@@ -261,7 +261,7 @@ class LevelOne extends Phaser.Scene {
   //Player Attacks
   singleAttack(){
     shotNoise.play();
-    var projectile = projectiles.create(player.x, player.y, 'lvl1projectile');
+    var projectile = projectiles.create(player.x, player.y, 'bullet');
     var velocityX = (pointer.x - player.x)*4;
     var velocityY = (pointer.y - player.y)*4;
     projectile.setVelocity(velocityX, velocityY);
@@ -270,7 +270,7 @@ class LevelOne extends Phaser.Scene {
 
   //Enemy Attacks
   enemyShootAttack(){ // Shoot at the player
-    var enemyBomb = enemyBombs.create(enemy.x, enemy.y, 'bomb');
+    var enemyBomb = enemyBombs.create(enemy.x, enemy.y, 'level1projectile');
     enemyBomb.setCollideWorldBounds(true);
     enemyBomb.setVelocity(Math.min(800,(player.x - enemy.x)*2), Math.min(800,(player.y - enemy.y)*2));
     enemyBomb.allowGravity = true;

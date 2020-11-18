@@ -10,7 +10,7 @@ class Tutorial extends Phaser.Scene {
     this.load.image('explosion', 'assets/explosion.png');
     this.load.image('star', 'assets/star.png');
     this.load.image('door', 'assets/door.png');
-    this.load.image('bomb', 'assets/bomb.png');
+    this.load.image('bullet', 'assets/bomb.png');
     this.load.spritesheet('dude', 'assets/main.png', { frameWidth: 56, frameHeight: 45 });
     this.load.audio('jump', ['assets/Jump.ogg', 'assets/Jump.mp3', 'assets/Jump.m4a']);
     this.load.audio('shot', ['assets/Shot.ogg', 'assets/Shot.mp3', 'assets/Shot.m4a']);
@@ -168,7 +168,7 @@ class Tutorial extends Phaser.Scene {
 
     if (pointer.isDown && !hasShot){
         shotNoise.play();
-        var bomb = bombs.create(player.x, player.y, 'bomb');
+        var bomb = bombs.create(player.x, player.y, 'bullet');
         var velocityX = (pointer.x - player.x)*4;
         var velocityY = (pointer.y - player.y)*4;
         bomb.setVelocity(velocityX, velocityY);
@@ -190,7 +190,7 @@ class Tutorial extends Phaser.Scene {
 
   playerAttack(){
     for (var i = 0; i < 1; i++){
-      var bomb = bombs.create(player.x, player.y, 'bomb');
+      var bomb = bombs.create(player.x, player.y, 'bullet');
       var velocityX = (pointer.x - player.x)*4;
       var velocityY = (pointer.y - player.y)*4;
       bomb.setVelocity(velocityX, velocityY);

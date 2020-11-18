@@ -9,8 +9,8 @@ class LevelTwo extends Phaser.Scene {
     this.load.image('lvl2ground', 'assets/new_plat.png');
     this.load.image('explosion', 'assets/explosion.png');
     this.load.image('door', 'assets/door.png');
-    this.load.image('bomb', 'assets/new_lvl2_proj.png');
-    this.load.image('lvl2projectile', 'assets/bomb.png');
+    this.load.image('level2projectile', 'assets/new_lvl2_proj.png');
+    this.load.image('bullet', 'assets/bomb.png');
     this.load.spritesheet('dude', 'assets/main.png', { frameWidth: 56, frameHeight: 45 });
 
     this.load.audio('jump', ['assets/Jump.ogg', 'assets/Jump.mp3', 'assets/Jump.m4a']);
@@ -342,7 +342,7 @@ class LevelTwo extends Phaser.Scene {
   //Player Attacks
   singleAttack(){
     shotNoise.play();
-    var projectile = projectiles.create(player.x, player.y, 'lvl2projectile');
+    var projectile = projectiles.create(player.x, player.y, 'bullet');
     var velocityX = (pointer.x - player.x)*4;
     var velocityY = (pointer.y - player.y)*4;
     projectile.setVelocity(velocityX, velocityY);
@@ -350,7 +350,7 @@ class LevelTwo extends Phaser.Scene {
 
   tripleAttack(){
     shotNoise.play();
-    var projectile = projectiles.create(player.x, player.y, 'lvl2projectile');
+    var projectile = projectiles.create(player.x, player.y, 'bullet');
     var velocityX = (pointer.x - player.x)*3;
     var velocityY = (pointer.y - player.y)*3;
     projectile.setVelocity(velocityX, velocityY);
@@ -358,7 +358,7 @@ class LevelTwo extends Phaser.Scene {
 
   //Enemy Attacks
   enemyShootAttack(){ // Shoot at the player
-    var enemyBomb = enemyBombs.create(enemy.x, enemy.y, 'bomb');
+    var enemyBomb = enemyBombs.create(enemy.x, enemy.y, 'level2projectile');
     enemyBomb.setCollideWorldBounds(true);
     enemyBomb.setVelocity(Math.min(800,(player.x - enemy.x)*3), Math.min(800,(player.y - enemy.y)*3));
     enemyBomb.allowGravity = true;
@@ -366,7 +366,7 @@ class LevelTwo extends Phaser.Scene {
 
   enemyScatterAttack(){ // Scatters a bunch of bombs
     for (var i = 0; i < 10; i++){
-      var enemyBomb = enemyBombs.create(enemy.x, enemy.y, 'bomb');
+      var enemyBomb = enemyBombs.create(enemy.x, enemy.y, 'level2projectile');
       enemyBomb.setBounce(1);
       enemyBomb.setCollideWorldBounds(true);
       enemyBomb.setVelocity(Phaser.Math.Between(-200, 200), 20);

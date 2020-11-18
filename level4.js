@@ -9,8 +9,8 @@ class LevelFour extends Phaser.Scene {
     this.load.image('lvl4ground', 'assets/platform.png');
     this.load.image('explosion', 'assets/explosion.png');
     this.load.image('door', 'assets/door.png');
-    this.load.image('bomb', 'assets/level4bossbullet.png');
-    this.load.image('lvl4projectile', 'assets/bomb.png');
+    this.load.image('level4projectile', 'assets/lvl4bossbullet.png');
+    this.load.image('bullet', 'assets/bomb.png');
     this.load.spritesheet('dude', 'assets/main.png', { frameWidth: 56, frameHeight: 45 });
 
     this.load.audio('jump', ['assets/Jump.ogg', 'assets/Jump.mp3', 'assets/Jump.m4a']);
@@ -359,7 +359,7 @@ class LevelFour extends Phaser.Scene {
   //Player Attacks
   singleAttack(){
     shotNoise.play();
-    var projectile = projectiles.create(player.x, player.y, 'lvl4projectile');
+    var projectile = projectiles.create(player.x, player.y, 'bullet');
     var velocityX = (pointer.x - player.x)*4;
     var velocityY = (pointer.y - player.y)*4;
     projectile.setVelocity(velocityX, velocityY);
@@ -367,7 +367,7 @@ class LevelFour extends Phaser.Scene {
 
   tripleAttack(){
     shotNoise.play();
-    var projectile = projectiles.create(player.x, player.y, 'lvl4projectile');
+    var projectile = projectiles.create(player.x, player.y, 'bullet');
     var velocityX = (pointer.x - player.x)*3;
     var velocityY = (pointer.y - player.y)*3;
     projectile.setVelocity(velocityX, velocityY);
@@ -375,7 +375,7 @@ class LevelFour extends Phaser.Scene {
 
   spreadAttack(){
     cannonNoise.play();
-    var bomb = projectiles.create(player.x, player.y, 'lvl4projectile');
+    var bomb = projectiles.create(player.x, player.y, 'bullet');
     var velocityX = ((pointer.x - player.x)*4) + Phaser.Math.Between(-100, 100);
     var velocityY = (pointer.y - player.y)*4 + Phaser.Math.Between(-100, 100);
     bomb.setVelocity(velocityX, velocityY);
@@ -383,7 +383,7 @@ class LevelFour extends Phaser.Scene {
 
   cannonAttack(){
     cannonNoise.play();
-    var cannon = cannons.create(player.x, player.y, 'lvl4projectile').setScale(2);
+    var cannon = cannons.create(player.x, player.y, 'bullet').setScale(2);
     var velocityX = (pointer.x - player.x)*6;
     var velocityY = (pointer.y - player.y)*6;
     cannon.setVelocity(velocityX, velocityY);
@@ -391,7 +391,7 @@ class LevelFour extends Phaser.Scene {
 
   //Enemy Attacks
   enemyShootAttack(){ // Shoot at the player
-    var enemyBomb = enemyBombs.create(enemy.x, enemy.y, 'bomb');
+    var enemyBomb = enemyBombs.create(enemy.x, enemy.y, 'level4projectile');
     enemyBomb.setCollideWorldBounds(true);
     enemyBomb.setVelocity(Math.min(800,(player.x - enemy.x)*3), Math.min(800,(player.y - enemy.y)*3));
     enemyBomb.allowGravity = true;
@@ -399,7 +399,7 @@ class LevelFour extends Phaser.Scene {
 
   enemyScatterAttack(){ // Scatters a bunch of bombs
     for (var i = 0; i < 10; i++){
-      var enemyBomb = enemyBombs.create(enemy.x, enemy.y, 'bomb');
+      var enemyBomb = enemyBombs.create(enemy.x, enemy.y, 'level4projectile');
       enemyBomb.setBounce(1);
       enemyBomb.setCollideWorldBounds(true);
       enemyBomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
@@ -409,7 +409,7 @@ class LevelFour extends Phaser.Scene {
 
   enemySprayAttack(){ // Sprays a bunch of bombs
     for (var i = 1; i <= 16; i++){
-      var enemyBomb = enemyBombs.create(enemy.x, enemy.y, 'bomb');
+      var enemyBomb = enemyBombs.create(enemy.x, enemy.y, 'level4projectile');
       enemyBomb.setVelocity(Math.cos(Math.PI * i/6)*500, Math.sin(Math.PI * i/6)*500);
       enemyBomb.allowGravity = true;
     }
