@@ -9,18 +9,7 @@ class LevelOne extends Phaser.Scene {
     this.load.image('lvl1ground', 'assets/moonrock.png');
     this.load.image('lvl1ground_breaking', 'assets/cracked_moonrock.png');
     this.load.image('lvl1ground_broken', 'assets/broken_moonrock.png');
-    this.load.image('explosion', 'assets/explosion.png');
-    this.load.image('door', 'assets/door.png');
-    this.load.image('bomb', 'assets/bomb.png');
-    this.load.image('lvl1projectile', 'assets/bomb.png');
-    this.load.spritesheet('dude', 'assets/main.png', { frameWidth: 56, frameHeight: 45 });
-
-    this.load.audio('jump', ['assets/Jump.ogg', 'assets/Jump.mp3', 'assets/Jump.m4a']);
-    this.load.audio('shot', ['assets/Shot.ogg', 'assets/Shot.mp3', 'assets/Shot.m4a']);
-    this.load.audio('hit', ['assets/Player Hit.ogg', 'assets/Player Hit.mp3', 'assets/Player Hit.m4a']);
-    this.load.audio('boom', ['assets/Shot Explode.ogg', 'assets/Shot Explode.mp3', 'assets/Shot Explode.m4a']);
-    this.load.audio('key', ['assets/Key Get.ogg', 'assets/Key Get.mp3', 'assets/Key Get.m4a']);
-    this.load.audio('win', ['assets/Enemy Die.ogg', 'assets/Enemy Die.mp3', 'assets/Enemy Die.m4a']);
+    this.load.image('lvl1projectile', 'assets/bossbullet.png');
   }
 
   create() {
@@ -62,13 +51,7 @@ class LevelOne extends Phaser.Scene {
       plat4.body.allowGravity = false;
       plat5.body.allowGravity = false;
 
-    //Sounds
-    jumpNoise = game.sound.add('jump', {volume: .25});
-    bombNoise = game.sound.add('boom', {volume: .25});
-    hitNoise = game.sound.add('hit', {volume: .25});
-    keyNoise = game.sound.add('key', {volume: .25});
-    winNoise = game.sound.add('win', {volume: .25});
-    shotNoise = game.sound.add('shot', {volume: .25});
+    //Music
     lv1Song.play();
 
     // The player
@@ -77,25 +60,6 @@ class LevelOne extends Phaser.Scene {
     //  Player physics properties
     player.setBounce(0);
     player.setCollideWorldBounds(true);
-
-    //  Our player animations, turning, walking left and walking right.
-    // this.anims.create({
-    //     key: 'left',
-    //     frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
-    //     frameRate: 10,
-    //     repeat: -1
-    // });
-    // this.anims.create({
-    //     key: 'turn',
-    //     frames: [ { key: 'dude', frame: 4 } ],
-    //     frameRate: 20
-    // });
-    // this.anims.create({
-    //     key: 'right',
-    //     frames: this.anims.generateFrameNumbers('dude', { start: 5, end: 8 }),
-    //     frameRate: 10,
-    //     repeat: -1
-    // });
 
     //Enemy
     enemy = this.physics.add.sprite(750 ,500,'lvl1boss');
@@ -117,11 +81,6 @@ class LevelOne extends Phaser.Scene {
       { x:    0, y:   90, duration: 5000, ease: 'Stepped' },
     ]
   });
-
-    //  Input Events
-    cursors = this.input.keyboard.createCursorKeys();
-    keys = this.input.keyboard.addKeys('W,A,S,D,SPACE,ESC');
-    pointer = this.input.activePointer;
 
     // projectiles
     projectiles = this.physics.add.group();
@@ -192,6 +151,7 @@ class LevelOne extends Phaser.Scene {
     }
 
     if (youWin) {
+      progress = 2;
       youWin = false; //this makes it so it doesn't call this part of the code every frame
       this.time.addEvent({delay:    0, callback: () => youWinText.setText("\t\t\t\t\t\tY")});
       this.time.addEvent({delay:  100, callback: () => youWinText.setText("\t\t\t\t\t\tYO")});
@@ -235,13 +195,10 @@ class LevelOne extends Phaser.Scene {
 
     // Player Attack
     if (pointer.isDown && !hasShot){
-      this.singleAttack();
+      singleAttack();
       this.time.addEvent({delay: 150, callback: () => hasShot = false});
       hasShot = true;
     }
-    /* if(!pointer.isDown){
-      hasShot = false;
-    } */
 
     // Enemy Attack
     if(enemyHealth > 0 && enemyShot == true){
@@ -258,19 +215,9 @@ class LevelOne extends Phaser.Scene {
     }
   }
 
-  //Player Attacks
-  singleAttack(){
-    shotNoise.play();
-    var projectile = projectiles.create(player.x, player.y, 'lvl1projectile');
-    var velocityX = (pointer.x - player.x)*4;
-    var velocityY = (pointer.y - player.y)*4;
-    projectile.setVelocity(velocityX, velocityY);
-  }
-
-
   //Enemy Attacks
   enemyShootAttack(){ // Shoot at the player
-    var enemyBomb = enemyBombs.create(enemy.x, enemy.y, 'bomb');
+    var enemyBomb = enemyBombs.create(enemy.x, enemy.y, 'lvl1projectile');
     enemyBomb.setCollideWorldBounds(true);
     enemyBomb.setVelocity(Math.min(800,(player.x - enemy.x)*2), Math.min(800,(player.y - enemy.y)*2));
     enemyBomb.allowGravity = true;

@@ -111,12 +111,30 @@ var firstSwitch = false;
 
 var game = new Phaser.Game(config);
 
-//  Our player animations, turning, walking left and walking right
+//Loading assets used in every scene
 function preload(){
+  //Loading images
   this.load.spritesheet('dude', 'assets/main.png', { frameWidth: 56, frameHeight: 45 });
+  this.load.image('explosion', 'assets/explosion.png');
+  this.load.image('star', 'assets/star.png');
+  this.load.image('door', 'assets/door.png');
+  this.load.image('bomb', 'assets/bomb.png');
+  this.load.image('sky', 'assets/sky.png');
+
+  //Loading audio
+  this.load.audio('jump', ['assets/Jump.ogg', 'assets/Jump.mp3', 'assets/Jump.m4a']);
+  this.load.audio('shot', ['assets/Shot.ogg', 'assets/Shot.mp3', 'assets/Shot.m4a']);
+  this.load.audio('hit', ['assets/Player Hit.ogg', 'assets/Player Hit.mp3', 'assets/Player Hit.m4a']);
+  this.load.audio('boom', ['assets/Shot Explode.ogg', 'assets/Shot Explode.mp3', 'assets/Shot Explode.m4a']);
+  this.load.audio('key', ['assets/Key Get.ogg', 'assets/Key Get.mp3', 'assets/Key Get.m4a']);
+  this.load.audio('win', ['assets/Enemy Die.ogg', 'assets/Enemy Die.mp3', 'assets/Enemy Die.m4a']);
+  this.load.audio('switch', ['assets/Weapon Change.ogg', 'assets/Weapon Change.mp3', 'assets/Weapon Change.m4a']);
+  this.load.audio('cannon', ['assets/Cannon.ogg', 'assets/Cannon.mp3', 'assets/Cannon.m4a']);
+
 }
 
 function create(){
+  //Our key frames
   game.anims.create({
       key: 'left',
       frames: game.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
@@ -136,6 +154,22 @@ function create(){
       frameRate: 10,
       repeat: -1
   });
+
+  // Our Sounds
+  jumpNoise = game.sound.add('jump', {volume: .25});
+  bombNoise = game.sound.add('boom', {volume: .25});
+  hitNoise = game.sound.add('hit', {volume: .25});
+  keyNoise = game.sound.add('key', {volume: .25});
+  winNoise = game.sound.add('win', {volume: .25});
+  shotNoise = game.sound.add('shot', {volume: .25});
+  switchNoise = game.sound.add('switch', {volume: .25});
+  cannonNoise = game.sound.add('cannon', {volume: .25});
+
+  //  Input Events
+  cursors = this.input.keyboard.createCursorKeys();
+  keys = this.input.keyboard.addKeys('W,A,S,D,SPACE,ESC');
+  pointer = this.input.activePointer;
+
 
 }
 
@@ -285,6 +319,41 @@ function platformBreak(player, platform){
   }
 
 }
+
+//Player Attacks
+function singleAttack(){
+  shotNoise.play();
+  var projectile = projectiles.create(player.x, player.y, 'bomb');
+  var velocityX = (pointer.x - player.x)*4;
+  var velocityY = (pointer.y - player.y)*4;
+  projectile.setVelocity(velocityX, velocityY);
+}
+
+function tripleAttack(){
+  shotNoise.play();
+  var projectile = projectiles.create(player.x, player.y, 'bomb');
+  var velocityX = (pointer.x - player.x)*3;
+  var velocityY = (pointer.y - player.y)*3;
+  projectile.setVelocity(velocityX, velocityY);
+}
+
+function spreadAttack(){
+  cannonNoise.play();
+  var bomb = projectiles.create(player.x, player.y, 'bomb');
+  var velocityX = ((pointer.x - player.x)*4) + Phaser.Math.Between(-100, 100);
+  var velocityY = (pointer.y - player.y)*4 + Phaser.Math.Between(-100, 100);
+  bomb.setVelocity(velocityX, velocityY);
+
+}
+
+function cannonAttack(){
+  cannonNoise.play();
+  var cannon = cannons.create(player.x, player.y, 'bomb').setScale(2);
+  var velocityX = (pointer.x - player.x)*6;
+  var velocityY = (pointer.y - player.y)*6;
+  cannon.setVelocity(velocityX, velocityY);
+}
+
 
 
 </script>

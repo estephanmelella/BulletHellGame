@@ -4,21 +4,8 @@ class Tutorial extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image('sky', 'assets/sky.png');
     this.load.image('dummy', 'assets/tutorial_dummy.png')
     this.load.image('ground', 'assets/new_plat.png');
-    this.load.image('explosion', 'assets/explosion.png');
-    this.load.image('star', 'assets/star.png');
-    this.load.image('door', 'assets/door.png');
-    this.load.image('bomb', 'assets/bomb.png');
-    this.load.spritesheet('dude', 'assets/main.png', { frameWidth: 56, frameHeight: 45 });
-    this.load.audio('jump', ['assets/Jump.ogg', 'assets/Jump.mp3', 'assets/Jump.m4a']);
-    this.load.audio('shot', ['assets/Shot.ogg', 'assets/Shot.mp3', 'assets/Shot.m4a']);
-    this.load.audio('hit', ['assets/Player Hit.ogg', 'assets/Player Hit.mp3', 'assets/Player Hit.m4a']);
-    this.load.audio('boom', ['assets/Shot Explode.ogg', 'assets/Shot Explode.mp3', 'assets/Shot Explode.m4a']);
-    this.load.audio('key', ['assets/Key Get.ogg', 'assets/Key Get.mp3', 'assets/Key Get.m4a']);
-    this.load.audio('win', ['assets/Enemy Die.ogg', 'assets/Enemy Die.mp3', 'assets/Enemy Die.m4a']);
-    //this.load.audio('tutorial song', ['assets/Tutorial Song.ogg', 'assets/Tutorial Song.mp3', 'assets/Tutorial Song.m4a'])
   }
 
   create() {
@@ -35,14 +22,6 @@ class Tutorial extends Phaser.Scene {
     platforms.create(100, 300, 'ground');
     platforms.create(700, 220, 'ground');
     platforms.create(400, -75, 'ground').setScale(2).refreshBody(); //ceiling
-    jumpNoise = game.sound.add('jump', {volume: .25});
-    bombNoise = game.sound.add('boom', {volume: .25});
-    hitNoise = game.sound.add('hit', {volume: .25});
-    keyNoise = game.sound.add('key', {volume: .25});
-    winNoise = game.sound.add('win', {volume: .25});
-    shotNoise = game.sound.add('shot', {volume: .25});
-    //tutorialSong = game.sound.add('tutorial song');
-    //tutorialSong.setLoop(true);
     tutorialSong.play();
 
     // The player and its settings
@@ -52,36 +31,10 @@ class Tutorial extends Phaser.Scene {
     player.setBounce(0);
     player.setCollideWorldBounds(true);
 
-    // //  Our player animations, turning, walking left and walking right.
-    // this.anims.create({
-    //     key: 'left',
-    //     frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
-    //     frameRate: 10,
-    //     repeat: -1
-    // });
-    //
-    // this.anims.create({
-    //     key: 'turn',
-    //     frames: [ { key: 'dude', frame: 4 } ],
-    //     frameRate: 20
-    // });
-    //
-    // this.anims.create({
-    //     key: 'right',
-    //     frames: this.anims.generateFrameNumbers('dude', { start: 5, end: 8 }),
-    //     frameRate: 10,
-    //     repeat: -1
-    // });
-
     //Enemy
     enemy = this.physics.add.sprite(50 ,100,'dummy');
     enemy.body.allowGravity = false;
     enemy.body.immovable = true;
-
-    //  Input Events
-    cursors = this.input.keyboard.createCursorKeys();
-    keys = this.input.keyboard.addKeys('W,A,S,D,SPACE,ESC');
-    pointer = this.input.activePointer;
 
     // Bombs
     bombs = this.physics.add.group();
@@ -116,7 +69,6 @@ class Tutorial extends Phaser.Scene {
 
     //  Collide the player and the stars with the platforms
     this.physics.add.collider(player, platforms);
-    //this.physics.add.collider(bombs, platforms, bombExplode, null, this);
     this.physics.add.collider(enemyBombs, platforms);
     this.physics.add.collider(bombs, platforms, bombExplode, null, this);
     this.physics.add.collider(player, enemyBombs, playerHitBomb, null, this);
@@ -188,13 +140,4 @@ class Tutorial extends Phaser.Scene {
     }
   }
 
-  playerAttack(){
-    for (var i = 0; i < 1; i++){
-      var bomb = bombs.create(player.x, player.y, 'bomb');
-      var velocityX = (pointer.x - player.x)*4;
-      var velocityY = (pointer.y - player.y)*4;
-      bomb.setVelocity(velocityX, velocityY);
-      bomb.allowGravity = false;
-    }
-  }
 }

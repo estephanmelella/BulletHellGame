@@ -8,18 +8,6 @@ class LevelOneIntro extends Phaser.Scene {
     this.load.image('lvl1ground', 'assets/moonrock.png');
     this.load.image('lvl1ground_breaking', 'assets/cracked_moonrock.png');
     this.load.image('lvl1ground_broken', 'assets/broken_moonrock.png');
-    this.load.image('explosion', 'assets/explosion.png');
-    this.load.image('win', 'assets/star.png');
-    this.load.image('lvl1projectile', 'assets/bomb.png');
-    this.load.image('door', 'assets/door.png');
-    this.load.spritesheet('dude', 'assets/main.png', { frameWidth: 56, frameHeight: 45 });
-
-    this.load.audio('jump', ['assets/Jump.ogg', 'assets/Jump.mp3', 'assets/Jump.m4a']);
-    this.load.audio('shot', ['assets/Shot.ogg', 'assets/Shot.mp3', 'assets/Shot.m4a']);
-    this.load.audio('hit', ['assets/Player Hit.ogg', 'assets/Player Hit.mp3', 'assets/Player Hit.m4a']);
-    this.load.audio('boom', ['assets/Shot Explode.ogg', 'assets/Shot Explode.mp3', 'assets/Shot Explode.m4a']);
-    this.load.audio('key', ['assets/Key Get.ogg', 'assets/Key Get.mp3', 'assets/Key Get.m4a']);
-    this.load.audio('win', ['assets/Enemy Die.ogg', 'assets/Enemy Die.mp3', 'assets/Enemy Die.m4a']);
   }
 
   create() {
@@ -57,13 +45,7 @@ class LevelOneIntro extends Phaser.Scene {
       plat3.body.allowGravity = false;
       plat4.body.allowGravity = false;
 
-    //Sounds
-    jumpNoise = game.sound.add('jump', {volume: .25});
-    bombNoise = game.sound.add('boom', {volume: .25});
-    hitNoise = game.sound.add('hit', {volume: .25});
-    keyNoise = game.sound.add('key', {volume: .25});
-    winNoise = game.sound.add('win', {volume: .25});
-    shotNoise = game.sound.add('shot', {volume: .25});
+    // Music
     lv1ISong.play();
 
     // The player
@@ -72,30 +54,6 @@ class LevelOneIntro extends Phaser.Scene {
     //  Player physics properties
     player.setBounce(0);
     player.setCollideWorldBounds(true);
-
-    //  Our player animations, turning, walking left and walking right.
-    // this.anims.create({
-    //     key: 'left',
-    //     frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
-    //     frameRate: 10,
-    //     repeat: -1
-    // });
-    // this.anims.create({
-    //     key: 'turn',
-    //     frames: [ { key: 'dude', frame: 4 } ],
-    //     frameRate: 20
-    // });
-    // this.anims.create({
-    //     key: 'right',
-    //     frames: this.anims.generateFrameNumbers('dude', { start: 5, end: 8 }),
-    //     frameRate: 10,
-    //     repeat: -1
-    // });
-
-    //  Input Events
-    cursors = this.input.keyboard.createCursorKeys();
-    keys = this.input.keyboard.addKeys('W,A,S,D,SPACE,ESC');
-    pointer = this.input.activePointer;
 
     // projectiles
     projectiles = this.physics.add.group();
@@ -164,22 +122,10 @@ class LevelOneIntro extends Phaser.Scene {
 
     // Player Attack
     if (pointer.isDown && !hasShot){
-      this.singleAttack();
+      singleAttack();
       this.time.addEvent({delay: 150, callback: () => hasShot = false});
       hasShot = true;
     }
-    /* if(!pointer.isDown){
-      hasShot = false;
-    } */
-  }
-
-  //Player Attacks
-  singleAttack(){
-    shotNoise.play();
-    var projectile = projectiles.create(player.x, player.y, 'lvl1projectile');
-    var velocityX = (pointer.x - player.x)*4;
-    var velocityY = (pointer.y - player.y)*4;
-    projectile.setVelocity(velocityX, velocityY);
   }
 
   movingBombExplode(platform, bomb){

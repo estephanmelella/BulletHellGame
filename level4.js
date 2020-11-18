@@ -7,20 +7,7 @@ class LevelFour extends Phaser.Scene {
     this.load.image('lvl4background', 'assets/lvl4background.png');
     this.load.image('lvl4boss', 'assets/lvl4boss.png')
     this.load.image('lvl4ground', 'assets/platform.png');
-    this.load.image('explosion', 'assets/explosion.png');
-    this.load.image('door', 'assets/door.png');
-    this.load.image('bomb', 'assets/level4bossbullet.png');
-    this.load.image('lvl4projectile', 'assets/bomb.png');
-    this.load.spritesheet('dude', 'assets/main.png', { frameWidth: 56, frameHeight: 45 });
-
-    this.load.audio('jump', ['assets/Jump.ogg', 'assets/Jump.mp3', 'assets/Jump.m4a']);
-    this.load.audio('shot', ['assets/Shot.ogg', 'assets/Shot.mp3', 'assets/Shot.m4a']);
-    this.load.audio('hit', ['assets/Player Hit.ogg', 'assets/Player Hit.mp3', 'assets/Player Hit.m4a']);
-    this.load.audio('boom', ['assets/Shot Explode.ogg', 'assets/Shot Explode.mp3', 'assets/Shot Explode.m4a']);
-    this.load.audio('key', ['assets/Key Get.ogg', 'assets/Key Get.mp3', 'assets/Key Get.m4a']);
-    this.load.audio('win', ['assets/Enemy Die.ogg', 'assets/Enemy Die.mp3', 'assets/Enemy Die.m4a']);
-    this.load.audio('switch', ['assets/Weapon Change.ogg', 'assets/Weapon Change.mp3', 'assets/Weapon Change.m4a']);
-  	this.load.audio('cannon', ['assets/Cannon.ogg', 'assets/Cannon.mp3', 'assets/Cannon.m4a']);
+    this.load.image('lvl4projectile', 'assets/lvl4bossbullet.png');
   }
 
   create() {
@@ -85,15 +72,7 @@ class LevelFour extends Phaser.Scene {
     //Storage for safe keeping
     plats = [plat1, plat2, plat3, plat4, plat5, plat6, plat7, plat8, plat9];
 
-    //Sounds
-    jumpNoise = game.sound.add('jump', {volume: .25});
-    bombNoise = game.sound.add('boom', {volume: .25});
-    hitNoise = game.sound.add('hit', {volume: .25});
-    keyNoise = game.sound.add('key', {volume: .25});
-    winNoise = game.sound.add('win', {volume: .25});
-    shotNoise = game.sound.add('shot', {volume: .25});
-    switchNoise = game.sound.add('switch', {volume: .25});
-    cannonNoise = game.sound.add('cannon', {volume: .25});
+    //Music
     lv4Song.play();
 
     // The player and its settings
@@ -103,38 +82,12 @@ class LevelFour extends Phaser.Scene {
     player.setBounce(0);
     player.setCollideWorldBounds(true);
 
-    //  Our player animations, turning, walking left and walking right.
-    // this.anims.create({
-    //     key: 'left',
-    //     frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
-    //     frameRate: 10,
-    //     repeat: -1
-    // });
-    //
-    // this.anims.create({
-    //     key: 'turn',
-    //     frames: [ { key: 'dude', frame: 4 } ],
-    //     frameRate: 20
-    // });
-    //
-    // this.anims.create({
-    //     key: 'right',
-    //     frames: this.anims.generateFrameNumbers('dude', { start: 5, end: 8 }),
-    //     frameRate: 10,
-    //     repeat: -1
-    // });
-
     //Enemy
     enemy = this.physics.add.sprite(750 ,500,'lvl4boss');
     enemy.body.allowGravity = false;
     enemy.body.immovable = true;
     enemyShot = false;
     this.time.addEvent({delay: 5000, callback: () => enemyShot = true});
-
-    //  Input Events
-    cursors = this.input.keyboard.createCursorKeys();
-    keys = this.input.keyboard.addKeys('W,A,S,D,SPACE,ESC');
-    pointer = this.input.activePointer;
 
     // Attacks
     attackList = ["single", "triple", "spread", "cannon"];
@@ -306,23 +259,23 @@ class LevelFour extends Phaser.Scene {
     if (pointer.isDown && !hasShot){
       switch (attack){
         case "single":
-        this.singleAttack();
+        singleAttack();
         this.time.addEvent({delay: 150, callback: () => hasShot = false});
         break;
         case "triple":
         for (var i=0; i<3; i++){
-          this.time.addEvent({delay: i*100, callback: () => this.tripleAttack()});
+          this.time.addEvent({delay: i*100, callback: () => tripleAttack()});
         }
         this.time.addEvent({delay: 400, callback: () => hasShot = false})
         break;
         case "spread":
         for (var i=0; i<15; i++){
-          this.spreadAttack();
+          spreadAttack();
         }
         this.time.addEvent({delay: 1000, callback: () => hasShot = false})
         break;
         case "cannon":
-        this.cannonAttack();
+        cannonAttack();
         this.time.addEvent({delay: 1500, callback: () => hasShot = false});
         break;
       }
@@ -356,42 +309,9 @@ class LevelFour extends Phaser.Scene {
 
   }
 
-  //Player Attacks
-  singleAttack(){
-    shotNoise.play();
-    var projectile = projectiles.create(player.x, player.y, 'lvl4projectile');
-    var velocityX = (pointer.x - player.x)*4;
-    var velocityY = (pointer.y - player.y)*4;
-    projectile.setVelocity(velocityX, velocityY);
-  }
-
-  tripleAttack(){
-    shotNoise.play();
-    var projectile = projectiles.create(player.x, player.y, 'lvl4projectile');
-    var velocityX = (pointer.x - player.x)*3;
-    var velocityY = (pointer.y - player.y)*3;
-    projectile.setVelocity(velocityX, velocityY);
-  }
-
-  spreadAttack(){
-    cannonNoise.play();
-    var bomb = projectiles.create(player.x, player.y, 'lvl4projectile');
-    var velocityX = ((pointer.x - player.x)*4) + Phaser.Math.Between(-100, 100);
-    var velocityY = (pointer.y - player.y)*4 + Phaser.Math.Between(-100, 100);
-    bomb.setVelocity(velocityX, velocityY);
-  }
-
-  cannonAttack(){
-    cannonNoise.play();
-    var cannon = cannons.create(player.x, player.y, 'lvl4projectile').setScale(2);
-    var velocityX = (pointer.x - player.x)*6;
-    var velocityY = (pointer.y - player.y)*6;
-    cannon.setVelocity(velocityX, velocityY);
-  }
-
   //Enemy Attacks
   enemyShootAttack(){ // Shoot at the player
-    var enemyBomb = enemyBombs.create(enemy.x, enemy.y, 'bomb');
+    var enemyBomb = enemyBombs.create(enemy.x, enemy.y, 'lvl4projectile');
     enemyBomb.setCollideWorldBounds(true);
     enemyBomb.setVelocity(Math.min(800,(player.x - enemy.x)*3), Math.min(800,(player.y - enemy.y)*3));
     enemyBomb.allowGravity = true;
@@ -399,7 +319,7 @@ class LevelFour extends Phaser.Scene {
 
   enemyScatterAttack(){ // Scatters a bunch of bombs
     for (var i = 0; i < 10; i++){
-      var enemyBomb = enemyBombs.create(enemy.x, enemy.y, 'bomb');
+      var enemyBomb = enemyBombs.create(enemy.x, enemy.y, 'lvl4projectile');
       enemyBomb.setBounce(1);
       enemyBomb.setCollideWorldBounds(true);
       enemyBomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
@@ -409,7 +329,7 @@ class LevelFour extends Phaser.Scene {
 
   enemySprayAttack(){ // Sprays a bunch of bombs
     for (var i = 1; i <= 16; i++){
-      var enemyBomb = enemyBombs.create(enemy.x, enemy.y, 'bomb');
+      var enemyBomb = enemyBombs.create(enemy.x, enemy.y, 'lvl4projectile');
       enemyBomb.setVelocity(Math.cos(Math.PI * i/6)*500, Math.sin(Math.PI * i/6)*500);
       enemyBomb.allowGravity = true;
     }

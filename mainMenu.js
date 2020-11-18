@@ -4,8 +4,6 @@ class MainMenu extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image('sky', 'assets/sky.png');
-    //this.load.image('star', 'assets/explosion.png');
     this.load.audio('select', ['assets/Select.ogg', 'assets/Select.mp3', 'assets/Select.m4a']);
     this.load.audio('tutorial song', ['assets/Tutorial Song.ogg', 'assets/Tutorial Song.mp3', 'assets/Tutorial Song.m4a'])
     this.load.audio('lv1 intro', ['assets/Level 1 Intro Theme.ogg', 'assets/Level 1 Intro Theme.mp3', 'assets/Level 1 Intro Theme.m4a'])
@@ -64,8 +62,6 @@ class MainMenu extends Phaser.Scene {
 
     //Menu text
     var titleText = this.add.text(50,100,'BLASTER MASTER', { fontSize: '80px', fill: '#505000' });
-
-    //FIXME: POLISH
     var newGameButton = this.add.text(200,250,'New Game', { fontSize: '50px', fill: '#ff0000' });
     var continueGameButton = this.add.text(200,350,'Continue Game', { fontSize: '50px', fill: '#ff0000' });
     var levelSelectButton = this.add.text(200,450,'Level Select', { fontSize: '50px', fill: '#ff0000' });

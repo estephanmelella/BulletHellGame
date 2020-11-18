@@ -4,8 +4,6 @@ class LevelSelect extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image('sky', 'assets/sky.png');
-    this.load.image('star', 'assets/star.png');
     this.load.audio('select', ['assets/Select.ogg', 'assets/Select.mp3', 'assets/Select.m4a']);
     this.load.audio('error', ['assets/Error.ogg', 'assets/Error.mp3', 'assets/Error.m4a'])
   }
@@ -50,7 +48,7 @@ class LevelSelect extends Phaser.Scene {
   }
 
   level2(errorText){
-    if (progress >= 1){
+    if (progress >= 2){
       selectNoise.play();
       this.scene.start('LevelTwoIntro');
     } else {
@@ -60,7 +58,7 @@ class LevelSelect extends Phaser.Scene {
   }
 
   level3(errorText){
-    if (progress >= 1){
+    if (progress >= 3){
       selectNoise.play();
       this.scene.start('LevelThreeIntro');
     } else {
@@ -70,7 +68,7 @@ class LevelSelect extends Phaser.Scene {
   }
 
   level4(errorText){
-    if (progress === 1){
+    if (progress === 4){
       selectNoise.play();
       this.scene.start('LevelFourIntro');
     } else {
