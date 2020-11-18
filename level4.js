@@ -309,9 +309,48 @@ class LevelFour extends Phaser.Scene {
 
   }
 
+<<<<<<< HEAD
   //Enemy Attacks
   enemyShootAttack(){ // Shoot at the player
     var enemyBomb = enemyBombs.create(enemy.x, enemy.y, 'lvl4projectile');
+=======
+  //Player Attacks
+  singleAttack(){
+    shotNoise.play();
+    var projectile = projectiles.create(player.x, player.y, 'bullet');
+    var velocityX = (pointer.x - player.x)*4;
+    var velocityY = (pointer.y - player.y)*4;
+    projectile.setVelocity(velocityX, velocityY);
+  }
+
+  tripleAttack(){
+    shotNoise.play();
+    var projectile = projectiles.create(player.x, player.y, 'bullet');
+    var velocityX = (pointer.x - player.x)*3;
+    var velocityY = (pointer.y - player.y)*3;
+    projectile.setVelocity(velocityX, velocityY);
+  }
+
+  spreadAttack(){
+    cannonNoise.play();
+    var bomb = projectiles.create(player.x, player.y, 'bullet');
+    var velocityX = ((pointer.x - player.x)*4) + Phaser.Math.Between(-100, 100);
+    var velocityY = (pointer.y - player.y)*4 + Phaser.Math.Between(-100, 100);
+    bomb.setVelocity(velocityX, velocityY);
+  }
+
+  cannonAttack(){
+    cannonNoise.play();
+    var cannon = cannons.create(player.x, player.y, 'bullet').setScale(2);
+    var velocityX = (pointer.x - player.x)*6;
+    var velocityY = (pointer.y - player.y)*6;
+    cannon.setVelocity(velocityX, velocityY);
+  }
+
+  //Enemy Attacks
+  enemyShootAttack(){ // Shoot at the player
+    var enemyBomb = enemyBombs.create(enemy.x, enemy.y, 'level4projectile');
+>>>>>>> 9cb03a3ded94040074613ac5bebc1d4b4974d4f6
     enemyBomb.setCollideWorldBounds(true);
     enemyBomb.setVelocity(Math.min(800,(player.x - enemy.x)*3), Math.min(800,(player.y - enemy.y)*3));
     enemyBomb.allowGravity = true;
@@ -319,7 +358,11 @@ class LevelFour extends Phaser.Scene {
 
   enemyScatterAttack(){ // Scatters a bunch of bombs
     for (var i = 0; i < 10; i++){
+<<<<<<< HEAD
       var enemyBomb = enemyBombs.create(enemy.x, enemy.y, 'lvl4projectile');
+=======
+      var enemyBomb = enemyBombs.create(enemy.x, enemy.y, 'level4projectile');
+>>>>>>> 9cb03a3ded94040074613ac5bebc1d4b4974d4f6
       enemyBomb.setBounce(1);
       enemyBomb.setCollideWorldBounds(true);
       enemyBomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
@@ -329,7 +372,11 @@ class LevelFour extends Phaser.Scene {
 
   enemySprayAttack(){ // Sprays a bunch of bombs
     for (var i = 1; i <= 16; i++){
+<<<<<<< HEAD
       var enemyBomb = enemyBombs.create(enemy.x, enemy.y, 'lvl4projectile');
+=======
+      var enemyBomb = enemyBombs.create(enemy.x, enemy.y, 'level4projectile');
+>>>>>>> 9cb03a3ded94040074613ac5bebc1d4b4974d4f6
       enemyBomb.setVelocity(Math.cos(Math.PI * i/6)*500, Math.sin(Math.PI * i/6)*500);
       enemyBomb.allowGravity = true;
     }

@@ -120,7 +120,7 @@ class Tutorial extends Phaser.Scene {
 
     if (pointer.isDown && !hasShot){
         shotNoise.play();
-        var bomb = bombs.create(player.x, player.y, 'bomb');
+        var bomb = bombs.create(player.x, player.y, 'bullet');
         var velocityX = (pointer.x - player.x)*4;
         var velocityY = (pointer.y - player.y)*4;
         bomb.setVelocity(velocityX, velocityY);
@@ -140,4 +140,16 @@ class Tutorial extends Phaser.Scene {
     }
   }
 
+<<<<<<< HEAD
+=======
+  playerAttack(){
+    for (var i = 0; i < 1; i++){
+      var bomb = bombs.create(player.x, player.y, 'bullet');
+      var velocityX = (pointer.x - player.x)*4;
+      var velocityY = (pointer.y - player.y)*4;
+      bomb.setVelocity(velocityX, velocityY);
+      bomb.allowGravity = false;
+    }
+  }
+>>>>>>> 9cb03a3ded94040074613ac5bebc1d4b4974d4f6
 }

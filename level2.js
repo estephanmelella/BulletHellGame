@@ -290,10 +290,33 @@ class LevelTwo extends Phaser.Scene {
     }
 
   }
+<<<<<<< HEAD
 
   //Enemy Attacks
   enemyShootAttack(){ // Shoot at the player
     var enemyBomb = enemyBombs.create(enemy.x, enemy.y, 'lvl2projectile');
+=======
+  //Player Attacks
+  singleAttack(){
+    shotNoise.play();
+    var projectile = projectiles.create(player.x, player.y, 'bullet');
+    var velocityX = (pointer.x - player.x)*4;
+    var velocityY = (pointer.y - player.y)*4;
+    projectile.setVelocity(velocityX, velocityY);
+  }
+
+  tripleAttack(){
+    shotNoise.play();
+    var projectile = projectiles.create(player.x, player.y, 'bullet');
+    var velocityX = (pointer.x - player.x)*3;
+    var velocityY = (pointer.y - player.y)*3;
+    projectile.setVelocity(velocityX, velocityY);
+  }
+
+  //Enemy Attacks
+  enemyShootAttack(){ // Shoot at the player
+    var enemyBomb = enemyBombs.create(enemy.x, enemy.y, 'level2projectile');
+>>>>>>> 9cb03a3ded94040074613ac5bebc1d4b4974d4f6
     enemyBomb.setCollideWorldBounds(true);
     enemyBomb.setVelocity(Math.min(800,(player.x - enemy.x)*3), Math.min(800,(player.y - enemy.y)*3));
     enemyBomb.allowGravity = true;
@@ -301,7 +324,11 @@ class LevelTwo extends Phaser.Scene {
 
   enemyScatterAttack(){ // Scatters a bunch of bombs
     for (var i = 0; i < 10; i++){
+<<<<<<< HEAD
       var enemyBomb = enemyBombs.create(enemy.x, enemy.y, 'lvl2projectile');
+=======
+      var enemyBomb = enemyBombs.create(enemy.x, enemy.y, 'level2projectile');
+>>>>>>> 9cb03a3ded94040074613ac5bebc1d4b4974d4f6
       enemyBomb.setBounce(1);
       enemyBomb.setCollideWorldBounds(true);
       enemyBomb.setVelocity(Phaser.Math.Between(-200, 200), 20);

@@ -215,9 +215,25 @@ class LevelOne extends Phaser.Scene {
     }
   }
 
+<<<<<<< HEAD
   //Enemy Attacks
   enemyShootAttack(){ // Shoot at the player
     var enemyBomb = enemyBombs.create(enemy.x, enemy.y, 'lvl1projectile');
+=======
+  //Player Attacks
+  singleAttack(){
+    shotNoise.play();
+    var projectile = projectiles.create(player.x, player.y, 'bullet');
+    var velocityX = (pointer.x - player.x)*4;
+    var velocityY = (pointer.y - player.y)*4;
+    projectile.setVelocity(velocityX, velocityY);
+  }
+
+
+  //Enemy Attacks
+  enemyShootAttack(){ // Shoot at the player
+    var enemyBomb = enemyBombs.create(enemy.x, enemy.y, 'level1projectile');
+>>>>>>> 9cb03a3ded94040074613ac5bebc1d4b4974d4f6
     enemyBomb.setCollideWorldBounds(true);
     enemyBomb.setVelocity(Math.min(800,(player.x - enemy.x)*2), Math.min(800,(player.y - enemy.y)*2));
     enemyBomb.allowGravity = true;
