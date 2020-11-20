@@ -98,7 +98,7 @@ class LevelFour extends Phaser.Scene {
     enemyBombs = this.physics.add.group();
 
     // The hp
-    hp = 100;
+    hp = 10;
     hpText = this.add.text(600, 16, 'HP: ' + hp, { fontSize: '32px', fill: '#000' });
 
     // Enemy Health
