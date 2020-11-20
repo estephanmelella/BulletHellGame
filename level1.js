@@ -4,11 +4,8 @@ class LevelOne extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image('lvl1background', 'assets/lvl1background_bigger.png');
     this.load.image('lvl1boss', 'assets/boss.png')
     this.load.image('lvl1ground', 'assets/moonrock.png');
-    this.load.image('lvl1ground_breaking', 'assets/cracked_moonrock.png');
-    this.load.image('lvl1ground_broken', 'assets/broken_moonrock.png');
     this.load.image('lvl1projectile', 'assets/bossbullet.png');
   }
 
