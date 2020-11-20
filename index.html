@@ -46,68 +46,27 @@ var config = {
     LevelFourIntro, LevelFour]
 };
 
+//Player variables
+var player, hp, hpText, bombs, invincible;
+var attack, changeAttack, attackList, attackNum;
 
-var player;
-var timedEvent;
-var timedEvent2;
+//Enemy variables
 var enemyShot = true;
-var enemy;
-var levelDoor;
-var bombs;
-var platforms;
-var pointer;
-var keys;
-var score = 0;
-var gameOver = false;
-var scoreText;
-var hp;
-var hpText;
-var enemyHealth;
-var enemyHealthText;
-var enemyBombs;
-var gameOverText = '';
-var youWin = false;
-var youWinText = '';
-var attack;
-var timer;
-var cursors;
-var date = new Date();
-var seconds;
-var jumpNoise;
-var bombNoise;
-var hitNoise;
-var keyNoise;
-var winNoise;
-var shotNoise;
-var hasShot = false;
+var enemy, enemyHealth, enemyHealthText, enemyBombs;
+
+//Level variables
+var levelDoor, timedEvent, moved, firstShot;
+var platforms, plats, plat1, plat2, plat3, plat4, plat5, plat6, plat7, plat8, plat9;
+var pointer, keys, cursors, projectiles, cannons;
+var gameOver, youWin, hasShot, firstSwitch = false;
+var gameOverText, youWinText, errorText, tutorialText, weaponText = '';
 var progress = 1;
-var errorText = '';
-var selectNoise;
-var errNoise;
-var projectiles;
-var changeAttack
-var attackList;
-var attackNum;
-var switchNoise;
-var cannonNoise;
-var cannons;
-var tutorialSong;
-var plat1, plat2, plat3, plat4, plat5, plat6, plat7, plat8, plat9;
-var invincible;
-var plats;
-var time;
-var lv1ISong;
-var lv1Song;
-var lv2ISong;
-var lv2Song;
-var lv3ISong;
-var lv3Song;
-var lv4ISong;
-var lv4Song;
-var tutorialText;
-var weaponText;
-var moved, firstShot;
-var firstSwitch = false;
+
+//Sound variables
+var jumpNoise, bombNoise, hitNoise, keyNoise, winNoise, shotNoise, switchNoise,
+cannonNoise, selectNoise, errNoise;
+var tutorialSong, lv1ISong, lv1Song, lv2ISong, lv2Song, lv3ISong, lv3Song,
+lv4ISong, lv4Song;
 
 var game = new Phaser.Game(config);
 
