@@ -4,9 +4,7 @@ class LevelThree extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image('lvl3background', 'assets/lvl3background.png');
     this.load.image('lvl3boss', 'assets/magmaboss.png')
-    this.load.image('lvl3ground', 'assets/new_plat.png');
     this.load.image('lvl3projectile', 'assets/magmabullet.png');
   }
 

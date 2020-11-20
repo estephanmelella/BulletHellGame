@@ -4,7 +4,7 @@ class LevelOneIntro extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image('lvl1background_bigger', 'assets/lvl1background_bigger.png');
+    this.load.image('lvl1background', 'assets/lvl1background_bigger.png');
     this.load.image('lvl1ground', 'assets/moonrock.png');
     this.load.image('lvl1ground_breaking', 'assets/cracked_moonrock.png');
     this.load.image('lvl1ground_broken', 'assets/broken_moonrock.png');
@@ -12,7 +12,7 @@ class LevelOneIntro extends Phaser.Scene {
 
   create() {
     //  A simple background for our game
-    this.add.image(400, 300, 'lvl1background_bigger');
+    this.add.image(400, 300, 'lvl1background');
     youWin = false;
     hasShot = false;
 
