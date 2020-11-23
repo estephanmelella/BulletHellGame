@@ -5,7 +5,7 @@ class LevelFourIntro extends Phaser.Scene {
 
   preload() {
     this.load.image('lvl4background', 'assets/lvl4background.png');
-    this.load.image('lvl4ground', 'assets/platform.png');
+    this.load.image('lvl4ground', 'assets/lvl4platform.png');
   }
 
   create() {
