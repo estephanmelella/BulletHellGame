@@ -30,6 +30,7 @@ class Tutorial extends Phaser.Scene {
     //  Player physics properties
     player.setBounce(0);
     player.setCollideWorldBounds(true);
+    lookingLeft = false;
 
     //Enemy
     enemy = this.physics.add.sprite(50 ,100,'dummy');
@@ -77,38 +78,42 @@ class Tutorial extends Phaser.Scene {
   }
 
   update(){
+
     if (youWin) {
       youWinText.setText("TUTORIAL COMPLETED");
       this.time.addEvent({delay: 5000, callback: () => this.scene.start('MainMenu')});
       this.time.addEvent({delay: 5000, callback: () => youWin = false});
-
     }
-    if (keys.A.isDown || cursors.left.isDown)
-    {
+
+    if (keys.A.isDown || cursors.left.isDown) {
         player.setVelocityX(-160);
-
         player.anims.play('left', true);
-        moved = true;
-    }
-    else if (keys.D.isDown || cursors.right.isDown)
-    {
-        player.setVelocityX(160);
 
-        player.anims.play('right', true);
         moved = true;
-    }
-    else if (keys.S.isDown || cursors.down.isDown)
-    {
+        lookingLeft = true;
+    } else if (keys.D.isDown || cursors.right.isDown) {
+        player.setVelocityX(160);
+        player.anims.play('right', true);
+
+        moved = true;
+        lookingLeft = false;
+    } else if (keys.S.isDown || cursors.down.isDown) {
       player.setVelocityY(300);
       player.setVelocityX(0);
 
-      player.anims.play('turn');
-
-    }
-    else {
+      if (lookingLeft){
+        player.anims.play('turnL');
+      } else {
+        player.anims.play('turnR');
+      }
+    } else {
         player.setVelocityX(0);
 
-        player.anims.play('turn');
+        if (lookingLeft){
+          player.anims.play('turnL');
+        } else {
+          player.anims.play('turnR');
+        }
     }
 
     if ((keys.W.isDown || cursors.up.isDown) && player.body.touching.down)
@@ -116,6 +121,12 @@ class Tutorial extends Phaser.Scene {
         player.setVelocityY(-400);
         jumpNoise.play();
         moved = true;
+
+        if (lookingLeft){
+          player.anims.play('turnL');
+        } else {
+          player.anims.play('turnR');
+        }
     }
 
     if (pointer.isDown && !hasShot){
@@ -133,7 +144,7 @@ class Tutorial extends Phaser.Scene {
 
     if (moved){
       if (!firstShot){
-        tutorialText.setText('Click to shoot');
+        tutorialText.setText('Point and click to shoot');
       } else {
         tutorialText.setText('Hold to rapid fire');
       }

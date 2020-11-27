@@ -145,6 +145,7 @@ class LevelThree extends Phaser.Scene {
     //  Player physics properties
     player.setBounce(0);
     player.setCollideWorldBounds(true);
+    lookingLeft = false;
 
     //Enemy
     enemy = this.physics.add.sprite(750 ,500,'lvl3boss');
@@ -281,27 +282,45 @@ class LevelThree extends Phaser.Scene {
     }
 
     // Movement
-    if (keys.A.isDown || cursors.left.isDown){
+    if (keys.A.isDown || cursors.left.isDown) {
         player.setVelocityX(-160);
-
         player.anims.play('left', true);
-    } else if (keys.D.isDown || cursors.right.isDown){
-        player.setVelocityX(160);
 
+        lookingLeft = true;
+    } else if (keys.D.isDown || cursors.right.isDown) {
+        player.setVelocityX(160);
         player.anims.play('right', true);
-    } else if (keys.S.isDown || cursors.down.isDown){
+
+        lookingLeft = false;
+    } else if (keys.S.isDown || cursors.down.isDown) {
       player.setVelocityY(300);
       player.setVelocityX(0);
 
-      player.anims.play('turn');
+      if (lookingLeft){
+        player.anims.play('turnL');
+      } else {
+        player.anims.play('turnR');
+      }
     } else {
         player.setVelocityX(0);
 
-        player.anims.play('turn');
+        if (lookingLeft){
+          player.anims.play('turnL');
+        } else {
+          player.anims.play('turnR');
+        }
     }
-    if ((keys.W.isDown || cursors.up.isDown) && player.body.touching.down){
+
+    if ((keys.W.isDown || cursors.up.isDown) && player.body.touching.down)
+    {
         player.setVelocityY(-400);
         jumpNoise.play();
+
+        if (lookingLeft){
+          player.anims.play('turnL');
+        } else {
+          player.anims.play('turnR');
+        }
     }
 
     // Switching Attacks
