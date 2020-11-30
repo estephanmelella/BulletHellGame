@@ -64,9 +64,10 @@ class Tutorial extends Phaser.Scene {
     tutorialText = this.add.text(400,550,'Use WASD to move', { fontSize: '30px', fill: '#000000' });
     var moved = false;
     var firstShot = false;
+    this.time.addEvent({delay: 1000, callback: () => firstShot = false});
 
     //Weapon text
-    weaponText = this.add.text(50,550,'Weapon: single', { fontSize: '30px', fill: '#000000' });
+    weaponText = this.add.text(50,550,'Aim with mouse', { fontSize: '30px', fill: '#000000' });
 
     //  Collide the player and the stars with the platforms
     this.physics.add.collider(player, platforms);
@@ -144,7 +145,7 @@ class Tutorial extends Phaser.Scene {
 
     if (moved){
       if (!firstShot){
-        tutorialText.setText('Point and click to shoot');
+        tutorialText.setText('Click to shoot');
       } else {
         tutorialText.setText('Hold to rapid fire');
       }
